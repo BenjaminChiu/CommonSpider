@@ -39,14 +39,17 @@ class TopWorkThread(threading.Thread):
                 print('Top 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
-                response.encoding = 'UTF-8'
+                response.encoding = 'GBK'
 
                 if response.status_code != 200:
                     self.queue.put(url)
                     time.sleep(20)
                 else :
+                    #分析 页面，将内容加入队列。一个队列就是一部完整的电影
                     temp = dytt_Lastest.getMoiveInforms(url, response.text)
-                    TaskQueue.getContentQueue().put(temp)
+                    #空项 不添加进队列，避免数据库产生空项
+                    if len(temp):
+                        TaskQueue.getContentQueue().put(temp)
                 #线程沉睡5 s/ ms???
                 time.sleep(5)
 

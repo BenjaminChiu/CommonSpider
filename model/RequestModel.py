@@ -52,12 +52,18 @@ class RequestModel(object):
     @classmethod
     def getHeaders(cls):
         headers = {
-            'User-Agent': random.choice(cls.UserAgent_List),
-            'Accept': "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,*/*;q=0.8",
-            'Accept-Encoding': 'gzip, deflate, sdch',
-            'Accept-Language': 'zh-CN,zh;q=0.8',
-            'Host':'www.dytt8.net',
+            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8',
+            'Accept-Encoding': 'gzip, deflate',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
+            # 'Cache - Control': 'no - cache',
+            'Host':'www.idyjy.com',
             # 'Referer': 'http: //www.dytt8.net/html/gndy/dyzz/index.html',
+            'Cookie': 'UM_distinctid = 1673f41e5c1442 - 04a4fcd1c22f79 - 3a3a5c0e - 1fa400 - 1673f41e5c2755;CNZZDATA1261133825 = '+
+                      '1883021458 - 1542952471 - null % 7C1542952471;ASPSESSIONIDCATCDBTR = LAOGPCKDKDGMAOEDLFGLCLAC;Hm_lvt_5146b742a9c9df07e049c28639c7750e = '+
+                      '1542954543;m = 27324__ % u5927 % u8C61 % u5E2D % u5730 % u800C % u5750__http % 3A // www.idyjy.com / sub / 27324.html__ % 7C % 7C27336__ % u534A % '+
+                      'u9B54 % u6CD5__http % 3A // www.idyjy.com / sub / 27336.html__ % 7C % 7C26709__ % u5DE8 % u9F7F % u9CA8__http % 3A // www.idyjy.com / sub / 26709.html'
+                      '__ % 7C % 7C;maxcms2 % 5Fscore27324 = ok;Hm_lpvt_5146b742a9c9df07e049c28639c7750e = 1542954969',
+            'User-Agent': random.choice(cls.UserAgent_List),
         }
         return headers
 

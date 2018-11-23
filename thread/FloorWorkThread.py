@@ -23,7 +23,7 @@ class FloorWorkThread(threading.Thread):
 
     NOT_EXIST = 0
 
-    host = 'http://www.dytt8.net'
+    host = 'http://www.idyjy.com'
 
     def __init__(self, queue, id):
         threading.Thread.__init__(self)
@@ -33,7 +33,7 @@ class FloorWorkThread(threading.Thread):
 
     def run(self):
         while not self.NOT_EXIST:
-            # 队列为空, 结束
+            # 队列为空, 结束。为什么先判断？因为如果先做业务的话，绝对会出错
             if self.queue.empty():
                 NOT_EXIST = 1
                 self.queue.task_done()
@@ -45,18 +45,23 @@ class FloorWorkThread(threading.Thread):
                 print('Floor 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
-                response.encoding = 'UTF-8'
+                response.encoding = 'GBK'
 
+                #请求失败
                 if response.status_code != 200:
+                    #将URL 重新加入队列，并休眠20ms
                     self.queue.put(url)
                     time.sleep(20)
+                #请求成功
                 else :
+                    #获取一页上所有的 电影的链接，并存入容器，返回一个List
                     moivePageUrlList = dytt_Lastest.getMoivePageUrlList(response.text)
                     for item in moivePageUrlList:
                         each = self.host + item
-                        # print(each)
+                        # print("在FloorWorkThread中，每部具体电影的URL："+each)
                         TaskQueue.putToMiddleQueue(each)
-                time.sleep(3) # 5
+                # 5
+                time.sleep(3)
 
             except Exception as e:
                 # print('catsh  Exception ==== ')

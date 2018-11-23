@@ -37,6 +37,7 @@ class TaskQueue(object):
     def getContentQueue(cls):
         return cls.contentQueue
 
+
     # Return True if the queue is empty, False otherwise (not reliable!).
     @classmethod
     def isFloorQueueEmpty(cls):
@@ -49,6 +50,8 @@ class TaskQueue(object):
     @classmethod
     def isContentQueueEmpty(cls):
         return cls.contentQueue.empty()
+
+
 
     # Put an item into the queue.
     @classmethod

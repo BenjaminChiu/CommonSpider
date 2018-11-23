@@ -26,46 +26,47 @@ class dytt_Lastest(object):
     # 截止到2017-08-08, 最新电影一共才有 164 个页面，返回一个页面总数（int）
     @classmethod
     def getMaxsize(cls):
-        response = requests.get(cls.breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
+        response = requests.get(cls.breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=300)
         # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
         response.encoding = 'GBK'
 
+        # print("请求地址为1："+cls.breakoutUrl)
+        # print("请求地址为2："+str(RequestModel.getHeaders()))
+        # print("请求地址为3："+str(RequestModel.getProxies()))
+        #
+        #print("页面信息为："+response.text)
+
         selector = etree.HTML(response.text)
-        print(selector)
         # 提取信息
-        optionList = selector.xpath("//div[@id='pages']/text()")
-        print("下面开始打印")
-        print(optionList)
+        page = selector.xpath("//div[@id='pages']/text()")
+        print(page)
+        #['页次:1/715页']
 
-        #pages = ''
-
-        for each in selector:
-            print(each)
-            if each[0:5] == "页次:1/":
-                pages = each[6:10]
-                print("最大页数是："+pages)
-            for eachs in each:
-                print(eachs)
-
-        return len(optionList) - 1   # 因首页重复, 所以要减1
+        pageNum = str(page).split('/')[1].split('页')[0]
+        print(pageNum)
+        #715
+        return pageNum
 
 
     # 获取 所有页面的 的URL，返回一个URL的集合（list）
     def getPageUrlList(self):
         '''
-        主要功能：目录页url取出，比如：http://www.dytt8.net/html/gndy/dyzz/list_23_'+ str(i) + '.html
+        主要功能：目录页url取出，比如：http://www.idyjy.com/w.asp?p=1&f=3&l=t，目标变换就仅仅只是p变量发生变化
         '''
+        #定义并初始化 一个list集合
         templist = []
-        request_url_prefix = 'http://www.dytt8.net/html/gndy/dyzz/'
-        templist = [request_url_prefix + 'index.html']
+        request_url_prefix = 'http://www.idyjy.com/w.asp?'
 
-        for i in range(2, self.sum + 1):
-            templist.append(request_url_prefix + 'list_23_' + str(i) + '.html')
+        #templist = [request_url_prefix + 'index.html']
+
+        for i in range(1, int(self.sum)+1):
+            templist.append(request_url_prefix + 'p=' + str(i) + '&f=3&l=t')
 
         for t in templist:
             print('request url is ###   ' + t + '    ###')
 
         return templist
+
 
 
     #获取 一个页面上的 所有电影的链接，返回一个所有电影的URL的集合（list）
@@ -75,213 +76,135 @@ class dytt_Lastest(object):
         获取电影信息的网页链接
         '''
         selector = etree.HTML(html)
-        templist = selector.xpath("//div[@class='co_content8']/ul/td/table/tr/td/b/a/@href")
+        templist = selector.xpath("//ul[@class='img-list clearfix']/li/a/@href")
         # print(len(templist))
         # print(templist)
         return templist
 
-    #请求一个电影链接，进入该电影信息页面，爬取内容
+
+
+    #请求一个电影链接，进入该电影信息页面，爬取内容。最为复杂的匹配页面函数
     @classmethod
     def getMoiveInforms(cls, url, html):
-        '''
-        解析电影信息页面的内容, 具体如下：
-        类型        : 疾速特攻/疾速追杀2][BD-mkv.720p.中英双字][2017年高分惊悚动作]
-        ◎译名      : ◎译\u3000\u3000名\u3000疾速特攻/杀神John Wick 2(港)/捍卫任务2(台)/疾速追杀2/极速追杀：第二章/约翰·威克2
-        ◎片名      : ◎片\u3000\u3000名\u3000John Wick: Chapter Two
-        ◎年代　    : ◎年\u3000\u3000代\u30002017
-        ◎国家　    : ◎产\u3000\u3000地\u3000美国
-        ◎类别　    : ◎类\u3000\u3000别\u3000动作/犯罪/惊悚
-        ◎语言　    : ◎语\u3000\u3000言\u3000英语
-        ◎字幕　    : ◎字\u3000\u3000幕\u3000中英双字幕
-        ◎上映日期  ：◎上映日期\u30002017-02-10(美国)
-        ◎IMDb评分  : ◎IMDb评分\xa0 8.1/10 from 86,240 users
-        ◎豆瓣评分　 : ◎豆瓣评分\u30007.7/10 from 2,915 users
-        ◎文件格式   : ◎文件格式\u3000x264 + aac
-        ◎视频尺寸　 : ◎视频尺寸\u30001280 x 720
-        ◎文件大小　 : ◎文件大小\u30001CD
-        ◎片长　    : ◎片\u3000\u3000长\u3000122分钟
-        ◎导演　    : ◎导\u3000\u3000演\u3000查德·史塔赫斯基 Chad Stahelski
-        ◎主演　    :
-        ◎简介      : 暂不要该字段
-        ◎获奖情况   : 暂不要该字段
-        ◎海报
-        影片截图
-        下载地址
-        '''
-        # print(html)
 
         #定义并初始化一个 容器，用来存储一个电影对象
         contentDir = {
-            'type': '',
-            'trans_name': '',
             'name': '',
+            'transName': '',
+            'desc': '',
+            'type': '',
             'decade': '',
             'conutry': '',
-            'level': '',
-            'language': '',
-            'subtitles': '',
-            'publish': '',
-            'IMDB_socre': '',
+            'IMDB_id': '',
             'douban_score': '',
-            'format': '',
-            'resolution': '',
-            'size': '',
-            'duration': '',
             'director': '',
-            'actors': '',
+            'actor': '',
             'placard': '',
-            'screenshot': '',
-            'ftpurl': '',
-            'dytt8_url': ''
+            'ftpUrl': '',
+            'thunderUrl': ''
         }
 
         selector = etree.HTML(html)
-        content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/p/text()")
-        # 匹配出来有两张图片, 第一张是海报, 第二张是电影画面截图
-        imgs = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/p/img/@src")
-        # print(content)
 
-        # 为了兼容 2012 年前的页面
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/span/text()")
+        #语法介绍：infoList[0][1:5]  这个列表的第0个元素的内容，从1开始，5结束的内容
+        #xpath得到的是一个列表，我们默认使用这个列表的第一个元素
 
-        # 有些页面特殊, 需要用以下表达式来重新获取信息
-        # 电影天堂页面好混乱啊~
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/div/text()")
+        #应该先判断 如果存在，再操作，否则下一部电影（这个功能如何实现），这样可以避免插入空电影
+        #影片名
+        if len(selector.xpath("//span[@id='name']/text()")):
+            contentDir['name'] = selector.xpath("//span[@id='name']/text()")[0]
 
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/p/font/text()")
-            if len(content) < 5:
-                content = selector.xpath("//div[@class='co_content8']/ul/tr/td/p/font/text()")
+            #影片图片
+            contentDir['placard'] = selector.xpath("//div[@class='pic']/img/@src")[0]
 
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/p/span/text()")
 
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/div/span/text()")
+            #获取info div中 第一个li内容，存在列表中
+            infoList = selector.xpath("//div[@class='info']/ul/li[1]/text()")
 
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/font/text()")
+            contentDir['decade'] = infoList[0][1:5]
+            contentDir['conutry'] = infoList[1][1:3]
 
-        if not len(content):
-            content = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/p/text()")
 
-        # print(content)
 
-        # 不同渲染页面要采取不同的抓取方式抓取图片
-        if not len(imgs):
-            imgs = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/img/@src")
+            #可以同时是多种类型
+            typeList = selector.xpath("//div[@class='info']/ul/li[2]/a/text()")
+            for each in typeList:
+                contentDir['type'] = contentDir['type'] + str(each)+"/"
 
-        if not len(imgs):
-            imgs = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/p/img/@src")
 
-        if not len(imgs):
-            imgs = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/div/img/@src")
+            contentDir['director'] = selector.xpath("//div[@class='info']/ul/li[3]/a/text()")[0]
 
-        if not len(imgs):
-            imgs = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/div/img/@src")
+            #一个集合
+            actorList = selector.xpath("//div[@class='info']/ul/li[4]/a/text()")
+            for each in actorList:
+                contentDir['actor'] = contentDir['actor'] + str(each)+"/"
 
-        # 类型
-        if content[0][0:1] != '◎':
-            contentDir['type'] = '[' + content[0]
-        actor = ''
 
-        for each in content:
-            if each[0:5] == '◎译\u3000\u3000名':
-                # 译名 ◎译\u3000\u3000名\u3000  一共占居6位
-                contentDir['trans_name'] = each[6: len(each)]
-            elif each[0:5] == '◎片\u3000\u3000名':
-                # 片名
-                contentDir['name'] = each[6: len(each)]
-            elif each[0:5] == '◎年\u3000\u3000代':
-                # 年份
-                contentDir['decade'] = each[6: len(each)]
-            elif each[0:5] == '◎产\u3000\u3000地':
-                # 产地
-                contentDir['conutry'] = each[6: len(each)]
-            elif each[0:5] == '◎类\u3000\u3000别':
-                # 类别
-                contentDir['level'] = each[6: len(each)]
-            elif each[0:5] == '◎语\u3000\u3000言':
-                # 语言
-                contentDir['language'] = each[6: len(each)]
-            elif each[0:5] == '◎字\u3000\u3000幕':
-                # 字幕
-                contentDir['subtitles'] = each[6: len(each)]
-            elif each[0:5] == '◎上映日期':
-                # 上映日期
-                contentDir['publish'] = each[6: len(each)]
-            elif each[0:7] == '◎IMDb评分':
-                # IMDb评分
-                contentDir['IMDB_socre'] = each[9: len(each)]
-            elif each[0:5] == '◎豆瓣评分':
-                # 豆瓣评分
-                contentDir['douban_score'] = each[6: len(each)]
-            elif each[0:5] == '◎文件格式':
-                # 文件格式
-                contentDir['format'] = each[6: len(each)]
-            elif each[0:5] == '◎视频尺寸':
-                # 视频尺寸
-                contentDir['resolution'] = each[6: len(each)]
-            elif each[0:5] == '◎文件大小':
-                # 文件大小
-                contentDir['size'] = each[6: len(each)]
-            elif each[0:5] == '◎片\u3000\u3000长':
-                # 片长
-                contentDir['duration'] = each[6: len(each)]
-            elif each[0:5] == '◎导\u3000\u3000演':
-                # 导演
-                contentDir['director'] = each[6: len(each)]
-            elif each[0:5] == '◎主\u3000\u3000演':
-                # 主演
-                actor = each[6: len(each)]
+            contentDir['transName'] = selector.xpath("//div[@class='info']/ul/li[5]/text()")[0]
 
-        for item in content:
-            if item[0: 4] == '\u3000\u3000\u3000\u3000':
-                actor = actor + '\n' + item[6: len(item)]
 
-        # 主演
-        contentDir['actors'] = actor
-        # 海报
-        if imgs[0] != None:
-            contentDir['placard'] = imgs[0]
-        # 影片截图
-        if imgs[1] != None:
-            contentDir['screenshot'] = imgs[1]
-        # 下载地址
-        ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/table/tbody/tr/td/a/text()")
+            contentDir['IMDB_id'] = selector.xpath("//span[@id='imdb']/text()")[0]
 
-        # 为了兼容 2012 年前的页面
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/table/tbody/tr/td/font/a/text()")
+            #豆瓣分数，并四舍五入1位小数
+            tempList = selector.xpath("//div[@class='star']/script/text()")[0]
+            people = str(tempList).split(',')[1]
+            score = str(tempList).split(',')[3]
+            contentDir['douban_score'] = str(round(int(score)/int(people), 1))
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/table/tbody/tr/td/a/text()")
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/div/table/tbody/tr/td/font/a/text()")
+            contentDir['desc'] = selector.xpath("//div[@class='endtext']/text()")[0]
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/div/table/tbody/tr/td/a/text()")
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/td/table/tbody/tr/td/a/text()")
+            #处理下载资源的获取 与 拼串
+            #只要有下载框，就进去。没有下载框，跳出。  downDIV可能为空
+            thunderURL=""
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/p/span/a/text()")
+            count = 0
+            while len(selector.xpath("//input[@name='down_url_list_" + str(count) + "']/@value")):
+                #旧样式
+                if count == 0:
+                    title = selector.xpath("//input[@name='down_url_list_0']/../../../../div[@class='title']/span/h3/text()")[0]
+                    #1个字符串 3个列表
+                    downURL = selector.xpath("//input[@name='down_url_list_0']/@value")
+                    nameList = selector.xpath("//input[@name='down_url_list_0']/../p/strong/a/text()")
+                    sizeList = selector.xpath("//input[@name='down_url_list_0']/../span/em/text()")
+                    #一个下载DIV 拼串
+                    title = str(title).rstrip("1")
+                    item = title+"@@"
+                    for i in range(len(sizeList)):
+                        item = item+downURL[i]+"&&"+nameList[i]+"&&"+sizeList[i]+"##"
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/div/div/table/tbody/tr/td/font/a/text()")
+                    thunderURL=thunderURL+item+"$$"
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/span/table/tbody/tr/td/font/a/text()")
+                #新样式
+                else:
+                    title = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../../../../div[@class='title']/span/h3/text()")[0]
+                    downURL = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/@value")
+                    sizeList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/em/text()")
+                    nameList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/text()")
+                    # 拿到偶数项， 相关奇数项为[::2]
+                    nameList = nameList[1::2]
+                    newNameList = []
+                    # 删除字符串中 ]
+                    for each in nameList:
+                        newNameList.append(str(each).lstrip("]"))
 
-        if not len(ftp):
-            ftp = selector.xpath("//div[@class='co_content8']/ul/tr/td/div/div/td/div/span/div/table/tbody/tr/td/font/a/text()")
 
-        contentDir['ftpurl'] = ftp[0]
-        # 页面链接
-        contentDir['dytt8_url'] = url
-        print(contentDir)
-        return contentDir
+                    # 一个下载DIV 拼串
+                    item = title+"@@"
+                    for i in range(len(sizeList)):
+                        item = item+downURL[i]+"&&"+newNameList[i]+"&&"+sizeList[i]+"##"
+
+                    thunderURL = thunderURL + item + "$$"
+
+                #进入下一个 下载框
+                count = count+1
+
+            contentDir['thunderUrl'] = thunderURL
+
+            print(contentDir)
+            return contentDir
+
+        #获取不到 页面电影名称，避免产生空项，故返回None
+        else:
+            return None
