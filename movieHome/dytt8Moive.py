@@ -111,48 +111,75 @@ class dytt_Lastest(object):
 
         #应该先判断 如果存在，再操作，否则下一部电影（这个功能如何实现），这样可以避免插入空电影
         #影片名
-        if len(selector.xpath("//span[@id='name']/text()")):
-            contentDir['name'] = selector.xpath("//span[@id='name']/text()")[0]
+
+        tmpName = selector.xpath("//span[@id='name']/text()")
+        if len(tmpName):
+            contentDir['name'] = tmpName[0]
 
             #影片图片
-            contentDir['placard'] = selector.xpath("//div[@class='pic']/img/@src")[0]
+            tmpPCard= selector.xpath("//div[@class='pic']/img/@src")
+            if len(tmpPCard):
+                contentDir['placard'] = tmpPCard[0]
 
 
             #获取info div中 第一个li内容，存在列表中
             infoList = selector.xpath("//div[@class='info']/ul/li[1]/text()")
-
-            contentDir['decade'] = infoList[0][1:5]
-            contentDir['conutry'] = infoList[1][1:3]
+            if len(infoList):
+                contentDir['decade'] = infoList[0][1:5]
+                contentDir['conutry'] = infoList[1][1:3]
 
 
 
             #可以同时是多种类型
             typeList = selector.xpath("//div[@class='info']/ul/li[2]/a/text()")
-            for each in typeList:
-                contentDir['type'] = contentDir['type'] + str(each)+"/"
+            if len(typeList):
+                for each in typeList:
+                    contentDir['type'] = contentDir['type'] + str(each)+"/"
 
 
-            contentDir['director'] = selector.xpath("//div[@class='info']/ul/li[3]/a/text()")[0]
+
+            tmpDire = selector.xpath("//div[@class='info']/ul/li[3]/a/text()")
+            if len(tmpDire):
+                contentDir['director'] = tmpDire[0]
+
 
             #一个集合
             actorList = selector.xpath("//div[@class='info']/ul/li[4]/a/text()")
-            for each in actorList:
-                contentDir['actor'] = contentDir['actor'] + str(each)+"/"
+            if len(actorList):
+                for each in actorList:
+                    contentDir['actor'] = contentDir['actor'] + str(each)+"/"
 
 
-            contentDir['transName'] = selector.xpath("//div[@class='info']/ul/li[5]/text()")[0]
 
 
-            contentDir['IMDB_id'] = selector.xpath("//span[@id='imdb']/text()")[0]
+            tmpTranName = selector.xpath("//div[@class='info']/ul/li[5]/text()")
+            if len(tmpTranName):
+                contentDir['transName'] = tmpTranName[0]
+
+
+
+
+            tmpIMDBID= selector.xpath("//span[@id='imdb']/text()")
+            if len(tmpIMDBID):
+                contentDir['IMDB_id'] = tmpIMDBID[0]
+
 
             #豆瓣分数，并四舍五入1位小数
-            tempList = selector.xpath("//div[@class='star']/script/text()")[0]
-            people = str(tempList).split(',')[1]
-            score = str(tempList).split(',')[3]
-            contentDir['douban_score'] = str(round(int(score)/int(people), 1))
+            tempList = selector.xpath("//div[@class='star']/script/text()")
+            if len(tempList):
+                people = str(tempList[0]).split(',')[1]
+                score = str(tempList[0]).split(',')[3]
+                contentDir['douban_score'] = str(round(int(score)/int(people), 1))
 
 
-            contentDir['desc'] = selector.xpath("//div[@class='endtext']/text()")[0]
+            #电影简介   可能存在反爬虫，可能是页面版本混乱。总之，进行判断，兼容
+            DescList = selector.xpath("//div[@class='endtext']/text()")
+            DescInPList = selector.xpath("//div[@class='endtext']/p/text()")
+            if len(DescList):
+                contentDir['desc'] = DescList[0]
+            elif len(DescInPList):
+                for each in DescInPList:
+                    contentDir['desc'] = contentDir['desc'] + each + "$$"
 
 
             #处理下载资源的获取 与 拼串

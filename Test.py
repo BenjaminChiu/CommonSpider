@@ -50,7 +50,7 @@ if __name__ == '__main__':
 
 
     #第二阶段测试，页面内容的抓取
-    url = "http://www.idyjy.com/sub/14439.html"
+    url = "http://www.idyjy.com/sub/7777.html"
 
     response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
 

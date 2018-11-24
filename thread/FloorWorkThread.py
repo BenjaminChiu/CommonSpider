@@ -41,7 +41,7 @@ class FloorWorkThread(threading.Thread):
 
             url = self.queue.get()
             try:
-                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
+                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=20)
                 print('Floor 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
@@ -61,7 +61,7 @@ class FloorWorkThread(threading.Thread):
                         # print("在FloorWorkThread中，每部具体电影的URL："+each)
                         TaskQueue.putToMiddleQueue(each)
                 # 5
-                time.sleep(3)
+                time.sleep(5)
 
             except Exception as e:
                 # print('catsh  Exception ==== ')

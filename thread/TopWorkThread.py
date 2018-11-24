@@ -35,7 +35,7 @@ class TopWorkThread(threading.Thread):
 
             url = self.queue.get()
             try:
-                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
+                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=20)
                 print('Top 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
@@ -48,7 +48,7 @@ class TopWorkThread(threading.Thread):
                     #分析 页面，将内容加入队列。一个队列就是一部完整的电影
                     temp = dytt_Lastest.getMoiveInforms(url, response.text)
                     #空项 不添加进队列，避免数据库产生空项
-                    if len(temp):
+                    if (len(temp) and None != temp):
                         TaskQueue.getContentQueue().put(temp)
                 #线程沉睡5 s/ ms???
                 time.sleep(5)
