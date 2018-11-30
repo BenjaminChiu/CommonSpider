@@ -15,36 +15,29 @@ from model.RequestModel import RequestModel
 
 class dytt_Lastest(object):
 
-    # 获取爬虫程序抓取入口，即找到可以大量翻页的地方
-    breakoutUrl = 'http://www.idyjy.com/w.asp?p=1&f=3&l=t'
+    # 初始页面即抓取入口，即找到可以大量翻页的地方
 
-    def __init__(self, sum):
+    #相当于构造函数，初始化起始页面 ，页面总数；后两个参数是页面变换时 以迭代变换的数字为中心，左右的关键定位字
+    def __init__(self, breakoutUrl, prefixKey, suffixKey, sum):
+        self.breakoutUrl = breakoutUrl
+        self.prefixKey = prefixKey
+        self.suffixKey = suffixKey
         self.sum = sum
+
 
 
     # 获取【最新电影】有多少个页面
     # 截止到2017-08-08, 最新电影一共才有 164 个页面，返回一个页面总数（int）
     @classmethod
-    def getMaxsize(cls):
-        response = requests.get(cls.breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=300)
+    def getMaxsize(self, breakoutUrl):
+        response = requests.get(breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=300)
         # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
         response.encoding = 'GBK'
-
-        # print("请求地址为1："+cls.breakoutUrl)
-        # print("请求地址为2："+str(RequestModel.getHeaders()))
-        # print("请求地址为3："+str(RequestModel.getProxies()))
-        #
-        #print("页面信息为："+response.text)
 
         selector = etree.HTML(response.text)
         # 提取信息
         page = selector.xpath("//div[@id='pages']/text()")
-        print(page)
-        #['页次:1/715页']
-
         pageNum = str(page).split('/')[1].split('页')[0]
-        print(pageNum)
-        #715
         return pageNum
 
 
@@ -55,15 +48,25 @@ class dytt_Lastest(object):
         '''
         #定义并初始化 一个list集合
         templist = []
-        request_url_prefix = 'http://www.idyjy.com/w.asp?'
 
-        #templist = [request_url_prefix + 'index.html']
+        # 定义前缀与后缀
+        # 'http://www.idyjy.com/w.asp?'
+        request_url_prefix = str(self.breakoutUrl).split(str(self.prefixKey))[0]
 
-        for i in range(1, int(self.sum)+1):
-            templist.append(request_url_prefix + 'p=' + str(i) + '&f=3&l=t')
+        request_url_suffix = str(self.breakoutUrl).split(str(self.suffixKey))[1]
+
+        #起始页
+        startPage = str(self.breakoutUrl).split(str(self.prefixKey))[1].split(str(self.suffixKey))[0]
+
+        print("测试startPage="+str(startPage))
+
+        for i in range(int(startPage), int(self.sum)+1):
+            templist.append(request_url_prefix + str(self.prefixKey) + str(i) + str(self.suffixKey) + request_url_suffix)
+
 
         for t in templist:
             print('request url is ###   ' + t + '    ###')
+
 
         return templist
 
@@ -89,18 +92,19 @@ class dytt_Lastest(object):
 
         #定义并初始化一个 容器，用来存储一个电影对象
         contentDir = {
-            'name': '',
+            'mName': '',
             'transName': '',
-            'desc': '',
-            'type': '',
+            'altName': '',
+            'mDesc': '',
+            'mType': '',
             'decade': '',
             'conutry': '',
-            'IMDB_id': '',
-            'douban_score': '',
+            'imdbId': '',
+            'doubanScore': '',
             'director': '',
             'actor': '',
             'placard': '',
-            'ftpUrl': '',
+            'updateTo': '',
             'thunderUrl': ''
         }
 
@@ -114,54 +118,88 @@ class dytt_Lastest(object):
 
         tmpName = selector.xpath("//span[@id='name']/text()")
         if len(tmpName):
-            contentDir['name'] = tmpName[0]
+            contentDir['mName'] = tmpName[0]
 
-            #影片图片
+            tmpTrName = selector.xpath("//span[@id='name']/../text()")
+            if len(tmpTrName):
+                contentDir['transName'] = tmpTrName[0]
+
+
+
+            #兼容 电视剧页面
+
+            liNum = 1
+
+            # 判断 页面类型：电视剧？电影？。约定 1表示电影， 2表示电视剧
+            pageType = 1
+
+            upKeyList = selector.xpath("//div[@class='info']/ul/li[" + str(liNum) + "]/span/text()")
+            if len(upKeyList) and "更新" == upKeyList[0][0:2]:
+                pageType = 2    #标注页面，虽然也可以用liNum 判断。但耦合过高
+                upList = selector.xpath("//div[@class='info']/ul/li[" + str(liNum) + "]/text()")
+                if len(upList):
+                    contentDir['updateTo'] = upList[0]
+                #为什么是这个位置，因为能进来，肯定是电视剧页面；故 分析完这栏 加 1
+                liNum = liNum + 1
+
+
+            #影片图片，插入这个位置不得已。因为必须用到pageType 来判断页面
             tmpPCard= selector.xpath("//div[@class='pic']/img/@src")
-            if len(tmpPCard):
+            tmpPCardOrg = selector.xpath("//div[@class='pic']/img/@original")
+            if len(tmpPCard) and pageType == 1:
                 contentDir['placard'] = tmpPCard[0]
+            elif len(tmpPCardOrg) and pageType == 2:
+                contentDir['placard'] = tmpPCardOrg[0]
+
 
 
             #获取info div中 第一个li内容，存在列表中
-            infoList = selector.xpath("//div[@class='info']/ul/li[1]/text()")
+            infoList = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/text()")
+            print("整个infoList是"+ str(infoList))
             if len(infoList):
-                contentDir['decade'] = infoList[0][1:5]
-                contentDir['conutry'] = infoList[1][1:3]
+                if 1 == pageType:
+                    contentDir['decade'] = infoList[0][1:5]
+                    contentDir['conutry'] = infoList[1]
+                elif 2 == pageType:
+                    contentDir['decade'] = infoList[0][0:4]
+                    contentDir['conutry'] = infoList[1]
 
 
 
+            liNum = liNum + 1
             #可以同时是多种类型
-            typeList = selector.xpath("//div[@class='info']/ul/li[2]/a/text()")
+            typeList = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/a/text()")
             if len(typeList):
                 for each in typeList:
-                    contentDir['type'] = contentDir['type'] + str(each)+"/"
+                    contentDir['mType'] = contentDir['mType'] + str(each)+"/"
 
 
-
-            tmpDire = selector.xpath("//div[@class='info']/ul/li[3]/a/text()")
+            liNum = liNum + 1
+            tmpDire = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/a/text()")
             if len(tmpDire):
                 contentDir['director'] = tmpDire[0]
 
 
+            liNum = liNum + 1
             #一个集合
-            actorList = selector.xpath("//div[@class='info']/ul/li[4]/a/text()")
+            actorList = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/a/text()")
             if len(actorList):
                 for each in actorList:
                     contentDir['actor'] = contentDir['actor'] + str(each)+"/"
 
 
 
-
-            tmpTranName = selector.xpath("//div[@class='info']/ul/li[5]/text()")
+            liNum = liNum + 1
+            tmpTranName = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/text()")
             if len(tmpTranName):
-                contentDir['transName'] = tmpTranName[0]
-
+                contentDir['altName'] = tmpTranName[0]
 
 
 
             tmpIMDBID= selector.xpath("//span[@id='imdb']/text()")
             if len(tmpIMDBID):
-                contentDir['IMDB_id'] = tmpIMDBID[0]
+                contentDir['imdbId'] = tmpIMDBID[0]
+
 
 
             #豆瓣分数，并四舍五入1位小数
@@ -169,64 +207,88 @@ class dytt_Lastest(object):
             if len(tempList):
                 people = str(tempList[0]).split(',')[1]
                 score = str(tempList[0]).split(',')[3]
-                contentDir['douban_score'] = str(round(int(score)/int(people), 1))
+                contentDir['doubanScore'] = str(round(int(score)/int(people), 1))
 
 
             #电影简介   可能存在反爬虫，可能是页面版本混乱。总之，进行判断，兼容
             DescList = selector.xpath("//div[@class='endtext']/text()")
             DescInPList = selector.xpath("//div[@class='endtext']/p/text()")
-            if len(DescList):
-                contentDir['desc'] = DescList[0]
+            if len(DescList) and '\r\n' != DescList[0]:
+                contentDir['mDesc'] = DescList[0]
             elif len(DescInPList):
                 for each in DescInPList:
-                    contentDir['desc'] = contentDir['desc'] + each + "$$"
+                    contentDir['mDesc'] = contentDir['mDesc'] + each + "$$"
 
 
             #处理下载资源的获取 与 拼串
             #只要有下载框，就进去。没有下载框，跳出。  downDIV可能为空
             thunderURL=""
 
+
             count = 0
             while len(selector.xpath("//input[@name='down_url_list_" + str(count) + "']/@value")):
-                #旧样式
-                if count == 0:
-                    title = selector.xpath("//input[@name='down_url_list_0']/../../../../div[@class='title']/span/h3/text()")[0]
-                    #1个字符串 3个列表
-                    downURL = selector.xpath("//input[@name='down_url_list_0']/@value")
-                    nameList = selector.xpath("//input[@name='down_url_list_0']/../p/strong/a/text()")
-                    sizeList = selector.xpath("//input[@name='down_url_list_0']/../span/em/text()")
-                    #一个下载DIV 拼串
-                    title = str(title).rstrip("1")
-                    item = title+"@@"
-                    for i in range(len(sizeList)):
-                        item = item+downURL[i]+"&&"+nameList[i]+"&&"+sizeList[i]+"##"
+                    #旧样式
+                    if count == 0:
+                        title = selector.xpath("//input[@name='down_url_list_0']/../../../../div[@class='title']/span/h3/text()")[0]
+                        #1个字符串 3个列表
+                        downURL = selector.xpath("//input[@name='down_url_list_0']/@value")
+                        nameList = selector.xpath("//input[@name='down_url_list_0']/../p/strong/a/text()")
+                        sizeList = selector.xpath("//input[@name='down_url_list_0']/../span/em/text()")
 
-                    thunderURL=thunderURL+item+"$$"
+                        #一个下载DIV 拼串
+                        title = str(title).rstrip("1")
+                        item = title+"@@"
 
-                #新样式
-                else:
-                    title = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../../../../div[@class='title']/span/h3/text()")[0]
-                    downURL = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/@value")
-                    sizeList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/em/text()")
-                    nameList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/text()")
-                    # 拿到偶数项， 相关奇数项为[::2]
-                    nameList = nameList[1::2]
-                    newNameList = []
-                    # 删除字符串中 ]
-                    for each in nameList:
-                        newNameList.append(str(each).lstrip("]"))
+                        if len(sizeList):
+                            for i in range(len(sizeList)):
+                                item = item+downURL[i]+"&&"+nameList[i]+"&&"+sizeList[i]+"##"
+                        else:
+                            for i in range(len(downURL)):
+                                item = item+downURL[i]+"&&"+nameList[i]+"##"
+
+                        thunderURL=thunderURL+item+"$$"
+
+                    #新样式
+                    else:
+                        title = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../../../../div[@class='title']/span/h3/text()")[0]
+                        downURL = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/@value")
+                        sizeList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/em/text()")
+                        print("页面中存在的sizeList="+str(sizeList))
+                        nameList = selector.xpath("//input[@name='down_url_list_" + str(count) + "']/../p/strong/a/text()")
+                        newNameList = []
 
 
-                    # 一个下载DIV 拼串
-                    item = title+"@@"
-                    for i in range(len(sizeList)):
-                        item = item+downURL[i]+"&&"+newNameList[i]+"&&"+sizeList[i]+"##"
+                        beStatus = None
+                        #=默认不存在=======判断是否有[12.6G] 这类特殊的字符存在，如果存在才处理；不存在就绕行。====
+                        if len(nameList) and '[' == nameList[0]:
+                            beStatus = 1
+                            # 拿到偶数项， 相关奇数项为[::2]
+                            nameList = nameList[1::2]
+                            # 删除字符串中 ]
+                            for each in nameList:
+                                newNameList.append(str(each).lstrip("]"))
+                            # 为下面的循环语句 减负，将新容器newNameList 赋给 nameList
+                            nameList = newNameList
+                        #============判断结束=============================================
 
-                    thunderURL = thunderURL + item + "$$"
 
-                #进入下一个 下载框
-                count = count+1
+                        # 一个下载DIV 拼串
+                        item = title+"@@"
+                        if len(sizeList):
+                            for i in range(len(sizeList)):
+                                item = item+downURL[i]+"&&"+nameList[i]+"&&"+sizeList[i]+"##"
+                        else:
+                            for i in range(len(downURL)):
+                                item = item+downURL[i]+"&&"+nameList[i]+"##"
 
+
+                        thunderURL = thunderURL + item + "$$"
+
+                    #进入下一个 下载框
+                    count = count+1
+
+
+            # 处理完成，开始赋值
             contentDir['thunderUrl'] = thunderURL
 
             print(contentDir)

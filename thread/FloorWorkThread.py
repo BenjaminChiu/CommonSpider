@@ -61,7 +61,7 @@ class FloorWorkThread(threading.Thread):
                         # print("在FloorWorkThread中，每部具体电影的URL："+each)
                         TaskQueue.putToMiddleQueue(each)
                 # 5
-                time.sleep(5)
+                time.sleep(4)
 
             except Exception as e:
                 # print('catsh  Exception ==== ')

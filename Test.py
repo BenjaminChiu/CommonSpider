@@ -1,4 +1,4 @@
-from main import insertData
+from dao.EntityDao import EntityDao
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
 
@@ -50,7 +50,11 @@ if __name__ == '__main__':
 
 
     #第二阶段测试，页面内容的抓取
-    url = "http://www.idyjy.com/sub/7777.html"
+    # 'http://www.idyjy.com/sub/27365.html'
+    # "http://www.idyjy.com/sub/19994.html"
+    #
+    # 'http://www.idyjy.com/sub/27366.html'
+    url = 'http://www.idyjy.com/sub/26840.html'
 
     response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
 
@@ -63,4 +67,7 @@ if __name__ == '__main__':
     # 分析 页面，将内容加入队列。一个队列就是一部完整的电影
     temp = dytt_Lastest.getMoiveInforms(url, response.text)
 
-    # insertData(temp)
+
+    # movieDao = EntityDao('testtable')
+    # movieDao.NAME = 'testtable'
+    # movieDao.insertData(temp)

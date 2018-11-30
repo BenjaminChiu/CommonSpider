@@ -29,14 +29,13 @@ THREAD_SUM = 6
 def startSpider():
     # 实例化对象
 
-
-    # 电影 http://www.idyjy.com/w.asp?p=1&f=3&l=t
+    # 电视剧 http://www.idyjy.com/w.asp?p=1&f=2&l=t
 
     #确定起始页面 ，终止页面
 
-    #
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=3&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=31&f=3&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    #dytt_Lastest.getMaxsize()
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=2&l=t')
+    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
 
 
 
@@ -72,8 +71,8 @@ def startSpider():
             pass
 
     #插入数据，注意进入EntityDao 中修改表名
-    movieDao = EntityDao('movie_home')
-    movieDao.NAME = 'movie_home'
+    movieDao = EntityDao('serial_home')
+    movieDao.NAME = 'serial_home'
     movieDao.insertData()
 
 

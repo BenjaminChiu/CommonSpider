@@ -26,6 +26,11 @@ class TopWorkThread(threading.Thread):
 
 
     def run(self):
+
+        # 分析页面计数器
+        count = 1
+
+        #循环取出 电影链接队列，分析页面了
         while not self.NOT_EXIST:
             # 队列为空, 结束
             if self.queue.empty():
@@ -44,14 +49,20 @@ class TopWorkThread(threading.Thread):
                 if response.status_code != 200:
                     self.queue.put(url)
                     time.sleep(20)
-                else :
-                    #分析 页面，将内容加入队列。一个队列就是一部完整的电影
+                else:
+                    #分析 页面，将内容加入队列。一个队列中的元素就是一部完整的电影
                     temp = dytt_Lastest.getMoiveInforms(url, response.text)
+
                     #空项 不添加进队列，避免数据库产生空项
                     if (len(temp) and None != temp):
                         TaskQueue.getContentQueue().put(temp)
+
+                count = count + 1
+                print("当前分析页面的叠加数：" + str(count))
+                print("当前分析页面进度：" + str("%.2f%%" % ((count / 12870) * 100)))
+
                 #线程沉睡5 s/ ms???
-                time.sleep(5)
+                time.sleep(4)
 
             except Exception as e:
                 # self.queue.put(url)
