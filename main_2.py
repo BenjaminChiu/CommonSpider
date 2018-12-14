@@ -9,6 +9,7 @@ import re
 from dao.EntityDao import EntityDao
 from movieHome.dytt8Moive import dytt_Lastest
 from model.TaskQueue import TaskQueue
+from service.EntityService import EntityService
 from thread.FloorWorkThread import FloorWorkThread
 from thread.TopWorkThread import TopWorkThread
 from model.Entity import Entity
@@ -23,7 +24,7 @@ from model.Entity import Entity
 #LASTEST_MOIVE_TOTAL_SUM = 6 #164
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 6
+THREAD_SUM = 2
 
 
 def startSpider():
@@ -34,8 +35,8 @@ def startSpider():
     #确定起始页面 ，终止页面
 
     #dytt_Lastest.getMaxsize()
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=2&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=3&l=t')
+    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=3&l=t', 'p=', '&f', 3)
 
 
 
@@ -63,20 +64,14 @@ def startSpider():
         workthread.start()
 
 
-
     while True:
         if TaskQueue.isMiddleQueueEmpty():
             break
         else:
             pass
 
-    #插入数据，注意进入EntityDao 中修改表名
-    movieDao = EntityDao('serial_home')
-    movieDao.NAME = 'serial_home'
-    movieDao.insertData()
-
-
-
+    #调用业务方法，插入数据
+    EntityService('table_1214').finalSpider()
 
 
 

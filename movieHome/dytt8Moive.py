@@ -146,10 +146,12 @@ class dytt_Lastest(object):
             #影片图片，插入这个位置不得已。因为必须用到pageType 来判断页面
             tmpPCard= selector.xpath("//div[@class='pic']/img/@src")
             tmpPCardOrg = selector.xpath("//div[@class='pic']/img/@original")
-            if len(tmpPCard) and pageType == 1:
-                contentDir['placard'] = tmpPCard[0]
-            elif len(tmpPCardOrg) and pageType == 2:
+
+            if len(tmpPCardOrg):
                 contentDir['placard'] = tmpPCardOrg[0]
+            else:
+                contentDir['placard'] = tmpPCard[0]
+
 
 
 

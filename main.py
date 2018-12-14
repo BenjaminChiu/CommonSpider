@@ -74,7 +74,7 @@ def startSpider():
     #插入数据，注意进入EntityDao 中修改表名
     movieDao = EntityDao('movie_home')
     movieDao.NAME = 'movie_home'
-    movieDao.insertData()
+    movieDao.insertEntity()
 
 
 

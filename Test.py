@@ -1,10 +1,12 @@
+import pymysql
+
 from dao.EntityDao import EntityDao
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
 
 import requests
 
-
+from service.EntityService import EntityService
 from thread.FloorWorkThread import FloorWorkThread
 
 from model.RequestModel import RequestModel
@@ -56,18 +58,39 @@ if __name__ == '__main__':
     # 'http://www.idyjy.com/sub/27366.html'
     url = 'http://www.idyjy.com/sub/26840.html'
 
-    response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
+    # response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
 
-    print(' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
+    # print(' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
     # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
-    response.encoding = 'GBK'
+    # response.encoding = 'GBK'
 
 
     # 分析 页面，将内容加入队列。一个队列就是一部完整的电影
-    temp = dytt_Lastest.getMoiveInforms(url, response.text)
+    # temp = dytt_Lastest.getMoiveInforms(url, response.text)
 
 
-    # movieDao = EntityDao('testtable')
-    # movieDao.NAME = 'testtable'
-    # movieDao.insertData(temp)
+
+    # EntityService('table_1214').insertEntity(temp)
+
+
+
+
+
+    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='fish_movie', port=3306,charset='utf8')
+    CONN = DB.cursor()
+    dao = EntityDao('table_1214')
+    dataList = dao.findModelByName('宝贝儿','刘杰')
+    print("dataList=" + str(dataList))
+    thunder = dataList[0][1]
+    name = dataList[0][0]
+    print("thunder链接为@@@@@@@@@@@@@" + thunder)
+    print("thunder长度为=" + str(len(thunder)))
+    print("name长度为=" + str(len(name)))
+
+    # dao.updateModel('我你妈改了1','宝贝儿','刘杰')
+
+
+    if not len(dataList):
+        print("我尼玛为空了")
+
