@@ -16,15 +16,12 @@ from model.Entity import Entity
 
 '''
     程序主入口
-@Author monkey
-@Date 2017-08-08
 '''
 
-# 截止到2017-08-08, 最新电影一共才有 164 个页面
 #LASTEST_MOIVE_TOTAL_SUM = 6 #164
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 2
+THREAD_SUM = 6
 
 
 def startSpider():
@@ -36,20 +33,23 @@ def startSpider():
 
     #dytt_Lastest.getMaxsize()
     LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=3&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=3&l=t', 'p=', '&f', 3)
+    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=3&l=t', 'p=', '&f', 40)
 
 
 
-    floorlist = dyttlastest.getPageUrlList()
+    pagelist = dyttlastest.getPageUrlList()
 
-    floorQueue = TaskQueue.getFloorQueue()
-    for item in floorlist:
-        floorQueue.put(item, 3)
 
-    # print(floorQueue.qsize())
+    #======将 pageList加入队列，因为队列线程安全=========
+    pageQueue = TaskQueue.getFloorQueue()
+    for item in pagelist:
+        pageQueue.put(item, 3)
 
+
+
+    #=====1111==用线程请求pageQueue（pageList）（注意队列枯竭），将请求结果存入pageInfoList中=========
     for i in range(THREAD_SUM):
-        workthread = FloorWorkThread(floorQueue, i)
+        workthread = FloorWorkThread(pageQueue, i)
         workthread.start()
 
     while True:
@@ -57,21 +57,36 @@ def startSpider():
             break
         else:
             pass
+    #=====================================请求 pageList 结束=====================================
 
-    count = 1
+
+
+
+
+    #33333-取出itemQueue 存入数据库
+    service = EntityService('table_1214')
+
+
+
+
+
+    #===222222===请求 pageInfoList（MidQueue） 中的信息，存入itemQueue中
     for i in range(THREAD_SUM):
         workthread = TopWorkThread(TaskQueue.getMiddleQueue(), i)
         workthread.start()
 
-
     while True:
         if TaskQueue.isMiddleQueueEmpty():
+            #队列枯竭，关闭数据库连接
+            service.shutDownDB()
             break
-        else:
-            pass
+        elif TaskQueue.isContentQueueFull():
+            service.finalSpider()
+    # ====================请求 pageInfoList 结束======================
 
-    #调用业务方法，插入数据
-    EntityService('table_1214').finalSpider()
+
+
+
 
 
 

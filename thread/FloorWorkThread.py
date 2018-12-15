@@ -53,7 +53,7 @@ class FloorWorkThread(threading.Thread):
                     self.queue.put(url)
                     time.sleep(20)
                 #请求成功
-                else :
+                else:
                     #获取一页上所有的 电影的链接，并存入容器，返回一个List
                     moivePageUrlList = dytt_Lastest.getMoivePageUrlList(response.text)
                     for item in moivePageUrlList:

@@ -9,6 +9,12 @@ class EntityService:
     def __init__(self, tableName):
         self.__tableName = tableName
         self.__entitydao = EntityDao(tableName)
+        self.__firstRun = True
+
+
+    # 关闭数据库连接
+    def shutDownDB(self):
+        self.__entitydao.DB.close()
 
 
     # 判断表是否存在业务
@@ -29,13 +35,15 @@ class EntityService:
     # 添加到数据库业务
     def finalSpider(self):
         # ----------------操作表-------可选-----开始---------------
-        # if (self.table_exists()):
-        #     self.__entitydao.dropTable()
-        #     self.__entitydao.createTable()
-        #     print("删除旧表成功！并且创建了新表！")
-        # else:
-        #     self.__entitydao.createTable()
-        #     print("新创建表成功！")
+        if self.__firstRun:
+            self.__firstRun = False
+            if (self.table_exists()):
+                self.__entitydao.dropTable()
+                self.__entitydao.createTable()
+                print("删除旧表成功！并且创建了新表！")
+            else:
+                self.__entitydao.createTable()
+                print("新创建表成功！")
         # ----------------操作表-------可选-----结束---------------
 
         # 初始化 叠加器
@@ -43,7 +51,12 @@ class EntityService:
         while not TaskQueue.isContentQueueEmpty():
             item = TaskQueue.getContentQueue().get()
             # 去重添加（有相同的电影名和导演），如果相同，判断链接是否多于数据库中，是就更新
-            dataList = self.__entitydao.findModelByName(item['mName'], item['director'])
+            # 导演字段可能为空的处理
+            parm = ''
+            if str(item['director']).strip():
+                parm = item['director']
+
+            dataList = self.__entitydao.findModelByName(item['mName'], parm)
 
             # 返回值为空 新电影 可以插入
             if not len(dataList):
@@ -55,17 +68,17 @@ class EntityService:
                 urlInPage = item['thunderUrl']
                 # 新爬到的链接更多，更新
                 if len(urlInPage) > len(urlInDB):
-                    self.__entitydao.updateModel(urlInPage, item['mName'], item['director'])
+                    self.__entitydao.updateModel(urlInPage, item['mName'], parm)
+                    print("更新"+str(item['mName'])+"成功!")
 
 
-
-        # ----第二阶段测试使用-----开始---------
+        # --第二阶段--页面信息集合抓取测试使用-----开始---------
         # self.__entitydao.insertManyEntity(temp)
         # print("插入成功！")
         # ----第二阶段测试使用-----结束--------
 
-        self.__entitydao.DB.close()
 
 
 
-    # 优化队列，500个 一桶
+
+

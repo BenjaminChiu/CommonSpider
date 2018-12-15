@@ -55,7 +55,7 @@ class dytt_Lastest(object):
 
         request_url_suffix = str(self.breakoutUrl).split(str(self.suffixKey))[1]
 
-        #起始页
+        #动态获取起始页码 1
         startPage = str(self.breakoutUrl).split(str(self.prefixKey))[1].split(str(self.suffixKey))[0]
 
         print("测试startPage="+str(startPage))
@@ -88,7 +88,7 @@ class dytt_Lastest(object):
 
     #请求一个电影链接，进入该电影信息页面，爬取内容。最为复杂的匹配页面函数
     @classmethod
-    def getMoiveInforms(cls, url, html):
+    def getMoiveInforms(cls, html):
 
         #定义并初始化一个 容器，用来存储一个电影对象
         contentDir = {

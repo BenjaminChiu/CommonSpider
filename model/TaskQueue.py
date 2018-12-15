@@ -3,6 +3,8 @@
 
 '''
 @Desc
+    队列只是一个容纳List的容器，这个容器是线程安全的。故多此一举
+
     维护三个队列：
     FloorQueue     存放一级目录 url 链接的队列
     MiddleQueue    存放二级目录 url 链接的队列
@@ -19,7 +21,7 @@ class TaskQueue(object):
     #将三层队列初始化
     floorQueue = Queue()
     middleQueue = Queue()
-    contentQueue = Queue()
+    contentQueue = Queue(200)   #定义一个有上限的队列，存储信息复杂的item；大大减少内存的开销
 
     def __init__(self):
         pass
@@ -52,6 +54,10 @@ class TaskQueue(object):
         return cls.contentQueue.empty()
 
 
+    @classmethod
+    def isContentQueueFull(cls):
+        return cls.contentQueue.full()
+
 
     # Put an item into the queue.
     @classmethod
@@ -65,3 +71,4 @@ class TaskQueue(object):
     @classmethod
     def putToContentQueue(cls, item):
         cls.contentQueue.put(item)
+

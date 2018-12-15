@@ -51,11 +51,14 @@ class TopWorkThread(threading.Thread):
                     time.sleep(20)
                 else:
                     #分析 页面，将内容加入队列。一个队列中的元素就是一部完整的电影
-                    temp = dytt_Lastest.getMoiveInforms(url, response.text)
+                    temp = dytt_Lastest.getMoiveInforms(response.text)
 
                     #空项 不添加进队列，避免数据库产生空项
                     if (len(temp) and None != temp):
+                        #队列put满后，等队列中数据被存入mysql后，在继续往队列中put
                         TaskQueue.getContentQueue().put(temp)
+                        # TaskQueue.getContentQueue().join()
+                        print("当前队列数量=" + str(TaskQueue.getContentQueue().qsize()))
 
                 count = count + 1
                 print("当前分析页面的叠加数：" + str(count))
