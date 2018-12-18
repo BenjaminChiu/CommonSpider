@@ -25,15 +25,15 @@ THREAD_SUM = 6
 
 
 def startSpider():
-    # 实例化对象
+    # 实例化对象 动画片
 
     # 电视剧 http://www.idyjy.com/w.asp?p=1&f=2&l=t
 
     #确定起始页面 ，终止页面
 
     #dytt_Lastest.getMaxsize()
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=2&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=27&l=t')
+    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=27&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
 
 
 
@@ -64,7 +64,7 @@ def startSpider():
 
 
     #33333-取出itemQueue 存入数据库
-    service = EntityService('serial_home_1218')
+    service = EntityService('cartoon_home_1218')
 
 
 

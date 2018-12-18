@@ -21,7 +21,7 @@ from model.Entity import Entity
 #LASTEST_MOIVE_TOTAL_SUM = 6 #164
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 6
+THREAD_SUM = 3
 
 
 def startSpider():
@@ -32,8 +32,8 @@ def startSpider():
     #确定起始页面 ，终止页面
 
     #dytt_Lastest.getMaxsize()
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=2&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=17&l=t')
+    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=17&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
 
 
 
@@ -64,7 +64,7 @@ def startSpider():
 
 
     #33333-取出itemQueue 存入数据库
-    service = EntityService('serial_home_1218')
+    service = EntityService('variety_home_1218')
 
 
 

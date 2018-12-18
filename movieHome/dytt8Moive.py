@@ -105,7 +105,8 @@ class dytt_Lastest(object):
             'actor': '',
             'placard': '',
             'updateTo': '',
-            'thunderUrl': ''
+            'thunderUrl': '',
+            'dyjyUrl': ''
         }
 
         selector = etree.HTML(html)
@@ -220,6 +221,14 @@ class dytt_Lastest(object):
             elif len(DescInPList):
                 for each in DescInPList:
                     contentDir['mDesc'] = contentDir['mDesc'] + each + "$$"
+
+
+
+            # 添加 数据来源URL
+            dyjyList = selector.xpath("//div[@id='SOHUCS']/@sid")
+            if len(dyjyList):
+                contentDir['dyjyUrl'] = dyjyList[0]
+
 
 
             #处理下载资源的获取 与 拼串

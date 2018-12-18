@@ -2,7 +2,7 @@
 #coding=utf-8
 
 '''
-    实体类
+    实体类，用于Dao层 将队列中1个又一个的item解析成一个列表，后批量插入
 '''
 
 class Entity(object):
@@ -27,4 +27,5 @@ class Entity(object):
         itemlist.append(item['placard'])
         itemlist.append(item['updateTo'])
         itemlist.append(item['thunderUrl'])
+        itemlist.append(item['dyjyUrl'])
         return itemlist

@@ -48,6 +48,7 @@ class EntityDao:
                   `placard` varchar(255) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '海报',
                   `update_to` varchar(32) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '更新到多少集 或 已完结（电视剧专用）',
                   `thunder_url` longtext CHARACTER SET utf8 COLLATE utf8_general_ci COMMENT '迅雷下载地址，字符串',
+                  `dyjy_url` varchar(128) CHARACTER SET utf8 COLLATE utf8_general_ci DEFAULT '' COMMENT '电影家园URL，用于主页降序推荐',
                   `rcmd` tinyint(1) DEFAULT 0 COMMENT '首页是否推荐，1是，0非',
                   `click_num` bigint(64) DEFAULT 0 COMMENT '影片点击量',
                   `mold` tinyint(1) DEFAULT 1 COMMENT '影片类型',
@@ -69,8 +70,8 @@ class EntityDao:
     def insertEntity(self):
         insertSql = '''
             INSERT INTO ''' + str(self.__tableName) + ''' (m_name, trans_name, alt_name, m_desc, m_type, decade, conutry, imdb_id, douban_score, 
-             director, actor, placard, update_to, thunder_url) 
-            values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
+             director, actor, placard, update_to, thunder_url, dyjy_url) 
+            values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
         '''
         self.CONN.execute(insertSql)
         self.DB.commit()
@@ -81,8 +82,8 @@ class EntityDao:
     def insertManyEntity(self, item):
         insertSql = '''
             INSERT INTO ''' + str(self.__tableName) + ''' (m_name, trans_name, alt_name, m_desc, m_type, decade, conutry, imdb_id, douban_score, 
-             director, actor, placard, update_to, thunder_url) 
-            values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
+             director, actor, placard, update_to, thunder_url, dyjy_url) 
+            values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
         '''
         self.CONN.executemany(insertSql, [Entity.dirToList(item), ])
         self.DB.commit()
