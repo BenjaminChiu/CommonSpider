@@ -52,6 +52,7 @@ class EntityDao:
                   `rcmd` tinyint(1) DEFAULT 0 COMMENT '首页是否推荐，1是，0非',
                   `click_num` bigint(64) DEFAULT 0 COMMENT '影片点击量',
                   `mold` tinyint(1) DEFAULT 1 COMMENT '影片类型',
+                  `loading` tinyint(1) DEFAULT 1 COMMENT '图片加载状态，0-加载失败，1-加载正常',
                   `del` tinyint(1) DEFAULT 0 COMMENT '逻辑删除标志，1是，0非',
                   PRIMARY KEY (`id`) USING BTREE
                 ) ENGINE = InnoDB AUTO_INCREMENT = 1 CHARACTER SET = utf8 COLLATE = utf8_general_ci ROW_FORMAT = Dynamic;
@@ -90,13 +91,15 @@ class EntityDao:
 
 
     def findModelByName(self, name, director):
-        sql = 'SELECT m_name,thunder_url FROM '+str(self.__tableName)+' WHERE m_name =\''+str(name)+'\' AND director=\''+str(director)+'\''
+        sql = 'SELECT m_name,thunder_url FROM '+str(self.__tableName)+' WHERE m_name =\"'+str(name)+'\" AND director=\"'+str(director)+'\"'
+        print("执行的去重SQL==="+str(sql))
         self.CONN.execute(sql)
         return self.CONN.fetchall()
 
     # 更新
     def updateModel(self, url, name, director):
-        sql = 'UPDATE '+str(self.__tableName)+' SET thunder_url = \''+str(url)+'\' WHERE m_name = \''+str(name)+'\' AND director=\''+str(director)+'\''
+        sql = 'UPDATE '+str(self.__tableName)+' SET thunder_url = \"'+str(url)+'\" WHERE m_name = \"'+str(name)+'\" AND director=\"'+str(director)+'\"'
+        print("更新SQL===" + str(sql))
         self.CONN.execute(sql)
         self.DB.commit()
 

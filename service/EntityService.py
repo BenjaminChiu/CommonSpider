@@ -30,11 +30,9 @@ class EntityService:
             return False
 
 
+    # 操作表-------可选-----
+    def doTable(self):
 
-
-    # 添加到数据库业务
-    def finalSpider(self):
-        # ----------------操作表-------可选-----开始---------------
         if self.__firstRun:
             self.__firstRun = False
             if (self.table_exists()):
@@ -44,7 +42,13 @@ class EntityService:
             else:
                 self.__entitydao.createTable()
                 print("新创建表成功！")
-        # ----------------操作表-------可选-----结束---------------
+
+
+    # 添加到数据库业务
+    def finalSpider(self):
+
+        # 操作表
+        self.doTable()
 
         # 初始化 叠加器
         count = 1

@@ -77,11 +77,14 @@ def startSpider():
 
     while True:
         if TaskQueue.isMiddleQueueEmpty():
+            service.finalSpider()
             #队列枯竭，关闭数据库连接
             service.shutDownDB()
             break
         elif TaskQueue.isContentQueueFull():
             service.finalSpider()
+        else:
+            pass
     # ====================请求 pageInfoList 结束======================
 
 
