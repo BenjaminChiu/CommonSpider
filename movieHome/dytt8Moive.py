@@ -44,7 +44,7 @@ class dytt_Lastest(object):
     # 获取 所有页面的 的URL，返回一个URL的集合（list）
     def getPageUrlList(self):
         '''
-        主要功能：目录页url取出，比如：http://www.idyjy.com/w.asp?p=1&f=3&l=t，目标变换就仅仅只是p变量发生变化
+            主要功能：目录页url取出，比如：http://www.idyjy.com/w.asp?p=1&f=3&l=t，目标变换就仅仅只是p变量发生变化
         '''
         #定义并初始化 一个list集合
         templist = []
@@ -185,7 +185,7 @@ class dytt_Lastest(object):
 
             liNum = liNum + 1
             #一个集合
-            actorList = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/a/text()")
+            actorList = selector.xpath("//div[@class='info']/ul/li[" + str(liNum) + "]/a/text()")
             if len(actorList):
                 for each in actorList:
                     contentDir['actor'] = contentDir['actor'] + str(each)+"/"
@@ -193,7 +193,7 @@ class dytt_Lastest(object):
 
 
             liNum = liNum + 1
-            tmpTranName = selector.xpath("//div[@class='info']/ul/li["+ str(liNum) +"]/text()")
+            tmpTranName = selector.xpath("//div[@class='info']/ul/li[" + str(liNum) + "]/text()")
             if len(tmpTranName):
                 contentDir['altName'] = tmpTranName[0]
 

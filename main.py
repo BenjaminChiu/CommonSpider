@@ -64,7 +64,7 @@ def startSpider():
 
 
     #33333-取出itemQueue 存入数据库
-    service = EntityService('movie_home_1218')
+    service = EntityService('movie_home')
 
 
 
