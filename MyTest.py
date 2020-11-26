@@ -7,7 +7,7 @@ from movieHome.dytt8Moive import dytt_Lastest
 import requests
 
 from service.EntityService import EntityService
-from thread.FloorWorkThread import FloorWorkThread
+from MyThread.FloorWorkThread import FloorWorkThread
 
 from model.RequestModel import RequestModel
 
@@ -15,7 +15,7 @@ from model.RequestModel import RequestModel
 
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 5
+# THREAD_SUM = 5
 
 
 
@@ -56,7 +56,7 @@ if __name__ == '__main__':
     # "http://www.idyjy.com/sub/19994.html"
     #
     # 'http://www.idyjy.com/sub/27366.html'
-    url = 'http://www.idyjy.com/sub/26840.html'
+    # url = 'http://www.idyjy.com/sub/26840.html'
 
     # response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=3)
 
@@ -77,20 +77,20 @@ if __name__ == '__main__':
 
 
 
-    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='fish_movie', port=3306,charset='utf8')
-    CONN = DB.cursor()
-    dao = EntityDao('table_1214')
-    dataList = dao.findModelByName('宝贝儿','刘杰')
-    print("dataList=" + str(dataList))
-    thunder = dataList[0][1]
-    name = dataList[0][0]
-    print("thunder链接为@@@@@@@@@@@@@" + thunder)
-    print("thunder长度为=" + str(len(thunder)))
-    print("name长度为=" + str(len(name)))
-
+    # DB = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='fish_movie', port=3306,charset='utf8')
+    # CONN = DB.cursor()
+    # dao = EntityDao('table_1214')
+    # dataList = dao.findModelByName('宝贝儿','刘杰')
+    # print("dataList=" + str(dataList))
+    # thunder = dataList[0][1]
+    # name = dataList[0][0]
+    # print("thunder链接为@@@@@@@@@@@@@" + thunder)
+    # print("thunder长度为=" + str(len(thunder)))
+    # print("name长度为=" + str(len(name)))
+    print("我尼玛为空了")
     # dao.updateModel('我你妈改了1','宝贝儿','刘杰')
 
 
-    if not len(dataList):
-        print("我尼玛为空了")
+    # if not len(dataList):
+    #     print("我尼玛为空了")
 

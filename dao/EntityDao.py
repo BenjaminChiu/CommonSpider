@@ -8,9 +8,9 @@ from model.TaskQueue import TaskQueue
 
 class EntityDao:
     # 确定数据库连接，并获取连接游标   #在实际使用中，用对象去访问 类中公有的静态属性CONN
-    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='fish_movie', port=3306,charset='utf8')
+    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='TT314602', db='fm_movie', port=3306,charset='utf8')
     CONN = DB.cursor()
-    DBNAME = 'fish_movie'
+    DBNAME = 'fm_movie'
 
     def __init__(self, tableName):
         self.__tableName = tableName

@@ -10,8 +10,8 @@ from dao.EntityDao import EntityDao
 from movieHome.dytt8Moive import dytt_Lastest
 from model.TaskQueue import TaskQueue
 from service.EntityService import EntityService
-from thread.FloorWorkThread import FloorWorkThread
-from thread.TopWorkThread import TopWorkThread
+from MyThread.FloorWorkThread import FloorWorkThread
+from MyThread.TopWorkThread import TopWorkThread
 from model.Entity import Entity
 
 '''

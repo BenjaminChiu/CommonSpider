@@ -48,7 +48,7 @@ class EntityService:
     def finalSpider(self):
 
         # 操作表
-        self.doTable()
+        # self.doTable()
 
         # 初始化 叠加器
         count = 1

@@ -27,9 +27,6 @@ class TopWorkThread(threading.Thread):
 
     def run(self):
 
-        # 分析页面计数器
-        count = 1
-
         #循环取出 电影链接队列，分析页面了
         while not self.NOT_EXIST:
             # 队列为空, 结束
@@ -42,6 +39,7 @@ class TopWorkThread(threading.Thread):
             try:
                 response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=2000)
                 print('Top 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
+                response.close()    #为什么加这个？？？？  原因：出现了 远程主机强迫关闭了一个现有的连接
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
                 response.encoding = 'GBK'
@@ -60,12 +58,8 @@ class TopWorkThread(threading.Thread):
                         # TaskQueue.getContentQueue().join()
                         print("当前队列数量=" + str(TaskQueue.getContentQueue().qsize()))
 
-                count = count + 1
-                print("当前分析页面的叠加数：" + str(count))
-                print("当前分析页面进度：" + str("%.2f%%" % ((count / 12870) * 100)))
-
-                #线程沉睡5 s/ ms???
-                time.sleep(4)
+                #线程沉睡5秒
+                time.sleep(6)
 
             except Exception as e:
                 # self.queue.put(url)
