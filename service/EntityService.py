@@ -11,11 +11,9 @@ class EntityService:
         self.__entitydao = EntityDao(tableName)
         self.__firstRun = True
 
-
     # 关闭数据库连接
     def shutDownDB(self):
         self.__entitydao.DB.close()
-
 
     # 判断表是否存在业务
     def table_exists(self):
@@ -29,7 +27,6 @@ class EntityService:
         else:
             return False
 
-
     # 操作表-------可选-----
     def doTable(self):
 
@@ -42,7 +39,6 @@ class EntityService:
             else:
                 self.__entitydao.createTable()
                 print("新创建表成功！")
-
 
     # 添加到数据库业务
     def finalSpider(self):
@@ -73,16 +69,9 @@ class EntityService:
                 # 新爬到的链接更多，更新
                 if len(urlInPage) > len(urlInDB):
                     self.__entitydao.updateModel(urlInPage, item['mName'], parm)
-                    print("更新"+str(item['mName'])+"成功!")
-
+                    print("更新" + str(item['mName']) + "成功!")
 
         # --第二阶段--页面信息集合抓取测试使用-----开始---------
         # self.__entitydao.insertManyEntity(temp)
         # print("插入成功！")
         # ----第二阶段测试使用-----结束--------
-
-
-
-
-
-
