@@ -1,10 +1,9 @@
 #!/usr/bin/env python
-#coding=utf-8
+# coding=utf-8
 import random
 
 
 class RequestModel(object):
-
     UserAgent_List = [
         "Mozilla/5.0 (Windows NT 6.1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2228.0 Safari/537.36",
         "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36",
@@ -44,12 +43,11 @@ class RequestModel(object):
         "Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00"
     ]
 
-    #代理池？？
+    # 代理池？？
     Proxy_Pool = [
         'web-proxy.oa.com:8080',
         # '',
     ]
-
 
     # 获取不同的请求头
     @classmethod

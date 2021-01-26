@@ -40,11 +40,11 @@ class dytt_Lastest(object):
 
     # 获取 所有页面的 的URL，返回一个URL的集合（list）
     def getPageUrlList(self):
-        '''
+        """
             主要功能：目录页url取出，比如：http://www.idyjy.com/w.asp?p=1&f=3&l=t，目标变换就仅仅只是p变量发生变化
-        '''
+        """
         # 定义并初始化 一个list集合
-        templist = []
+        temp_list = []
 
         # 定义前缀与后缀
         # 'http://www.idyjy.com/w.asp?'
@@ -58,24 +58,24 @@ class dytt_Lastest(object):
         print("测试startPage=" + str(startPage))
 
         for i in range(int(startPage), int(self.sum) + 1):
-            templist.append(request_url_prefix + str(self.prefixKey) + str(i) + str(self.suffixKey) + request_url_suffix)
+            temp_list.append(request_url_prefix + str(self.prefixKey) + str(i) + str(self.suffixKey) + request_url_suffix)
 
-        for t in templist:
+        for t in temp_list:
             print('request url is ###   ' + t + '    ###')
 
-        return templist
+        return temp_list
 
     # 获取 一个页面上的 所有电影的链接，返回一个所有电影的URL的集合（list）
     @classmethod
     def getMoivePageUrlList(cls, html):
-        '''
+        """
         获取电影信息的网页链接
-        '''
+        """
         selector = etree.HTML(html)
-        templist = selector.xpath("//ul[@class='img-list clearfix']/li/a/@href")
+        temp_list = selector.xpath("//ul[@class='img-list clearfix']/li/a/@href")
         # print(len(templist))
         # print(templist)
-        return templist
+        return temp_list
 
     # 请求一个电影链接，进入该电影信息页面，爬取内容。最为复杂的匹配页面函数
     @classmethod
