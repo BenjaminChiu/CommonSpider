@@ -1,21 +1,16 @@
-import re
-
 import pymysql
 
 from model.Entity import Entity
-from model.TaskQueue import TaskQueue
 
 
 class EntityDao:
     # 确定数据库连接，并获取连接游标   #在实际使用中，用对象去访问 类中公有的静态属性CONN
-    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='TT314602', db='fm_movie', port=3306,charset='utf8')
+    DB = pymysql.connect(host='127.0.0.1', user='root', passwd='TT314602', db='fm_movie', port=3306, charset='utf8')
     CONN = DB.cursor()
     DBNAME = 'fm_movie'
 
     def __init__(self, tableName):
         self.__tableName = tableName
-
-
 
     # 这个函数用来判断表是否存在当前数据库
     def showAllTables(self):
@@ -24,11 +19,9 @@ class EntityDao:
         tables = [self.CONN.fetchall()]
         return tables
 
-
     def selectSql(self):
         selectSql = 'select t.table_name from information_schema.TABLES t where t.TABLE_SCHEMA ="' + str(self.DBNAME) + '" and t.TABLE_NAME ="' + str(self.__tableName) + '";'
         self.CONN.execute(selectSql)
-
 
     def createTable(self):
         createTableSql = '''
@@ -60,12 +53,10 @@ class EntityDao:
         self.CONN.execute(createTableSql)
         self.DB.commit()
 
-
     def dropTable(self):
         dropTableSql = 'DROP TABLE IF EXISTS `' + str(self.__tableName) + '`;'
         self.CONN.execute(dropTableSql)
         self.DB.commit()
-
 
     # 单个插入
     def insertEntity(self):
@@ -77,9 +68,7 @@ class EntityDao:
         self.CONN.execute(insertSql)
         self.DB.commit()
 
-
-
-    #批量插入
+    # 批量插入
     def insertManyEntity(self, item):
         insertSql = '''
             INSERT INTO ''' + str(self.__tableName) + ''' (m_name, trans_name, alt_name, m_desc, m_type, decade, conutry, imdb_id, douban_score, 
@@ -89,17 +78,15 @@ class EntityDao:
         self.CONN.executemany(insertSql, [Entity.dirToList(item), ])
         self.DB.commit()
 
-
     def findModelByName(self, name, director):
-        sql = 'SELECT m_name,thunder_url FROM '+str(self.__tableName)+' WHERE m_name =\"'+str(name)+'\" AND director=\"'+str(director)+'\"'
-        print("执行的去重SQL==="+str(sql))
+        sql = 'SELECT m_name,thunder_url FROM ' + str(self.__tableName) + ' WHERE m_name =\"' + str(name) + '\" AND director=\"' + str(director) + '\"'
+        print("执行的去重SQL===" + str(sql))
         self.CONN.execute(sql)
         return self.CONN.fetchall()
 
     # 更新
     def updateModel(self, url, name, director):
-        sql = 'UPDATE '+str(self.__tableName)+' SET thunder_url = \"'+str(url)+'\" WHERE m_name = \"'+str(name)+'\" AND director=\"'+str(director)+'\"'
+        sql = 'UPDATE ' + str(self.__tableName) + ' SET thunder_url = \"' + str(url) + '\" WHERE m_name = \"' + str(name) + '\" AND director=\"' + str(director) + '\"'
         print("更新SQL===" + str(sql))
         self.CONN.execute(sql)
         self.DB.commit()
-

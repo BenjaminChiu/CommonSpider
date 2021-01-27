@@ -1,15 +1,16 @@
 #!/usr/bin/env python
-#coding=utf-8
+# coding=utf-8
 
-'''
+"""
     实体类，用于Dao层 将队列中1个又一个的item解析成一个列表，后批量插入
-'''
+"""
+
 
 class Entity(object):
-
-    '''
+    """
     将字典转化为列表，返回一个list集合
-    '''
+    """
+
     @staticmethod
     def dirToList(item):
         itemlist = []

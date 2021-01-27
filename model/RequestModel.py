@@ -55,14 +55,15 @@ class RequestModel(object):
         headers = {
             'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
             'Accept-Encoding': 'gzip, deflate',
-            'Accept-Language': 'zh-CN,zh;q=0.9,en;q=0.8',
+            'Accept-Language': 'zh-CN,zh;q=0.9',
             'Cache - Control': 'no-cache',
             'Connection': 'keep-alive',
-            'Host': 'www.idyjy.com',
+            'Host': 'www.dy1234.net',
             'DNT': '1',
             'Pragma': 'no-cache',
             # 'Referer': 'http: //www.dytt8.net/html/gndy/dyzz/index.html',
-            'Cookie': 'UM_distinctid=16dc0cffadc137-0831184c76eb09-67e1b3f-1fa400-16dc0cffadd1ea; safedog-flow-item=EDB5B438336D2E9A48D2FD085328122B; Hm_lvt_b12979e4e40bb5a6bba9824601810548=1580370178,1580472504,1580522352,1580539422; ASPSESSIONIDQQQSSCCR=KCHCEKNBKIMHNLJMKPGIBEFD; CNZZDATA1276470129=1619689626-1570892783-%7C1580546276; m=33367__%u7F8E%u5229%u575A%u5973%u58EB__http%3A//www.idyjy.com/sub/33367.html__%7C%7C32587__%u53F6%u95EE4%uFF1A%u5B8C%u7ED3%u7BC7__http%3A//www.idyjy.com/sub/32587.html__%7C%7C33362__%u8FDE%u73AF%u6740%u624B%u751F%u6D3B%u6307%u5357__http%3A//www.idyjy.com/sub/33362.html__%7C%7C26160__%u8FDD%u547D__http%3A//www.idyjy.com/sub/26160.html__%7C%7C23895__%u6D6E%u751F%u68A6__http%3A//www.idyjy.com/sub/23895.html__%7C%7C32530__%u71C3%u70E7%u5973%u5B50%u7684%u8096%u50CF__http%3A//www.idyjy.com/sub/32530.html__%7C%7C33222__1917__http%3A//www.idyjy.com/sub/33222.html__%7C%7C8931__%u9F99%u7EB9%u8EAB%u7684%u5973%u5B69__http%3A//www.idyjy.com/sub/8931.html__%7C%7C8626__%u8C1C%u4E00%u6837%u7684%u53CC%u773C__http%3A//www.idyjy.com/sub/8626.html__%7C%7C9503__%u6700%u4F73%u51FA%u4EF7__http%3A//www.idyjy.com/sub/9503.html__%7C%7C9857__%u767B%u5802%u5165%u5BA4__http%3A//www.idyjy.com/sub/9857.html__%7C%7C31068__%u54C8%u9A6C%u820D%u5C14%u5FB7%u60AC%u6848__http%3A//www.idyjy.com/sub/31068.html__; Hm_lpvt_b12979e4e40bb5a6bba9824601810548=1580547697',
+            'Cookie': 'UM_distinctid=174c60df6f4807-070d6885205e05-7e647b65-1fa400-174c60df6f5955; CNZZDATA1276470129=299915948-1601046745-%7C1606627666; '
+                      'Hm_lvt_b12979e4e40bb5a6bba9824601810548=1606542703,1606561256,1606625698,1606631576; ASPSESSIONIDSQAARADT=MHHHEIMDLCDMDBPCELHDFMGC',
             'User-Agent': random.choice(cls.UserAgent_List),
         }
         return headers

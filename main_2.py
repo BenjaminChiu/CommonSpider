@@ -19,6 +19,7 @@ from service.EntityService import EntityService
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 THREAD_SUM = 6
 
+WEBSITE = 'http://www.dy1234.net/'
 
 def startSpider():
     # 实例化对象
@@ -28,8 +29,8 @@ def startSpider():
     # 确定起始页面 ，终止页面
 
     # dytt_Lastest.getMaxsize()
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.idyjy.com/w.asp?p=1&f=2&l=t')
-    dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize(WEBSITE + 'w.asp?p=1&f=2&l=t')
+    dyttlastest = dytt_Lastest(WEBSITE + 'w.asp?p=1&f=2&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
 
     pagelist = dyttlastest.getPageUrlList()
 

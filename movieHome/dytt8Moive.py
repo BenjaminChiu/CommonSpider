@@ -81,7 +81,7 @@ class dytt_Lastest(object):
     @classmethod
     def getMoiveInforms(cls, html):
 
-        # 定义并初始化一个 容器，用来存储一个电影对象
+        # 定义并初始化一个字典，用来存储一个电影对象
         contentDir = {
             'mName': '',
             'transName': '',

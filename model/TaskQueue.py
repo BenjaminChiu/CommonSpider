@@ -1,7 +1,7 @@
 #!/usr/bin/env python
-#coding=utf-8
+# coding=utf-8
 
-'''
+"""
 @Desc
     队列只是一个容纳List的容器，这个容器是线程安全的。故多此一举
 
@@ -12,16 +12,15 @@
 
     存放未爬取 url 的队列
     存放
-'''
+"""
 from queue import Queue
 
 
 class TaskQueue(object):
-
-    #将三层队列初始化
+    # 将三层队列初始化
     floorQueue = Queue()
     middleQueue = Queue()
-    contentQueue = Queue(200)   #定义一个有上限的队列，存储信息复杂的item；大大减少内存的开销
+    contentQueue = Queue(200)  # 定义一个有上限的队列，存储信息复杂的item；大大减少内存的开销
 
     def __init__(self):
         pass
@@ -39,7 +38,6 @@ class TaskQueue(object):
     def getContentQueue(cls):
         return cls.contentQueue
 
-
     # Return True if the queue is empty, False otherwise (not reliable!).
     @classmethod
     def isFloorQueueEmpty(cls):
@@ -53,11 +51,9 @@ class TaskQueue(object):
     def isContentQueueEmpty(cls):
         return cls.contentQueue.empty()
 
-
     @classmethod
     def isContentQueueFull(cls):
         return cls.contentQueue.full()
-
 
     # Put an item into the queue.
     @classmethod
@@ -71,4 +67,3 @@ class TaskQueue(object):
     @classmethod
     def putToContentQueue(cls, item):
         cls.contentQueue.put(item)
-
