@@ -4,46 +4,43 @@
 
 # import sqlite3
 
-from MyThread.FloorWorkThread import FloorWorkThread
+from MyThread.ThreadOne import ThreadOne
 from MyThread.TopWorkThread import TopWorkThread
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
 from service.EntityService import EntityService
+import cfg
 
+# cfg.py为自定义的项目总配置文件
 '''
     程序主入口
 '''
 
-# LASTEST_MOIVE_TOTAL_SUM = 6 #164
-
-# 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 8
-# 配置被爬取网站域名
-WEBSITE = 'http://www.dy1234.net/'
 
 def startSpider():
     # 确定起始页面 ，终止页面
 
     # dytt_Lastest.getMaxsize()
-    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize('http://www.dy1234.net/w.asp?p=1&f=3&l=t')
+    LASTEST_MOIVE_TOTAL_SUM = dytt_Lastest.getMaxsize(cfg.WEBSITE + 'w.asp?p=1&f=3&l=t')
     # dyttlastest = dytt_Lastest('http://www.idyjy.com/w.asp?p=1&f=3&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
-    dyttlastest = dytt_Lastest(WEBSITE + 'w.asp?p=1&f=3&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
+    dyttlastest = dytt_Lastest(cfg.WEBSITE + 'w.asp?p=1&f=3&l=t', 'p=', '&f', LASTEST_MOIVE_TOTAL_SUM)
 
     pagelist = dyttlastest.getPageUrlList()
 
     # ======将 pageList加入队列，因为队列线程安全=========
-    pageQueue = TaskQueue.getFloorQueue()
+    pageQueue = TaskQueue.getQueue_1()
     for item in pagelist:
         pageQueue.put(item, 3)
 
     # =======用线程请求pageQueue（pageList）（注意队列枯竭），将请求结果存入pageInfoList中=========
-    for i in range(THREAD_SUM):
-        workthread = FloorWorkThread(pageQueue, i)
-        # workthread.run()   #原版是workthread.start()，无法进行多线程调试，所以换成前面的样式
-        workthread.start()
+    for i in range(cfg.THREAD_SUM):
+        thread_one = ThreadOne(pageQueue, i)
+        # thread_one.start()
+        thread_one.run()  # 原版是workthread.start()，无法进行多线程调试，所以换成前面的样式
 
+    # 监听thread_one是否干完活
     while True:
-        if TaskQueue.isFloorQueueEmpty():
+        if TaskQueue.isQueue_1Empty():
             break
         else:
             pass
@@ -53,7 +50,7 @@ def startSpider():
     service = EntityService('movie_home_210127')
 
     # ===222222===请求 pageInfoList（MidQueue） 中的信息，存入itemQueue中
-    for i in range(THREAD_SUM):
+    for i in range(cfg.THREAD_SUM):
         workthread = TopWorkThread(TaskQueue.getMiddleQueue(), i)
         # workthread.run()   #原版是workthread.start()，无法进行多线程调试，所以换成前面的样式
         workthread.start()
@@ -77,6 +74,6 @@ def startSpider():
     # ====================请求 pageInfoList 结束======================
 
 
-# 主函数 入口？什么几把原理？
+# 主函数 入口
 if __name__ == '__main__':
     startSpider()

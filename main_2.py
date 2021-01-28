@@ -4,7 +4,7 @@
 
 # import sqlite3
 
-from MyThread.FloorWorkThread import FloorWorkThread
+from MyThread.ThreadOne import FloorWorkThread
 from MyThread.TopWorkThread import TopWorkThread
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest

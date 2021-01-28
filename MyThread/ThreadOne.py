@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-#coding=utf-8
+# coding=utf-8
 
 import threading
 import time
@@ -9,6 +9,7 @@ import requests
 from movieHome.dytt8Moive import dytt_Lastest
 from model.RequestModel import RequestModel
 from model.TaskQueue import TaskQueue
+import cfg
 
 '''
     1)自己封装抓取二级网页多线程
@@ -19,17 +20,16 @@ from model.TaskQueue import TaskQueue
 @Date 2017-08-08
 '''
 
-class FloorWorkThread(threading.Thread):
 
+class ThreadOne(threading.Thread):
     NOT_EXIST = 0
 
-    host = 'http://www.idyjy.com'
+    # host = 'http://www.idyjy.com'
 
     def __init__(self, queue, id):
         threading.Thread.__init__(self)
         self.queue = queue
         self.id = id
-
 
     def run(self):
         while not self.NOT_EXIST:
@@ -42,22 +42,22 @@ class FloorWorkThread(threading.Thread):
             url = self.queue.get()
             try:
                 response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel.getProxies(), timeout=2000)
-                print('Floor 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
+                print('线程1代 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
                 response.encoding = 'GBK'
 
-                #请求失败
+                # 请求失败
                 if response.status_code != 200:
-                    #将URL 重新加入队列，并休眠20ms
+                    # 将URL 重新加入队列，并休眠20ms
                     self.queue.put(url)
                     time.sleep(20)
-                #请求成功
+                # 请求成功
                 else:
-                    #获取一页上所有的 电影的链接，并存入容器，返回一个List
+                    # 获取一页上所有的 电影的链接，并存入容器，返回一个List
                     moivePageUrlList = dytt_Lastest.getMoivePageUrlList(response.text)
                     for item in moivePageUrlList:
-                        each = self.host + item
+                        each = cfg.WEBSITE + item
                         # print("在FloorWorkThread中，每部具体电影的URL："+each)
                         TaskQueue.putToMiddleQueue(each)
                 # 5
