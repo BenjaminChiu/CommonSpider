@@ -57,9 +57,9 @@ class ThreadOne(threading.Thread):
                     # 获取一页上所有的 电影的链接，并存入容器，返回一个List
                     moivePageUrlList = dytt_Lastest.getMoivePageUrlList(response.text)
                     for item in moivePageUrlList:
-                        each = cfg.WEBSITE + item
+                        each = cfg.WEBSITE + item   # 拼接每一部电影的链接
                         # print("在FloorWorkThread中，每部具体电影的URL："+each)
-                        TaskQueue.putToMiddleQueue(each)
+                        TaskQueue.putToQueue_2(each)    # 将页面上许多电影的链接 存入queue2
                 # 5
                 time.sleep(8)
 

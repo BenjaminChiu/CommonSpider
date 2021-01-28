@@ -4,12 +4,12 @@
 
 # import sqlite3
 
+import cfg
 from MyThread.ThreadOne import ThreadOne
-from MyThread.TopWorkThread import TopWorkThread
+from MyThread.ThreadTwo import ThreadTwo
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
 from service.EntityService import EntityService
-import cfg
 
 # cfg.py为自定义的项目总配置文件
 '''
@@ -27,7 +27,7 @@ def startSpider():
 
     pagelist = dyttlastest.getPageUrlList()
 
-    # ======将 pageList加入队列，因为队列线程安全=========
+    # ======将 pageList加入队列1，因为队列线程安全=========
     pageQueue = TaskQueue.getQueue_1()
     for item in pagelist:
         pageQueue.put(item, 3)
@@ -35,13 +35,17 @@ def startSpider():
     # =======用线程请求pageQueue（pageList）（注意队列枯竭），将请求结果存入pageInfoList中=========
     for i in range(cfg.THREAD_SUM):
         thread_one = ThreadOne(pageQueue, i)
-        # thread_one.start()
-        thread_one.run()  # 原版是workthread.start()，无法进行多线程调试，所以换成前面的样式
+        # thread_one.run()  # thread.run()只能启动一个主线程
+        thread_one.start()
 
     # 监听thread_one是否干完活
     while True:
+        # 逻辑生成的主页链接 枯竭（queue1枯竭）
         if TaskQueue.isQueue_1Empty():
             break
+        # # 队列2满，10页满
+        # elif TaskQueue.isQueue_2Full():
+        #     break
         else:
             pass
     # =====================================请求 pageList 结束=====================================
@@ -51,22 +55,24 @@ def startSpider():
 
     # ===222222===请求 pageInfoList（MidQueue） 中的信息，存入itemQueue中
     for i in range(cfg.THREAD_SUM):
-        workthread = TopWorkThread(TaskQueue.getMiddleQueue(), i)
-        # workthread.run()   #原版是workthread.start()，无法进行多线程调试，所以换成前面的样式
-        workthread.start()
+        thread_two = ThreadTwo(TaskQueue.getQueue_2(), i)  # 为什么会从queue_2中提取数据，因为在thread_one中已将数据加入到了queue_2
+        thread_two.start()
 
     # 爬取计数
     count = 1
 
     while True:
-        if TaskQueue.isMiddleQueueEmpty():
+        # 队列2为空，即爬取完成，将剩余数据添加到数据库，并关闭数据库连接
+        if TaskQueue.isQueue_2Empty():
             service.finalSpider()
             # 队列枯竭，关闭数据库连接
             service.shutDownDB()
             break
-        elif TaskQueue.isContentQueueFull():
+        # 队列3满了，为避免内存溢出，立即将队列中的数据添加到数据库
+        elif TaskQueue.isQueue_3Full():
+            service.doTable()
             service.finalSpider()
-            print("当前分析页面的叠加数：" + str(count * 200))
+            print("当前分析页面的叠加数：" + str(count * 200))  # 200：因为设置了队列3的上限个数为200
             count = count + 1
 
         else:

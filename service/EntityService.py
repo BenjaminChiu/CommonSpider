@@ -29,10 +29,9 @@ class EntityService:
 
     # 操作表-------可选-----
     def doTable(self):
-
         if self.__firstRun:
             self.__firstRun = False
-            if (self.table_exists()):
+            if self.table_exists():
                 self.__entitydao.dropTable()
                 self.__entitydao.createTable()
                 print("删除旧表成功！并且创建了新表！")
@@ -42,14 +41,13 @@ class EntityService:
 
     # 添加到数据库业务
     def finalSpider(self):
-
         # 操作表
         # self.doTable()
 
         # 初始化 叠加器
         count = 1
-        while not TaskQueue.isContentQueueEmpty():
-            item = TaskQueue.getContentQueue().get()
+        while not TaskQueue.isQueue_3Empty():
+            item = TaskQueue.getQueue_3().get()
             # 去重添加（有相同的电影名和导演），如果相同，判断链接是否多于数据库中，是就更新
             # 导演字段可能为空的处理
             parm = ''

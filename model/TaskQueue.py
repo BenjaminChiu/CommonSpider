@@ -18,9 +18,9 @@ from queue import Queue
 
 class TaskQueue(object):
     # 将三层队列初始化
-    Queue_1 = Queue()
-    Queue_2 = Queue()
-    Queue_3 = Queue(200)  # 定义一个有上限的队列，存储信息复杂的item；大大减少内存的开销
+    Queue_1 = Queue()       # 每页的链接，有规律的话，一般逻辑生成
+    Queue_2 = Queue()     # 10页
+    Queue_3 = Queue(200)    # 定义一个有上限的队列，存储信息复杂的item；大大减少内存的开销
 
     def __init__(self):
         pass
@@ -50,6 +50,10 @@ class TaskQueue(object):
     @classmethod
     def isQueue_3Empty(cls):
         return cls.Queue_3.empty()
+
+    @classmethod
+    def isQueue_2Full(cls):
+        return cls.Queue_2.full()
 
     @classmethod
     def isQueue_3Full(cls):
