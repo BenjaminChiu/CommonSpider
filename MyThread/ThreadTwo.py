@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-
+import random
 import threading
 import time
 
@@ -57,7 +57,7 @@ class ThreadTwo(threading.Thread):
                         print("当前队列数量=" + str(TaskQueue.getQueue_3().qsize()))
 
                 # 线程沉睡5秒
-                time.sleep(6)
+                time.sleep(random.randint(5, 20))
 
             except Exception as e:
                 # self.queue.put(url)

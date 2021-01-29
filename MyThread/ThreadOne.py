@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
-
+import random
 import threading
 import time
 
@@ -60,8 +60,8 @@ class ThreadOne(threading.Thread):
                         each = cfg.WEBSITE + item   # 拼接每一部电影的链接
                         # print("在FloorWorkThread中，每部具体电影的URL："+each)
                         TaskQueue.putToQueue_2(each)    # 将页面上许多电影的链接 存入queue2
-                # 5
-                time.sleep(8)
+                # 支线程 随机休眠
+                time.sleep(random.randint(5, 20))
 
             except Exception as e:
                 # print('catsh  Exception ==== ')
