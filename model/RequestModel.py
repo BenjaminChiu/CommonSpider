@@ -2,7 +2,7 @@
 # coding=utf-8
 import json
 import random
-
+import os
 
 class RequestModel(object):
     UserAgent_List = [
@@ -49,7 +49,12 @@ class RequestModel(object):
     Proxy_Pool_https = []
 
     def __init__(self):
-        with open('./proxy_ip.json', 'r', encoding='utf8') as f:
+
+        curPath = os.path.abspath(os.path.dirname(__file__))
+        rootPath = curPath[:curPath.find("Spider_MovieHome\\")+len("Spider_MovieHome\\")]  # 获取myProject，也就是项目的根路径
+        dataPath = os.path.abspath(rootPath + 'model\\proxy_ip.json')   # 获取tran.csv文件的路径
+
+        with open(dataPath, 'r', encoding='utf8') as f:
             # dict_ip = json.load(f)
             content = f.readlines()
             for line in content:
@@ -63,8 +68,7 @@ class RequestModel(object):
                     self.Proxy_Pool_https.append(result)
                 else:
                     continue
-
-        # print(self.Proxy_Pool_http)   # 测试输出代理池
+    # print(self.Proxy_Pool_http)   # 测试输出代理池
 
     # 获取不同的请求头
     @classmethod
@@ -88,6 +92,9 @@ class RequestModel(object):
     # 获取代理
     @classmethod
     def getProxies(self):
+
+
+
         proxies = {
             'http': random.choice(self.Proxy_Pool_http)
             # 'http':'web-proxy.oa.com:8080',
@@ -100,3 +107,4 @@ class RequestModel(object):
 if __name__ == '__main__':
     temp = RequestModel()
     temp.getProxies()
+    # RequestModel.getProxies()

@@ -8,7 +8,7 @@
 
 import json
 import telnetlib
-
+import os
 import requests
 
 from model.RequestModel import RequestModel
@@ -77,6 +77,29 @@ def verify2(ip, port, type):
         raise Exception('代理IP无效')
 
 
+
+
+def test_proxy():
+    """
+    测试已经加入到json文件中的代理
+    """
+    curPath = os.path.abspath(os.path.dirname(__file__))
+    rootPath = curPath[:curPath.find("Spider_MovieHome\\")+len("Spider_MovieHome\\")]  # 获取myProject，也就是项目的根路径
+    dataPath = os.path.abspath(rootPath + 'model\\proxy_ip.json')   # 获取tran.csv文件的路径
+
+    with open(dataPath, 'r', encoding='utf8') as f:
+        # dict_ip = json.load(f)
+        content = f.readlines()
+        for line in content:
+            data = json.loads(line)
+            data_host, data_port, data_type=data['host'], data['port'], data['type']
+            try:
+                verify2(data_host, data_port, data_type)
+            except Exception as e:
+                print('当前代理：'+str(data_type)+'://'+str(data_host)+str(data_port)+'失效')
+
+
+
 def getProxy(proxy_url):
     """
     获取ip，port ，type
@@ -105,5 +128,11 @@ def getProxy(proxy_url):
             verify(host, port, type)
 
 
+
+
+# 运行前，先清空代理池json文件
 if __name__ == '__main__':
-    getProxy(proxy_url)
+    # getProxy(proxy_url)     # 获取代理
+
+    test_proxy()# 测试成功的代理
+
