@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
+import json
 import random
 
 
@@ -44,10 +45,26 @@ class RequestModel(object):
     ]
 
     # 代理池？？
-    Proxy_Pool = [
-        'web-proxy.oa.com:8080',
-        # '',
-    ]
+    Proxy_Pool_http = []
+    Proxy_Pool_https = []
+
+    def __init__(self):
+        with open('./proxy_ip.json', 'r', encoding='utf8') as f:
+            # dict_ip = json.load(f)
+            content = f.readlines()
+            for line in content:
+                data = json.loads(line)
+                data_type = data['type']
+                result = str(data['host']) + ':' + str(data['port'])
+                # 根据http类型，加入到相应的列表中
+                if data_type == 'http':
+                    self.Proxy_Pool_http.append(result)
+                elif data_type == 'https':
+                    self.Proxy_Pool_https.append(result)
+                else:
+                    continue
+
+        # print(self.Proxy_Pool_http)   # 测试输出代理池
 
     # 获取不同的请求头
     @classmethod
@@ -70,10 +87,20 @@ class RequestModel(object):
 
     # 获取代理
     @classmethod
-    def getProxies(cls):
+    def getProxies(self):
         proxies = {
-            # 'http': random.choice(cls.Proxy_Pool),
+            'http': random.choice(self.Proxy_Pool_http)
             # 'http':'web-proxy.oa.com:8080',
             # 'https': random.choice(cls.Proxy_Pool)
         }
+        print('当前所使用的代理为:' + str(proxies))
         return proxies
+
+
+if __name__ == '__main__':
+    temp = RequestModel()
+    temp.getProxies()
+
+
+
+
