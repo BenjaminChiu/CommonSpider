@@ -3,16 +3,12 @@
 
 
 #import sqlite3
-import pymysql
-import re
 
-from dao.EntityDao import EntityDao
 from movieHome.dytt8Moive import dytt_Lastest
 from model.TaskQueue import TaskQueue
-from service.EntityService import EntityService
+from dao.EntityService import EntityService
 from MyThread.ThreadOne import FloorWorkThread
 from MyThread.ThreadTwo import TopWorkThread
-from model.Entity import Entity
 
 '''
     程序主入口

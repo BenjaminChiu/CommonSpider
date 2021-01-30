@@ -28,7 +28,9 @@ class dytt_Lastest(object):
     # 截止到2017-08-08, 最新电影一共才有 164 个页面，返回一个页面总数（int）
     @classmethod
     def getMaxsize(cls, breakoutUrl):
-        response = requests.get(breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel().getProxies(), timeout=8000)
+        request_model = RequestModel()
+        # response = requests.get(breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel().get_proxies(), timeout=8000)
+        response = request_model.new_request(breakoutUrl)
         # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
         response.encoding = 'GBK'
 

@@ -1,6 +1,6 @@
 import pymysql
 
-from model.Entity import Entity
+from dao.Entity import Entity
 
 
 class EntityDao:

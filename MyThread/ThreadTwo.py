@@ -34,8 +34,9 @@ class ThreadTwo(threading.Thread):
                 break
 
             url = self.queue.get()
+            requests_model = RequestModel()
             try:
-                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel().getProxies(), timeout=8000)
+                response = requests_model.new_request(url)
                 print('线程2代 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
                 response.close()  # 为什么加这个？？？？  原因：出现了 远程主机强迫关闭了一个现有的连接
 

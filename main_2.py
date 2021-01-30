@@ -8,7 +8,7 @@ from MyThread.ThreadOne import FloorWorkThread
 from MyThread.ThreadTwo import TopWorkThread
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
-from service.EntityService import EntityService
+from dao.EntityService import EntityService
 
 '''
     程序主入口

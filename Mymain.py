@@ -9,7 +9,7 @@ from MyThread.ThreadOne import ThreadOne
 from MyThread.ThreadTwo import ThreadTwo
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
-from service.EntityService import EntityService
+from dao.EntityService import EntityService
 
 # cfg.py为自定义的项目总配置文件
 '''

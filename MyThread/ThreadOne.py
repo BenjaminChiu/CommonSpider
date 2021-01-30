@@ -40,8 +40,9 @@ class ThreadOne(threading.Thread):
                 break
 
             url = self.queue.get()
+            request_model = RequestModel()
             try:
-                response = requests.get(url, headers=RequestModel.getHeaders(), proxies=RequestModel().getProxies(), timeout=8000)
+                response = request_model.new_request(url)
                 print('线程1代 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况

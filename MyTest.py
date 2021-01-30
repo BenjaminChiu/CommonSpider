@@ -1,19 +1,3 @@
-import pymysql
-
-from dao.EntityDao import EntityDao
-from model.TaskQueue import TaskQueue
-from movieHome.dytt8Moive import dytt_Lastest
-
-import requests
-
-from service.EntityService import EntityService
-from MyThread.ThreadOne import FloorWorkThread
-
-from model.RequestModel import RequestModel
-
-
-
-
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 # THREAD_SUM = 5
 
