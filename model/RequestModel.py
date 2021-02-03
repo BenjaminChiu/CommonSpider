@@ -93,21 +93,26 @@ class RequestModel(object):
         }
         return headers
 
-    # 验证、获取代理
-    def get_proxies(self):
-        pre_data = random.choice(self.Proxy_Pool_http)
-        ip, port = pre_data.split(':')
+    def get_proxies(self, flag):
+        """
+        验证、获取代理
+        @param flag:根据flag来判断是否使用代理。flag为false时，直接返回一个空的字典
+        @return:字典，内容为代理
+        """
         proxies = {}
-        # 如果当前代理通过的话
-        if my_proxy.test_proxy(ip, port, 'http'):
-            proxies = {
-                'http': pre_data
-                # 'http':'web-proxy.oa.com:8080',
-                # 'https': random.choice(cls.Proxy_Pool)
-            }
-            print('当前所使用的代理为:' + str(proxies))
-        else:
-            self.get_proxies()  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
+        if flag:
+            pre_data = random.choice(self.Proxy_Pool_http)  # 随机筛选一个
+            ip, port = pre_data.split(':')
+            # 如果当前代理通过的话
+            if my_proxy.test_proxy(ip, port, 'http'):
+                proxies = {
+                    'http': pre_data
+                    # 'http':'web-proxy.oa.com:8080',
+                    # 'https': random.choice(cls.Proxy_Pool)
+                }
+                print('当前所使用的代理为:' + str(proxies))
+            else:
+                self.get_proxies()  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
         return proxies
 
     # 返回一个request连接
@@ -115,8 +120,7 @@ class RequestModel(object):
         requests.adapters.DEFAULT_RETRIES = 20  # 增加重连次数
         s = requests.session()
         s.keep_alive = False  # 关闭多余连接
-        # proxies=self.get_proxy 为使用代理；no_proxy 不使用代理
-        return s.get(url, headers=self.get_headers(), proxies=self.no_proxy, timeout=cfg.TIMEOUT + 1000)
+        return s.get(url, headers=self.get_headers(), proxies=self.get_proxies(True), timeout=cfg.TIMEOUT + 1500)
 
 
 if __name__ == '__main__':

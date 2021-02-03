@@ -11,7 +11,7 @@ import os
 WEBSITE = 'http://www.dy1234.net/'
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
-THREAD_SUM = 128
+THREAD_SUM = 8
 
 # 统一设置 中断时间
 TIMEOUT = 8000

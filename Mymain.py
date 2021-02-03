@@ -51,7 +51,7 @@ def startSpider():
     # =====================================请求 pageList 结束=====================================
 
     # 33333-取出itemQueue 存入数据库
-    service = EntityService('movie_home_210127')
+    service = EntityService('movie_home_210201')
 
     # ===222222===请求 pageInfoList（MidQueue） 中的信息，存入itemQueue中
     for i in range(cfg.THREAD_SUM):
