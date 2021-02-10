@@ -29,8 +29,8 @@ class dytt_Lastest(object):
     @classmethod
     def getMaxsize(cls, breakoutUrl):
         request_model = RequestModel()
-        # response = requests.get(breakoutUrl, headers=RequestModel.getHeaders(), proxies=RequestModel().get_proxies(), timeout=8000)
-        response = request_model.new_request(breakoutUrl)
+        response = requests.get(breakoutUrl, headers=request_model.get_headers(), timeout=8000)
+        # response = request_model.new_request(breakoutUrl)
         # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况
         response.encoding = 'GBK'
 

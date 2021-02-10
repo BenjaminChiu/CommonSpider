@@ -1,53 +1,46 @@
-{"type": "http", "host": "104.131.109.66", "port": 8080}
-{"type": "http", "host": "206.189.227.203", "port": 8080}
-{"type": "http", "host": "54.156.164.61", "port": 80}
-{"type": "http", "host": "3.211.17.212", "port": 80}
-{"type": "http", "host": "169.57.1.84", "port": 8123}
-{"type": "http", "host": "159.8.114.37", "port": 8123}
-{"type": "http", "host": "51.158.68.68", "port": 8811}
-{"type": "http", "host": "51.158.123.35", "port": 9999}
-{"type": "http", "host": "51.158.119.88", "port": 8811}
-{"type": "http", "host": "161.202.226.194", "port": 80}
-{"type": "http", "host": "161.202.226.194", "port": 8123}
-{"type": "http", "host": "194.126.8.90", "port": 80}
-{"type": "http", "host": "169.57.157.148", "port": 8123}
-{"type": "http", "host": "169.57.157.148", "port": 80}
-{"type": "http", "host": "58.220.95.44", "port": 10174}
-{"type": "http", "host": "203.198.94.132", "port": 80}
-{"type": "http", "host": "139.59.126.135", "port": 8080}
-{"type": "http", "host": "119.81.71.27", "port": 80}
-{"type": "http", "host": "119.81.71.27", "port": 8123}
-{"type": "http", "host": "51.158.172.165", "port": 8811}
-{"type": "http", "host": "172.104.108.227", "port": 1080}
-{"type": "http", "host": "120.232.175.244", "port": 80}
-{"type": "http", "host": "27.148.248.203", "port": 80}
-{"type": "http", "host": "58.220.95.40", "port": 10174}
-{"type": "http", "host": "183.89.81.28", "port": 8080}
-{"type": "http", "host": "180.250.12.10", "port": 80}
-{"type": "http", "host": "51.158.119.88", "port": 8761}
-{"type": "http", "host": "118.99.103.182", "port": 80}
-{"type": "http", "host": "14.207.78.88", "port": 8080}
-{"type": "http", "host": "51.158.165.18", "port": 8761}
-{"type": "http", "host": "52.221.239.149", "port": 80}
-{"type": "http", "host": "77.79.146.78", "port": 8080}
-{"type": "http", "host": "51.158.165.18", "port": 8811}
-{"type": "http", "host": "182.92.243.144", "port": 80}
-{"type": "http", "host": "58.220.95.34", "port": 10174}
-{"type": "http", "host": "45.201.164.82", "port": 8080}
-{"type": "http", "host": "116.117.134.134", "port": 8081}
-{"type": "http", "host": "171.96.110.74", "port": 8080}
-{"type": "http", "host": "116.117.134.134", "port": 80}
-{"type": "http", "host": "113.214.13.1", "port": 1080}
-{"type": "http", "host": "117.26.194.247", "port": 4216}
-{"type": "http", "host": "205.141.197.38", "port": 8080}
-{"type": "http", "host": "123.231.254.82", "port": 8080}
-{"type": "http", "host": "159.65.171.69", "port": 80}
-{"type": "http", "host": "13.229.129.176", "port": 80}
-{"type": "http", "host": "113.53.29.218", "port": 33885}
-{"type": "http", "host": "27.123.255.82", "port": 34832}
-{"type": "http", "host": "221.182.31.54", "port": 8080}
-{"type": "http", "host": "39.98.39.55", "port": 80}
-{"type": "http", "host": "221.122.91.59", "port": 11223}
-{"type": "http", "host": "59.60.122.98", "port": 4216}
-{"type": "http", "host": "58.220.95.31", "port": 10174}
-{"type": "http", "host": "58.220.95.30", "port": 10174}
+{"type": "http", "host": "3.211.17.212", "port": 80, "hp": 10}
+{"type": "http", "host": "155.138.233.191", "port": 80, "hp": 10}
+{"type": "http", "host": "169.57.1.84", "port": 8123, "hp": 10}
+{"type": "http", "host": "159.8.114.37", "port": 8123, "hp": 10}
+{"type": "http", "host": "159.8.114.37", "port": 80, "hp": 10}
+{"type": "http", "host": "169.57.157.148", "port": 8123, "hp": 10}
+{"type": "http", "host": "207.180.203.229", "port": 8080, "hp": 10}
+{"type": "http", "host": "161.202.226.194", "port": 8123, "hp": 10}
+{"type": "http", "host": "161.202.226.194", "port": 80, "hp": 10}
+{"type": "http", "host": "51.158.68.68", "port": 8811, "hp": 10}
+{"type": "http", "host": "194.126.8.90", "port": 80, "hp": 10}
+{"type": "http", "host": "190.217.39.173", "port": 8081, "hp": 10}
+{"type": "http", "host": "221.223.80.126", "port": 8060, "hp": 10}
+{"type": "http", "host": "159.65.154.238", "port": 80, "hp": 10}
+{"type": "http", "host": "119.81.71.27", "port": 8123, "hp": 10}
+{"type": "http", "host": "180.250.12.10", "port": 80, "hp": 10}
+{"type": "http", "host": "172.104.108.227", "port": 1080, "hp": 10}
+{"type": "http", "host": "221.122.91.59", "port": 11223, "hp": 10}
+{"type": "http", "host": "120.232.175.244", "port": 80, "hp": 10}
+{"type": "http", "host": "60.255.151.82", "port": 80, "hp": 10}
+{"type": "http", "host": "119.81.71.27", "port": 80, "hp": 10}
+{"type": "http", "host": "41.229.253.214", "port": 8080, "hp": 10}
+{"type": "http", "host": "39.106.223.134", "port": 80, "hp": 10}
+{"type": "http", "host": "116.117.134.134", "port": 80, "hp": 10}
+{"type": "http", "host": "41.193.245.221", "port": 8080, "hp": 10}
+{"type": "http", "host": "36.95.15.146", "port": 8080, "hp": 10}
+{"type": "http", "host": "103.80.61.79", "port": 8080, "hp": 10}
+{"type": "http", "host": "47.241.39.178", "port": 8080, "hp": 10}
+{"type": "http", "host": "203.198.94.132", "port": 80, "hp": 10}
+{"type": "http", "host": "59.7.123.37", "port": 8080, "hp": 10}
+{"type": "http", "host": "183.47.237.251", "port": 80, "hp": 10}
+{"type": "http", "host": "180.175.170.76", "port": 8060, "hp": 10}
+{"type": "http", "host": "54.156.164.61", "port": 80, "hp": 10}
+{"type": "http", "host": "27.148.248.203", "port": 80, "hp": 10}
+{"type": "http", "host": "125.87.93.74", "port": 3256, "hp": 10}
+{"type": "http", "host": "116.117.134.134", "port": 8081, "hp": 10}
+{"type": "http", "host": "170.79.94.110", "port": 8080, "hp": 10}
+{"type": "http", "host": "186.157.242.229", "port": 8080, "hp": 10}
+{"type": "http", "host": "59.125.123.129", "port": 81, "hp": 10}
+{"type": "http", "host": "59.13.206.92", "port": 80, "hp": 10}
+{"type": "http", "host": "5.189.171.179", "port": 80, "hp": 10}
+{"type": "http", "host": "51.158.186.242", "port": 8811, "hp": 10}
+{"type": "http", "host": "97.87.248.14", "port": 80, "hp": 10}
+{"type": "http", "host": "178.63.240.212", "port": 80, "hp": 10}
+{"type": "http", "host": "62.210.83.241", "port": 8080, "hp": 10}
+{"type": "http", "host": "193.174.67.39", "port": 80, "hp": 10}

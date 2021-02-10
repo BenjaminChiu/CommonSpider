@@ -8,6 +8,7 @@ import requests
 
 import cfg
 import model.my_proxy as my_proxy
+from model.proxy_model import ProxyModel
 
 
 class RequestModel(object):
@@ -50,10 +51,9 @@ class RequestModel(object):
         "Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00"
     ]
 
-    # 代理池，两种类型
+    # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复制的代理
     Proxy_Pool_http = []
     Proxy_Pool_https = []
-    no_proxy = {}
 
     def __init__(self):
         """
@@ -65,13 +65,13 @@ class RequestModel(object):
             content = f.readlines()
             for line in content:
                 data = json.loads(line)
-                data_type = data['type']
-                result = str(data['host']) + ':' + str(data['port'])
+                proxy_model = ProxyModel(data['type'], data['host'], data['port'])      # 使用一个实体类来接收代理的各种参数
+
                 # 根据http类型，加入到相应的列表中
-                if data_type == 'http':
-                    self.Proxy_Pool_http.append(result)
-                elif data_type == 'https':
-                    self.Proxy_Pool_https.append(result)
+                if proxy_model.proxy_type == 'http':
+                    self.Proxy_Pool_http.append(proxy_model)
+                elif proxy_model.proxy_type == 'https':
+                    self.Proxy_Pool_https.append(proxy_model)
                 else:
                     continue
 
@@ -102,17 +102,24 @@ class RequestModel(object):
         proxies = {}
         if flag:
             pre_data = random.choice(self.Proxy_Pool_http)  # 随机筛选一个
-            ip, port = pre_data.split(':')
-            # 如果当前代理通过的话
-            if my_proxy.test_proxy(ip, port, 'http'):
+            host, port, hp = pre_data.host, pre_data.port, pre_data.hp
+            # 当前代理通过的话
+            if my_proxy.test_proxy(host, port, 'http'):
                 proxies = {
-                    'http': pre_data
+                    'http': str(pre_data.host) + ':' + str(pre_data.port)
                     # 'http':'web-proxy.oa.com:8080',
                     # 'https': random.choice(cls.Proxy_Pool)
                 }
-                print('当前所使用的代理为:' + str(proxies))
+                print('当前所使用的代理为:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
+            # 当前代理验证失败，减生命值
             else:
-                self.get_proxies()  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
+                if pre_data.hp != 0:
+                    pre_data.hp = pre_data.hp - 1
+                    self.get_proxies(flag)  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
+                # 该项生命值为0
+                else:
+                    print('正在移除当前代理:' + str(pre_data))
+                    self.Proxy_Pool_http.remove(pre_data)
         return proxies
 
     # 返回一个request连接
@@ -125,6 +132,6 @@ class RequestModel(object):
 
 if __name__ == '__main__':
     temp = RequestModel()
-    # temp.get_proxies()
-    response = temp.new_request(cfg.WEBSITE + 'w.asp?p=1&f=3&l=t')
-    print(response)
+    temp.get_proxies(True)
+    # response = temp.new_request(cfg.WEBSITE + 'w.asp?p=1&f=3&l=t')
+    # print(response)
