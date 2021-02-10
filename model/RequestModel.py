@@ -110,15 +110,16 @@ class RequestModel(object):
                     # 'http':'web-proxy.oa.com:8080',
                     # 'https': random.choice(cls.Proxy_Pool)
                 }
-                print('当前所使用的代理为:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
+                print('使用代理:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
             # 当前代理验证失败，减生命值
             else:
                 if pre_data.hp != 0:
-                    pre_data.hp = pre_data.hp - 1
+                    pre_data.hp = pre_data.hp - 1   # -1只是针对当前这个变量
+                    print('失效代理:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
                     self.get_proxies(flag)  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
                 # 该项生命值为0
                 else:
-                    print('正在移除当前代理:' + str(pre_data))
+                    print('正在移除代理:' + str(pre_data))
                     self.Proxy_Pool_http.remove(pre_data)
         return proxies
 

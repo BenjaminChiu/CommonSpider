@@ -107,7 +107,8 @@ def test_proxy(ip, port, type):
     try:
         verify2(ip, port, type)
     except Exception as e:
-        print('当前代理=' + str(type) + '://' + str(ip) + ':' + str(port) + '失效')
+        # print('当前代理=' + str(type) + '://' + str(ip) + ':' + str(port) + '失效')
+        pass
     else:
         return True
 
