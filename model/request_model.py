@@ -1,14 +1,11 @@
 #!/usr/bin/env python
 # coding=utf-8
-import json
-import os
 import random
 
 import requests
 
 import cfg
-import model.my_proxy as my_proxy
-from model.proxy_model import ProxyModel
+import proxy_host.get_proxy as my_proxy
 
 
 class RequestModel(object):
@@ -51,29 +48,8 @@ class RequestModel(object):
         "Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00"
     ]
 
-    # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复制的代理
-    Proxy_Pool_http = []
-    Proxy_Pool_https = []
-
     def __init__(self):
-        """
-        初始化的目的：将json文件转移到proxy_poll_http等两个私有变量中
-        """
-        dataPath = os.path.abspath(cfg.RootPath + '\\model\\proxy_ip.json')  # 获取tran.csv文件的路径
-        with open(dataPath, 'r', encoding='utf8') as f:
-            # dict_ip = json.load(f)
-            content = f.readlines()
-            for line in content:
-                data = json.loads(line)
-                proxy_model = ProxyModel(data['type'], data['host'], data['port'])      # 使用一个实体类来接收代理的各种参数
-
-                # 根据http类型，加入到相应的列表中
-                if proxy_model.proxy_type == 'http':
-                    self.Proxy_Pool_http.append(proxy_model)
-                elif proxy_model.proxy_type == 'https':
-                    self.Proxy_Pool_https.append(proxy_model)
-                else:
-                    continue
+        pass
 
     # 获取不同的请求头
     def get_headers(self):
@@ -101,7 +77,7 @@ class RequestModel(object):
         """
         proxies = {}
         if flag:
-            pre_data = random.choice(self.Proxy_Pool_http)  # 随机筛选一个
+            pre_data = random.choice(cfg.Proxy_Pool_http)  # 随机筛选一个
             host, port, hp = pre_data.host, pre_data.port, pre_data.hp
             # 当前代理通过的话
             if my_proxy.test_proxy(host, port, 'http'):
@@ -114,13 +90,13 @@ class RequestModel(object):
             # 当前代理验证失败，减生命值
             else:
                 if pre_data.hp != 0:
-                    pre_data.hp = pre_data.hp - 1   # -1只是针对当前这个变量
+                    pre_data.hp = pre_data.hp - 1  # -1只是针对当前这个变量
                     print('失效代理:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
                     self.get_proxies(flag)  # 简单的递归，直至选出有效的代理。但当代理全部无效的时候，将陷入死循环
                 # 该项生命值为0
                 else:
-                    print('正在移除代理:' + str(pre_data))
-                    self.Proxy_Pool_http.remove(pre_data)
+                    print('正在移除代理:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
+                    cfg.Proxy_Pool_http.remove(pre_data)
         return proxies
 
     # 返回一个request连接

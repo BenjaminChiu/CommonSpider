@@ -2,7 +2,7 @@
 @Desc   : 提取并验证ip代理池
 @Time   : 2021-01-28 19:10
 @Author : tank boy
-@File   : my_proxy.py
+@File   : get_proxy.py
 @coding : utf-8
 """
 
@@ -11,8 +11,6 @@ import os
 import telnetlib
 
 import requests
-
-import cfg
 
 proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
@@ -54,7 +52,7 @@ def verify(ip, port, type):
 
 def verify1(ip, port):
     """
-    验证IP是否可用
+    Telnet验证IP是否可用
     :param ip:
     :param port:
     :return:
@@ -65,7 +63,7 @@ def verify1(ip, port):
 
 def verify2(ip, port, type):
     """
-    验证ip是否可用
+    Request验证ip是否可用
     :param ip:
     :param port:
     :param type:
@@ -74,7 +72,7 @@ def verify2(ip, port, type):
     requests.adapters.DEFAULT_RETRIES = 3
     thisProxy = str(type) + '://' + str(ip) + ':' + str(port)
     # 这里时间写的越小我们的所获取的ip越少，当然了他的质量也就越高
-    res = requests.get(url="http://icanhazip.com/", timeout=10000, proxies={type: thisProxy})
+    res = requests.get(url="http://icanhazip.com/", timeout=8000, proxies={type: thisProxy})
 
     proxyIP = res.text.replace("\n", "")
     if proxyIP == ip:
@@ -127,6 +125,7 @@ def clean_json():
 
 def get_proxy(proxy_url):
     """
+    从.list文件中读取代理信息
     获取ip，port ，type
     :param proxy_url:
     :return:
@@ -156,7 +155,7 @@ def get_proxy(proxy_url):
             host = proxy_json['host']
             port = proxy_json['port']
             type = proxy_json['type']
-            verify(host, port, type)
+            verify(host, port, type)  # 调用下面的方法
 
         f.close()  # 关闭文件
 
@@ -164,6 +163,7 @@ def get_proxy(proxy_url):
 # 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
 # 没请求失败一次就-1，直至为0，从文件中删除（内存 内存中删除）
 
+
 if __name__ == '__main__':
-    get_proxy('https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list')  # 获取代理
+    get_proxy(proxy_url)  # 获取代理
     # test_proxy_json()  # 测试成功的代理

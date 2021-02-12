@@ -7,7 +7,7 @@ import time
 import requests
 
 from movieHome.dytt8Moive import dytt_Lastest
-from model.RequestModel import RequestModel
+from model.request_model import RequestModel
 from model.TaskQueue import TaskQueue
 import cfg
 

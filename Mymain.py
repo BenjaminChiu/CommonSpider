@@ -4,12 +4,16 @@
 
 # import sqlite3
 
+import json
+import os
+
 import cfg
 from MyThread.ThreadOne import ThreadOne
 from MyThread.ThreadTwo import ThreadTwo
+from dao.EntityService import EntityService
 from model.TaskQueue import TaskQueue
 from movieHome.dytt8Moive import dytt_Lastest
-from dao.EntityService import EntityService
+from proxy_host.proxy_model import ProxyModel
 
 # cfg.py为自定义的项目总配置文件
 '''
@@ -17,7 +21,7 @@ from dao.EntityService import EntityService
 '''
 
 
-def startSpider():
+def start_spider():
     # 确定起始页面 ，终止页面
 
     # dytt_Lastest.getMaxsize()
@@ -51,7 +55,7 @@ def startSpider():
     # =====================================请求 pageList 结束=====================================
 
     # 33333-取出itemQueue 存入数据库
-    service = EntityService('movie_home_210201')
+    service = EntityService('movie_home_210212')
 
     # ===222222===请求 pageInfoList（MidQueue） 中的信息，存入itemQueue中
     for i in range(cfg.THREAD_SUM):
@@ -80,6 +84,28 @@ def startSpider():
     # ====================请求 pageInfoList 结束======================
 
 
+def init_requestmodel():
+    """
+    初始化的目的：将json文件转移到proxy_poll_http等两个私有变量中
+    """
+    dataPath = os.path.abspath(cfg.RootPath + '\\proxy_host\\proxy_ip.json')  # 获取tran.csv文件的路径
+    with open(dataPath, 'r', encoding='utf8') as f:
+        # dict_ip = json.load(f)
+        content = f.readlines()
+        for line in content:
+            data = json.loads(line)
+            proxy_model = ProxyModel(data['type'], data['host'], data['port'])  # 使用一个实体类来接收代理的各种参数
+
+            # 根据http类型，加入到相应的列表中
+            if proxy_model.proxy_type == 'http':
+                cfg.Proxy_Pool_http.append(proxy_model)
+            elif proxy_model.proxy_type == 'https':
+                cfg.Proxy_Pool_https.append(proxy_model)
+            else:
+                continue
+
+
 # 主函数 入口
 if __name__ == '__main__':
-    startSpider()
+    init_requestmodel()
+    start_spider()
