@@ -19,13 +19,52 @@ header = {
 }
 
 
+# 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
+# 没请求失败一次就-1，直至为0，从文件中删除（内存 内存中删除）
+
+def get_proxy(proxy_url):
+    """
+    从.list文件中读取代理信息
+    获取ip，port ，type
+    :param proxy_url:
+    :return:
+    """
+    # response = requests.get(proxy_url, headers=header)
+    # print(response)
+    # proxies_list = response.text.split('\n')
+    # for proxy_str in proxies_list:
+    #     proxy_json = json.loads(proxy_str)
+    #     host = proxy_json['host']
+    #     port = proxy_json['port']
+    #     type = proxy_json['type']
+
+    with open("C:/Users/Administrator/Desktop/proxy.list", "r") as f:
+        data = f.read()
+        # 拆分开返回的数据
+        proxies_list = data.split('\n')
+        print(len(proxies_list))
+        print(proxies_list)
+
+        clean_json()  # 手动清空json文件
+
+        # 总数-1的目的是，读文件的时候，总会多读1行
+        for i in range(len(proxies_list) - 1):
+            print(str(i) + proxies_list[i])
+            proxy_json = json.loads(proxies_list[i])
+            host = proxy_json['host']
+            port = proxy_json['port']
+            type = proxy_json['type']
+            verify(host, port, type)  # 调用下面的方法
+
+        f.close()  # 关闭文件
+
+
 def verify(ip, port, type):
     """
-    验证后写入文件中
+    验证后写入json文件中
     :param ip:
     :param port:
     :param type:
-    :return:
 
     验证方式,这里我看了网上都是用的都是用的都是telnet或者是用的我上面说的那个网址，
     返回当前的访问ip，差不多都是这样的，所以我就写了这两个验证的方法，后话啊，当然这
@@ -70,15 +109,26 @@ def verify2(ip, port, type):
     :return:
     """
     requests.adapters.DEFAULT_RETRIES = 3
-    thisProxy = str(type) + '://' + str(ip) + ':' + str(port)
+    this_proxy = str(type) + '://' + str(ip) + ':' + str(port)
     # 这里时间写的越小我们的所获取的ip越少，当然了他的质量也就越高
-    res = requests.get(url="http://icanhazip.com/", timeout=8000, proxies={type: thisProxy})
+    res = requests.get(url="http://icanhazip.com/", timeout=3, proxies={type: this_proxy})
 
     proxyIP = res.text.replace("\n", "")
     if proxyIP == ip:
         print('ip:' + ip + '有效')
     else:
         raise Exception('代理IP无效')
+
+
+def clean_json():
+    """
+    清空json文件
+    """
+    with open('proxy_ip.json', 'w') as f:
+        f.seek(0)
+        f.truncate()
+        print("json已清空数据")
+        f.close()
 
 
 def test_proxy_json():
@@ -102,6 +152,9 @@ def test_proxy_json():
 
 
 def test_proxy(ip, port, type):
+    """
+    此方法在request_model中被调用
+    """
     try:
         verify2(ip, port, type)
     except Exception as e:
@@ -109,59 +162,6 @@ def test_proxy(ip, port, type):
         pass
     else:
         return True
-
-
-def clean_json():
-    """
-    清空json文件
-    @return:
-    """
-    with open('proxy_ip.json', 'w') as f:
-        f.seek(0)
-        f.truncate()
-        print("json已清空数据")
-        f.close()
-
-
-def get_proxy(proxy_url):
-    """
-    从.list文件中读取代理信息
-    获取ip，port ，type
-    :param proxy_url:
-    :return:
-    """
-    # response = requests.get(proxy_url, headers=header)
-    # print(response)
-    # proxies_list = response.text.split('\n')
-    # for proxy_str in proxies_list:
-    #     proxy_json = json.loads(proxy_str)
-    #     host = proxy_json['host']
-    #     port = proxy_json['port']
-    #     type = proxy_json['type']
-
-    with open("C:/Users/Administrator/Desktop/proxy.list", "r") as f:
-        data = f.read()
-        # 拆分开返回的数据
-        proxies_list = data.split('\n')
-        print(len(proxies_list))
-        print(proxies_list)
-
-        clean_json()  # 手动清空json文件
-
-        # 总数-1的目的是，读文件的时候，总会多读1行
-        for i in range(len(proxies_list) - 1):
-            print(str(i) + proxies_list[i])
-            proxy_json = json.loads(proxies_list[i])
-            host = proxy_json['host']
-            port = proxy_json['port']
-            type = proxy_json['type']
-            verify(host, port, type)  # 调用下面的方法
-
-        f.close()  # 关闭文件
-
-
-# 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
-# 没请求失败一次就-1，直至为0，从文件中删除（内存 内存中删除）
 
 
 if __name__ == '__main__':

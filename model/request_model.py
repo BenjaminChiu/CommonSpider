@@ -101,10 +101,10 @@ class RequestModel(object):
 
     # 返回一个request连接
     def new_request(self, url):
-        requests.adapters.DEFAULT_RETRIES = 20  # 增加重连次数
+        requests.adapters.DEFAULT_RETRIES = 3  # 增加重连次数
         s = requests.session()
         s.keep_alive = False  # 关闭多余连接
-        return s.get(url, headers=self.get_headers(), proxies=self.get_proxies(True), timeout=cfg.TIMEOUT + 1500)
+        return s.get(url, headers=self.get_headers(), proxies=self.get_proxies(True), timeout=cfg.TIMEOUT)
 
 
 if __name__ == '__main__':

@@ -14,7 +14,7 @@ WEBSITE = 'http://www.dy1234.net/'
 THREAD_SUM = 128
 
 # 统一设置 中断时间
-TIMEOUT = 30000
+TIMEOUT = 6
 
 RootPath = os.path.abspath(os.path.dirname(__file__))
 # RootPath = curPath[:curPath.find("Spider_MovieHome\\") + len("Spider_MovieHome\\")]  # 获取myProject，也就是项目的根路径
