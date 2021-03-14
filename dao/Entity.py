@@ -12,21 +12,8 @@ class Entity(object):
     """
 
     @staticmethod
-    def dirToList(item):
-        itemlist = []
-        itemlist.append(item['mName'])
-        itemlist.append(item['transName'])
-        itemlist.append(item['altName'])
-        itemlist.append(item['mDesc'])
-        itemlist.append(item['mType'])
-        itemlist.append(item['decade'])
-        itemlist.append(item['conutry'])
-        itemlist.append(item['imdbId'])
-        itemlist.append(item['doubanScore'])
-        itemlist.append(item['director'])
-        itemlist.append(item['actor'])
-        itemlist.append(item['placard'])
-        itemlist.append(item['updateTo'])
-        itemlist.append(item['thunderUrl'])
-        itemlist.append(item['dyjyUrl'])
-        return itemlist
+    def dir2list(item):
+        item_list = [item['mName'], item['transName'], item['altName'], item['mDesc'], item['mType'], item['decade'],
+                     item['conutry'], item['imdbId'], item['doubanScore'], item['director'], item['actor'],
+                     item['placard'], item['updateTo'], item['thunderUrl'], item['dyjyUrl']]
+        return item_list

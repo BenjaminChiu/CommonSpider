@@ -75,7 +75,7 @@ class EntityDao:
              director, actor, placard, update_to, thunder_url, dyjy_url) 
             values(%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s);
         '''
-        self.CONN.executemany(insertSql, [Entity.dirToList(item), ])
+        self.CONN.executemany(insertSql, [Entity.dir2list(item), ])
         self.DB.commit()
 
     def findModelByName(self, name, director):
