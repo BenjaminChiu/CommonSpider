@@ -9,7 +9,7 @@ from my_thread.ThreadTwo import ThreadTwo
 from dao.EntityService import EntityService
 from model.TaskQueue import TaskQueue
 from do_main.dytt8Moive import dytt_Lastest
-from proxy_host.proxy_model import ProxyModel
+from model.proxy_model import ProxyModel
 
 # cfg.py为自定义的项目总配置文件
 '''

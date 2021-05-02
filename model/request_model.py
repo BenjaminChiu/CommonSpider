@@ -77,6 +77,7 @@ class RequestModel(object):
         }
         return headers
 
+    # 先直接用，不通过再反馈，相应proxy hp-1
     def get_proxies(self, flag):
         """
         1.获取代理，2.验证代理
@@ -88,7 +89,7 @@ class RequestModel(object):
             pre_data = random.choice(cfg.Proxy_Pool_http)  # 随机筛选一个
             host, port, hp = pre_data.host, pre_data.port, pre_data.hp
             # 当前代理通过的话
-            if my_proxy.test_proxy(host, port, 'http'):
+            if my_proxy.verify_proxy('http', host, port):
                 proxies = {
                     'http': str(pre_data.host) + ':' + str(pre_data.port)
                     # 'http':'web-proxy.oa.com:8080',

@@ -21,5 +21,6 @@ RootPath = os.path.abspath(os.path.dirname(__file__))
 
 
 # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理
+Proxy_Pool = []
 Proxy_Pool_http = []
 Proxy_Pool_https = []
