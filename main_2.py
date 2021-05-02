@@ -4,10 +4,10 @@
 
 # import sqlite3
 
-from MyThread.ThreadOne import FloorWorkThread
-from MyThread.ThreadTwo import TopWorkThread
+from my_thread.ThreadOne import FloorWorkThread
+from my_thread.ThreadTwo import TopWorkThread
 from model.TaskQueue import TaskQueue
-from movieHome.dytt8Moive import dytt_Lastest
+from do_main.dytt8Moive import dytt_Lastest
 from dao.EntityService import EntityService
 
 '''

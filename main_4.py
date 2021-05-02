@@ -5,7 +5,7 @@
 # import sqlite3
 
 from model.TaskQueue import TaskQueue
-from movieHome.dytt8Moive import dytt_Lastest
+from do_main.dytt8Moive import dytt_Lastest
 from dao.EntityService import EntityService
 
 '''
