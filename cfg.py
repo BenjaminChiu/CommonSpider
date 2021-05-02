@@ -17,7 +17,7 @@ THREAD_SUM = 128
 TIMEOUT = 6
 
 RootPath = os.path.abspath(os.path.dirname(__file__))
-# RootPath = curPath[:curPath.find("Spider_MovieHome\\") + len("Spider_MovieHome\\")]  # 获取myProject，也就是项目的根路径
+# RootPath = curPath[:curPath.find("CommonSpider\\") + len("CommonSpider\\")]  # 获取myProject，也就是项目的根路径
 
 
 # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理

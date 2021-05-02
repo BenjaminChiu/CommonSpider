@@ -39,7 +39,7 @@ def test_proxy_json():
     测试已经加入到json文件中的代理
     """
     curPath = os.path.abspath(os.path.dirname(__file__))
-    rootPath = curPath[:curPath.find("Spider_MovieHome\\") + len("Spider_MovieHome\\")]  # 获取myProject，也就是项目的根路径
+    rootPath = curPath[:curPath.find("CommonSpider\\") + len("CommonSpider\\")]  # 获取myProject，也就是项目的根路径
     dataPath = os.path.abspath(rootPath + 'model\\proxy_ip.json')  # 获取tran.csv文件的路径
 
     with open(dataPath, 'r', encoding='utf8') as f:
