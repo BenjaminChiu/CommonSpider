@@ -10,9 +10,11 @@ import os
 
 import requests
 
-
 # 验证方式：1.使用telnet，2.使用下面这个网址
 # 返回当前的访问ip，差不多都是这样的，所以我就写了这两个验证的方法，
+import cfg
+
+
 def verify_proxy(type, host, port):
     """
     :param type:http or https
@@ -52,3 +54,10 @@ def test_proxy_json():
                 verify_proxy(data_type, data_host, data_port)
             except Exception as e:
                 print('当前代理：' + str(data_type) + '://' + str(data_host) + str(data_port) + '失效')
+
+
+def proxy_false(proxy):
+    if proxy.hp == 0:
+        cfg.Proxy_Pool.remove(proxy)
+    else:
+        proxy.hp = proxy.hp - 1

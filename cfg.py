@@ -8,13 +8,18 @@
 import os
 
 # 配置被爬取网站域名
+
 WEBSITE = "http://www.dy1234.net/"
+
+proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 THREAD_SUM = 128
 
-# 统一设置 中断时间
-TIMEOUT = 6
+# timeout是用作设置响应时间的，响应时间分为连接时间和读取时间，timeout(3,7)表示的连接时间是3，响应时间是7
+# 连接超时指的是在你的客户端实现到远端机器端口的连接时（对应的是 connect() ），Request 会等待的秒数。
+# 一个很好的实践方法是把连接超时设为比 3 的倍数略大的一个数值，因为 TCP 数据包重传窗口 (TCP packet retransmission window) 的默认大小是 3。
+TIMEOUT = (4, 7)
 
 RootPath = os.path.abspath(os.path.dirname(__file__))
 # RootPath = curPath[:curPath.find("CommonSpider\\") + len("CommonSpider\\")]  # 获取myProject，也就是项目的根路径

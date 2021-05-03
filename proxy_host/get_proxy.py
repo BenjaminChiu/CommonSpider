@@ -9,13 +9,7 @@
 import json
 
 import cfg
-import test_proxy
-
-proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
-
-header = {
-    'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'
-}
+from proxy_host import test_proxy
 
 
 # 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
