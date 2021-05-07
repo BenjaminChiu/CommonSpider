@@ -6,9 +6,9 @@ import time
 
 import requests
 
-from do_main.dytt8Moive import dytt_Lastest
+from do_main.dytt import dytt_Lastest
 from model.request_model import RequestModel
-from model.TaskQueue import TaskQueue
+from model.task_queue import TaskQueue
 
 '''
     1)从电影详细信息页面【http://www.dytt8.net/html/gndy/dyzz/20170806/54695.html】中抓取目标内容

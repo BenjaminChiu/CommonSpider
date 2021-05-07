@@ -7,13 +7,16 @@ import cfg
 from my_thread.ThreadOne import ThreadOne
 from my_thread.ThreadTwo import ThreadTwo
 from dao.EntityService import EntityService
-from model.TaskQueue import TaskQueue
-from do_main.dytt8Moive import dytt_Lastest
+from model.task_queue import TaskQueue
+from do_main.dytt import dytt_Lastest
 from model.proxy_model import ProxyModel
 
 # cfg.py为自定义的项目总配置文件
 '''
-    程序主入口
+    使用子线程请求，拿到response.text
+    借助适配规则，在本文件中的逻辑控制，完成任务
+    
+    这样只需要修改适配规则，与逻辑控制就能完成任务，达到通用爬虫的目的
 '''
 
 
@@ -30,14 +33,15 @@ def start_spider():
     # ======将 pageList加入队列1，因为队列线程安全=========
     pageQueue = TaskQueue.getQueue_1()
     for item in pagelist:
-        pageQueue.put(item, 3)
+        pageQueue.put(item, 3)  # 3代表？
 
     # =======用线程请求pageQueue（pageList）（注意队列枯竭），将请求结果存入pageInfoList中=========
     for i in range(cfg.THREAD_SUM):
-        thread_one = ThreadOne(pageQueue, i)
+        thread_one = ThreadOne(i, pageQueue)
         # thread_one.run()  # thread.run()只能启动一个主线程
         thread_one.start()
 
+    pageQueue.join()  # 使用新api，这个队列完事了。搭配Queue.task_done()
     # 监听thread_one是否干完活
     while True:
         # 逻辑生成的主页链接 枯竭（queue1枯竭）
@@ -80,28 +84,11 @@ def start_spider():
     # ====================请求 pageInfoList 结束======================
 
 
-def init_requestmodel():
-    """
-    初始化的目的：将json文件转移到proxy_poll_http等两个私有变量中
-    """
-    dataPath = os.path.abspath(cfg.RootPath + '\\proxy_host\\proxy_ip.json')  # 获取tran.csv文件的路径
-    with open(dataPath, 'r', encoding='utf8') as f:
-        # dict_ip = json.load(f)
-        content = f.readlines()
-        for line in content:
-            data = json.loads(line)
-            proxy_model = ProxyModel(data['type'], data['host'], data['port'])  # 使用一个实体类来接收代理的各种参数
-
-            # 根据http类型，加入到相应的列表中
-            if proxy_model.proxy_type == 'http':
-                cfg.Proxy_Pool_http.append(proxy_model)
-            elif proxy_model.proxy_type == 'https':
-                cfg.Proxy_Pool_https.append(proxy_model)
-            else:
-                continue
 
 
 # 主函数 入口
 if __name__ == '__main__':
-    init_requestmodel()
+    # read_proxy_json()   读取代理
     start_spider()
+    # start_spider() 队列1
+    # start_spider() 队列2       这样当队列1中有内容时，就开始请求。不用等队列1完事了才开始第二阶段。队列1中的用完后，即释放内存

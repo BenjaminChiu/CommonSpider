@@ -5,7 +5,6 @@
 @File   : cfg.py
 @coding : utf-8
 """
-import os
 
 # 配置被爬取网站域名
 
@@ -21,11 +20,5 @@ THREAD_SUM = 128
 # 一个很好的实践方法是把连接超时设为比 3 的倍数略大的一个数值，因为 TCP 数据包重传窗口 (TCP packet retransmission window) 的默认大小是 3。
 TIMEOUT = (4, 7)
 
-RootPath = os.path.abspath(os.path.dirname(__file__))
-# RootPath = curPath[:curPath.find("CommonSpider\\") + len("CommonSpider\\")]  # 获取myProject，也就是项目的根路径
-
-
 # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理
 Proxy_Pool = []
-Proxy_Pool_http = []
-Proxy_Pool_https = []

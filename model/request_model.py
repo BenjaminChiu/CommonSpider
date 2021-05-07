@@ -79,33 +79,27 @@ header_1 = {
 
 
 # 先直接用，不通过再反馈，相应proxy hp-1
-def get_proxies(flag):
+def get_proxies():
     """
-    1.获取代理，2.验证代理
-    @param flag:根据flag来判断是否使用代理。flag为false时，直接返回一个空的字典
-    @return:字典，内容为代理
+    json代理池proxy格式：{'type': type, 'host': host, 'port': port, 'hp':hp}
+    request需要的proxy格式：{type:"host:port"}
+    @return:一个字典，内容为代理
     """
-    if flag:
-        pre_data = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
-        type, host, port, hp = pre_data.type, pre_data.host, pre_data.port, pre_data.hp
+    pre_data = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
+    type, host, port, hp = pre_data['type'], pre_data['host'], pre_data['port'], pre_data['hp']
 
-        proxy = {str(pre_data.type): str(pre_data.host) + ':' + str(pre_data.port)}
-        print('使用代理:' + str(pre_data.host) + ':' + str(pre_data.port) + ':hp=' + str(pre_data.hp))
-        return proxy
+    proxy = {type: host + ':' + port}
+    print('当前请求正在使用代理:' + type + '://' + host + ':' + port + ':hp=' + hp)
+    return proxy
 
 
-def new_request(url, header, proxy, timeout):
+def new_request(url, header, proxy):
     s = requests.session()
     s.mount('http://', HTTPAdapter(max_retries=3))  # 增加重连次数
     s.mount('https://', HTTPAdapter(max_retries=3))
     s.keep_alive = False  # 关闭多余连接
 
-    return s.get(url, headers=header, proxies=proxy, timeout=timeout)
-
-
-if __name__ == '__main__':
-    print("fuck")
-    temp = new_request('https://www.baidu.com', header_1, get_proxies(False), cfg.TIMEOUT)
-    print(temp)
-    # temp.encoding = 'GBK'
-    print(temp.text)
+    if proxy:
+        return s.get(url, headers=header, timeout=cfg.TIMEOUT, proxies=get_proxies())
+    else:
+        return s.get(url, headers=header, timeout=cfg.TIMEOUT)

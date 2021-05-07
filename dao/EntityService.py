@@ -1,7 +1,7 @@
 import re
 
 from dao.EntityDao import EntityDao
-from model.TaskQueue import TaskQueue
+from model.task_queue import TaskQueue
 
 
 class EntityService:
