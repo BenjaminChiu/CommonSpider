@@ -39,9 +39,12 @@ class ThreadOne(threading.Thread):
                     #     each = cfg.WEBSITE + item  # 拼接每一部电影的链接
                     #     # print("在FloorWorkThread中，每部具体电影的URL："+each)
                     #     TaskQueue.putToQueue_2(each)  # 将页面上许多电影的链接 存入queue2
+
                     return response.text
             except Exception as e:
                 print('1代子线程出现问题：' + str(e))
                 return None
             finally:
+                # 干完活，返回一个标记。使得queue.join()能执行，而不是无限挂起
+                self.queue.task_done()  # 仅仅表示get成功后，执行的一个标记。不能用在queue.put()上
                 time.sleep(random.randint(5, 20))  # 子线程 随机休眠

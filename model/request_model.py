@@ -9,6 +9,7 @@ import cfg
 
 # request是一个库，不是类，无法继承
 # 继承request，在request基础上进行二次开发
+from proxy_host.get_proxy import info_proxy_dict
 
 UserAgent_List = [
     "Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36",
@@ -58,22 +59,14 @@ UserAgent_List = [
     "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_10_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/41.0.2227.1 Safari/537.36",
 ]
 
-header_1 = {
+header = {
     'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
     'Cache - Control': 'no-cache',
     'Connection': 'keep-alive',
     'DNT': '1',
-    'Host': 'www.baidu.com',
     'Pragma': 'no-cache',
-    'Cookie': 'BIDUPSID=F98C1D0ABF664037D251F19AC111E8A3; PSTM=1615618535; BD_UPN=12314753; BDUSS=NLWHZuOVpOSkplNGJhUmRVSlgtYkZYMzBydW50dml0Um'
-              'VsbnhOZDFNdXhIWmxnRVFBQUFBJCQAAAAAAAAAAAEAAABwFvQqdG9wZmlzaGVybWFuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA'
-              'AAAAAAAALGQcWCxkHFgdD; BDUSS_BFESS=NLWHZuOVpOSkplNGJhUmRVSlgtYkZYMzBydW50dml0UmVsbnhOZDFNdXhIWmxnRVFBQUFBJCQAAAAAAAAAAAEAAABwFv'
-              'QqdG9wZmlzaGVybWFuAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAALGQcWCxkHFgdD; __yjs_duid=1_d2cce4ce765a'
-              '880cb70fdc3420279b581618302782872; BDORZ=B490B5EBF6F3CD402E515D22BCDA1598; BAIDUID=9D5E1CE05AD332852107596CF338C5AE:SL=0:NR=50:'
-              'FG=1; MCITY=-:; BAIDUID_BFESS=7EFE793D3610701B1D6647899356A73D:FG=1; BD_HOME=1; H_PS_PSSID=33802_33820_31660_33849_33676_33607_'
-              '26350_33996; BDRCVFR[feWj1Vr5u3D]=I67x6TjHwwYf0; delPer=0; BD_CK_SAM=1; PSINO=6; sug=3; sugstore=0; ORIGIN=0; bdime=0; BA_HECTOR=242k240ha50501ahee1g8uud80q',
     'User-Agent': random.choice(UserAgent_List)
 }
 
@@ -86,14 +79,19 @@ def get_proxies():
     @return:一个字典，内容为代理
     """
     pre_data = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
-    type, host, port, hp = pre_data['type'], pre_data['host'], pre_data['port'], pre_data['hp']
+    type, host, port = info_proxy_dict(pre_data)
 
     proxy = {type: host + ':' + port}
-    print('当前请求正在使用代理:' + type + '://' + host + ':' + port + ':hp=' + hp)
+    print('当前请求正在使用代理:' + type + '://' + host + ':' + port + ':hp=' + pre_data['hp'])
     return proxy
 
 
-def new_request(url, header, proxy):
+def new_request(url, *proxy):
+    """
+    @param url:
+    @param proxy: 为可变参数，保持参数简洁高效
+    @return:
+    """
     s = requests.session()
     s.mount('http://', HTTPAdapter(max_retries=3))  # 增加重连次数
     s.mount('https://', HTTPAdapter(max_retries=3))

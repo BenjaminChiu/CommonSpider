@@ -35,16 +35,18 @@ class ThreadTwo(threading.Thread):
                     self.queue.put(url)
                 else:
                     # 分析 页面，将内容加入队列。一个队列中的元素就是一部完整的电影
-                    temp = dytt_Lastest.getMoiveInforms(response.text)
-
-                    # 空项 不添加进队列，避免数据库产生空项
-                    if len(temp) and temp is not None:
-                        # 队列put满后，等队列中数据被存入mysql后，在继续往队列中put
-                        TaskQueue.getQueue_3().put(temp)
-                        # TaskQueue.getContentQueue().join()
-                        print("当前队列数量=" + str(TaskQueue.getQueue_3().qsize()))
+                    # temp = dytt_Lastest.getMoiveInforms(response.text)
+                    #
+                    # # 空项 不添加进队列，避免数据库产生空项
+                    # if len(temp) and temp is not None:
+                    #     # 队列put满后，等队列中数据被存入mysql后，在继续往队列中put
+                    #     TaskQueue.getQueue_3().put(temp)
+                    #     # TaskQueue.getContentQueue().join()
+                    #     print("当前队列数量=" + str(TaskQueue.getQueue_3().qsize()))
+                    return response.text
 
             except Exception as e:
                 print('子线程2代出现问题' + str(e))
             finally:
+                self.queue.task_done()
                 time.sleep(random.randint(5, 20))  # 线程沉睡5秒

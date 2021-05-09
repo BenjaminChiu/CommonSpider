@@ -27,6 +27,7 @@ def read_proxy_json():
 
 
 # 当request请求失败，将代理打回来的情况下。判断是代理问题，还是其他问题，如网关拦截、网络波动、反爬拦截
+# 修改对应缓冲区中json的hp值，避免下次脏读
 def proxy_false(proxy):
     # 1.先进行代理测试  2.代理确实不通过，减hp
     if not verify_proxy(proxy):
