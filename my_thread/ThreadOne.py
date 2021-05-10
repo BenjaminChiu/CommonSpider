@@ -30,7 +30,8 @@ class ThreadOne(threading.Thread):
                 response.encoding = 'GBK'
 
                 if response.status_code != 200:  # 请求失败
-                    self.queue.put(url)  # 将URL重新加入队列，并休眠20ms
+                    self.queue.put(url)  # 将URL重新加入队列
+
                     return None
                 else:  # 请求成功
                     # 获取一页上所有的 电影的链接，并存入容器，返回一个List

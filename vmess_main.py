@@ -9,15 +9,15 @@
 from lxml import etree
 
 import cfg
-from model.request_model import new_request
+from model.request_model import MyRequest
 
 
 def init():
-    response = new_request(cfg.vmess_web)
+    response = MyRequest(cfg.vmess_web).my_get()
     selector = etree.HTML(response.text)
-    day = selector.xpath("//div[@class='post-outer']/div[@class='post']/article/font/h2/a/@href")
+    day = selector.xpath("//div[@class='post-outer' and position()=1]/div[@class='post']/article/font/h2/a/@href")
 
-    response_2 = new_request(day[0])
+    response_2 = MyRequest(day).my_get()
     selector_2 = etree.HTML(response_2.text)
     data = selector_2.xpath("//div[@style='-webkit-text-stroke-width: 0px;']/div[4]/div/text()")  # 注意脚标是1开始，而非0
 

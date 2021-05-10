@@ -17,8 +17,8 @@ def read_proxy_json():
     """
     测试已经加入到json文件中的代理
     """
-    data_path = os.path.abspath('.\\proxy.json')  # 获取tran.csv文件的路径
-    with open(data_path, 'r', encoding='utf8') as f:
+    # data_path = os.path.abspath('proxy.json')  # 获取文件的路径
+    with open('C:\Develop\WorkSpace\PC_Spider\CommonSpider\proxy_host\proxy.json', 'r', encoding='utf8') as f:
         # dict_ip = json.load(f)
         content = f.readlines()
         for line in content:
