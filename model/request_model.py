@@ -6,10 +6,10 @@ import requests
 from requests.adapters import HTTPAdapter
 
 import cfg
-
 # request是一个库，不是类，无法继承
 # 继承request，在request基础上进行二次开发
 from proxy_host.get_proxy import info_proxy_dict
+
 
 UserAgent_List = [
     "Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36",
@@ -64,9 +64,10 @@ header = {
     'Accept-Encoding': 'gzip, deflate, br',
     'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
     'Cache - Control': 'no-cache',
-    'Connection': 'keep-alive',
+    # 'Connection': 'keep-alive',
     'DNT': '1',
     'Pragma': 'no-cache',
+    # ':authority': 'www.mattkaydiary.com',
     'User-Agent': random.choice(UserAgent_List)
 }
 

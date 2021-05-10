@@ -23,7 +23,7 @@ class ThreadOne(threading.Thread):
         while not self.queue.empty():
             url = self.queue.get()
             try:
-                response = new_request(url, my_request.header_1, False)
+                response = new_request(url, False)
                 print('线程1代 子线程 ' + str(self.id) + ' 请求【 ' + url + ' 】的结果： ' + str(response.status_code))
 
                 # 需将电影天堂的页面的编码改为 GBK, 不然会出现乱码的情况

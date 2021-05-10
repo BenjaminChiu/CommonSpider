@@ -9,6 +9,7 @@
 # 配置被爬取网站域名
 
 WEBSITE = "http://www.dy1234.net/"
+vmess_web = "https://www.mattkaydiary.com/"
 
 proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
@@ -18,7 +19,7 @@ THREAD_SUM = 128
 # timeout是用作设置响应时间的，响应时间分为连接时间和读取时间，timeout(3,7)表示的连接时间是3，响应时间是7
 # 连接超时指的是在你的客户端实现到远端机器端口的连接时（对应的是 connect() ），Request 会等待的秒数。
 # 一个很好的实践方法是把连接超时设为比 3 的倍数略大的一个数值，因为 TCP 数据包重传窗口 (TCP packet retransmission window) 的默认大小是 3。
-TIMEOUT = (4, 7)
+TIMEOUT = (10, 16)
 
 # 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理
 Proxy_Pool = []

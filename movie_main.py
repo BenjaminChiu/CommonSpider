@@ -1,15 +1,11 @@
 # import sqlite3
 
-import json
-import os
-
 import cfg
+from dao.EntityService import EntityService
+from do_main.dytt import dytt_Lastest
+from model.task_queue import TaskQueue
 from my_thread.ThreadOne import ThreadOne
 from my_thread.ThreadTwo import ThreadTwo
-from dao.EntityService import EntityService
-from model.task_queue import TaskQueue
-from do_main.dytt import dytt_Lastest
-from model.proxy_model import ProxyModel
 
 # cfg.py为自定义的项目总配置文件
 '''
@@ -82,8 +78,6 @@ def start_spider():
         else:
             pass
     # ====================请求 pageInfoList 结束======================
-
-
 
 
 # 主函数 入口
