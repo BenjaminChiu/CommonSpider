@@ -1,5 +1,5 @@
 """
-@Desc   : 获取代理，存放到ip代理池。1.从json文件中获取，2.从数据库中获取
+@Desc   : 获取代理，存放到ip代理池。1.从json文件中获取，2.从数据库中获取（暂时不用数据库，太重）
 @Time   : 2021-01-28 19:10
 @Author : tank boy
 @File   : get_proxy.py
@@ -8,13 +8,8 @@
 
 import json
 
-import requests
+from proxy_host.proxy_json import info_proxy_dict, verify_proxy
 
-import cfg
-
-
-# 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
-# 没请求失败一次就-1，直至为0，从文件中删除（内存 内存中删除）
 
 def clean_json():
     """
@@ -41,53 +36,13 @@ def write_proxy(pass_proxy):
     #     json.dump(pass_proxy + '\n', f)
 
 
-def info_proxy_dict(proxy):
+# 为每个代理添加一个生命值，并初始化赋值如100，（磁盘 持久化）
+# 没请求失败一次就-1，直至为0，从文件中删除（内存 内存中删除）
+def get_proxy_from_list():
     """
-    @param proxy:解析字典
-    @return:返回三个值
+    从.list文件中读取代理信息，获取ip，port ，type
+    未用request请求.list文件的原因：需要翻墙才能下载。只能手动翻墙，手动下载
     """
-    type = proxy['type']
-    host = proxy['host']
-    port = proxy['port']
-    return type, host, port
-
-
-def verify_proxy(proxy):
-    """
-    :param proxy: type host port
-    :@return pass with True,or False
-    """
-    type, host, port = info_proxy_dict(proxy)
-    this_proxy = type + '://' + host + ':' + str(port)
-    try:
-        response = requests.get(url="http://icanhazip.com/", timeout=cfg.TIMEOUT, proxies={type: this_proxy})  # timeout越小，得到ip越少、质量越高
-        proxy_ip = response.text.replace("\n", "")
-        if proxy_ip == host:
-            print("测试代理：" + this_proxy + '有效')
-            return True
-        else:
-            print("测试代理：" + this_proxy + '无效')
-            return False
-    except Exception as e:
-        print("测试代理：" + this_proxy + "出现未知错误")
-
-
-def get_proxy(proxy_url):
-    """
-    从.list文件中读取代理信息
-    获取ip，port ，type
-    :param proxy_url:
-    :return:
-    """
-    # response = requests.get(proxy_url, headers=header)
-    # print(response)
-    # proxies_list = response.text.split('\n')
-    # for proxy_str in proxies_list:
-    #     proxy_json = json.loads(proxy_str)
-    #     host = proxy_json['host']
-    #     port = proxy_json['port']
-    #     type = proxy_json['type']
-
     with open("C:/Users/Administrator/Desktop/proxy.list", "r") as f:
         data = f.read()
         proxies_list = data.split('\n')  # 拆分开返回的数据
@@ -97,16 +52,17 @@ def get_proxy(proxy_url):
         # 总数-1的目的是，读文件的时候，总会多读1行
         for i in range(len(proxies_list) - 1):
             proxy_json = json.loads(proxies_list[i])  # print(str(i) + proxies_list[i])
-            type, host, port = info_proxy_dict(proxy_json)  # 解析字典，重新赋值
+            type, host, port = info_proxy_dict(proxy_json)  # 提取字典信息，重新赋值
             proxy = {'type': type, 'host': host, 'port': port}
 
             # 代理测试通过，就写入到json文件
             if verify_proxy(proxy):
-                proxy['hp'] = 10  # 新增一个hp键
+                proxy['hp'] = 9  # 新增一个hp键，0开始计数
+                proxy['id'] = i  # 新增一个id键，方便回溯修改
                 write_proxy(proxy)
 
         f.close()  # 关闭文件
 
 
 if __name__ == '__main__':
-    get_proxy('')  # 获取代理，存入json
+    get_proxy_from_list()  # 获取代理，存入json

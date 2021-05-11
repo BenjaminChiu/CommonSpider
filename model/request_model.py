@@ -30,6 +30,10 @@ class MyRequest(object):
             self.proxy = get_proxies()
 
     def my_get(self):
+        """
+        没有将url移到本函数中，是为了更好捆绑url与proxy。方便追踪修改proxy
+        @return:
+        """
         if self.proxy_flag:
             # get是一个动作，这个动作的值是response。外面需要接受到response，就需要return get
             return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, proxies=self.proxy)

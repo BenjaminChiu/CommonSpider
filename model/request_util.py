@@ -7,9 +7,6 @@
 """
 import random
 
-import cfg
-from proxy_host.get_proxy import info_proxy_dict
-
 UserAgent_List = [
     "Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36",
     "Opera/9.80 (Windows NT 5.1; U; zh-sg) Presto/2.9.181 Version/12.00",
@@ -68,20 +65,3 @@ header = {
     'Pragma': 'no-cache',
     'User-Agent': random.choice(UserAgent_List)
 }
-
-
-# 先直接用，不通过再反馈，相应proxy hp-1
-def get_proxies():
-    """
-    json代理池proxy格式：{'type': type, 'host': host, 'port': port, 'hp':hp}
-    request需要的proxy格式：{type:"host:port"}
-    @return:一个字典，内容为代理
-    """
-    if cfg.Proxy_Pool:
-        pre_data = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
-        type, host, port = info_proxy_dict(pre_data)
-        proxy = {type: host + ':' + str(port)}
-        print('当前请求正在使用代理:' + type + '://' + host + ':' + str(port) + ':hp=' + str(pre_data['hp']))
-        return proxy
-    else:
-        return None
