@@ -14,6 +14,7 @@ request queue1，put response to Queue2
 
 class ThreadOne(threading.Thread):
 
+    # 加个session？
     def __init__(self, id, queue):
         threading.Thread.__init__(self)
         self.id = id

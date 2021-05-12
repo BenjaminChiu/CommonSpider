@@ -15,10 +15,12 @@ from model.request_model import MyRequest, MySession
 def init():
     session = MySession()
     response = MyRequest(session, cfg.vmess_web).my_get()
+    response.close()
+    response.connection
     selector = etree.HTML(response.text)
-    day = selector.xpath("//div[@class='post-outer' and position()=1]/div[@class='post']/article/font/h2/a/@href")
+    day = selector.xpath("//div[@class='post-outer' and position()=1]/div[@class='post']/article/font/h2/a/@href")  # day是一个list
 
-    response_2 = MyRequest(session, day).my_get()
+    response_2 = MyRequest(session, day[0]).my_get()
     selector_2 = etree.HTML(response_2.text)
     data = selector_2.xpath("//div[@style='-webkit-text-stroke-width: 0px;']/div[4]/div/text()")  # 注意脚标是1开始，而非0
 

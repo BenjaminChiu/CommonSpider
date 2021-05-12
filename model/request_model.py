@@ -3,11 +3,10 @@
 
 from requests import Session
 from requests.adapters import HTTPAdapter
-
+import urllib3.request
 import cfg
-# request是一个库，不是类，无法继承
-# 继承request，在request基础上进行二次开发
-from model.request_util import get_proxies, header
+from model.request_util import header
+from proxy_host.proxy_json import get_proxy
 
 
 class MySession(Session):
@@ -18,6 +17,8 @@ class MySession(Session):
         self.mount('https://', HTTPAdapter(max_retries=3))
 
 
+# 继承request，在request基础上进行二次开发
+# request是一个库，不是类，无法继承
 class MyRequest(object):
 
     def __init__(self, session, url, *proxy_flag):
@@ -27,7 +28,7 @@ class MyRequest(object):
         self.header = header
         self.proxy_flag = proxy_flag
         if self.proxy_flag:
-            self.proxy = get_proxies()
+            self.proxy = get_proxy()
 
     def my_get(self):
         """
