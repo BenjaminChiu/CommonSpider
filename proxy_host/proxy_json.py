@@ -65,7 +65,7 @@ def read_proxy_json():
 
 
 # 验证方式：1.使用telnet，2.使用下面这个网址
-def verify_proxy(dict):
+def verify_proxy(session, dict, *id):
     """
     :param dict: 一个字典。可能为json格式、可能为request模式
     :@return pass with True,or False
@@ -76,14 +76,15 @@ def verify_proxy(dict):
     try:
         response = requests.get(url="http://icanhazip.com/", timeout=cfg.TIMEOUT, proxies=proxy)  # timeout越小，得到ip越少、质量越高
         proxy_ip = response.text.replace("\n", "")
+        response.close()
         if proxy_ip == dict['host']:
-            print("测试代理：%s" % dict + '有效')
+            print("子线程%s " % id + "测试代理%s" % dict + "_code=%s" % response.status_code + '_有效')
             return True
         else:
-            print("测试代理：%s" % dict + '无效')
+            print("子线程%s " % id + "测试代理%s" % dict + "_code=%s" % response.status_code + '_无效')
             return False
     except Exception as e:
-        print("测试代理：%s" % dict + "出现未知错误")
+        print("子线程%s " % id + "测试代理%s" % dict + "出现未知错误")
         return False
 
 

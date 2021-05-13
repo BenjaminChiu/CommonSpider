@@ -29,7 +29,7 @@ def start_spider():
     # ======将 pageList加入队列1，因为队列线程安全=========
     pageQueue = TaskQueue.getQueue_1()
     for item in pagelist:
-        pageQueue.put(item, 3)  # 3代表？
+        pageQueue.put(item, 3)  # timeout=3，等待3秒
 
     # =======用线程请求pageQueue（pageList）（注意队列枯竭），将请求结果存入pageInfoList中=========
     for i in range(cfg.THREAD_SUM):
@@ -83,6 +83,12 @@ def start_spider():
 # 主函数 入口
 if __name__ == '__main__':
     # read_proxy_json()   读取代理
+
+    # 使用一个session 来支持所有request
+
     start_spider()
     # start_spider() 队列1
     # start_spider() 队列2       这样当队列1中有内容时，就开始请求。不用等队列1完事了才开始第二阶段。队列1中的用完后，即释放内存
+
+    # if queue.join()
+    # session.close()

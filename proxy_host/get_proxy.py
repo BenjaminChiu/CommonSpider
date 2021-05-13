@@ -7,8 +7,13 @@
 """
 
 import json
+import random
+import threading
+import time
+from queue import Queue
 
-from proxy_host.proxy_json import info_proxy_dict, verify_proxy
+from model.request_model import MySession
+from proxy_host.proxy_json import info_proxy_dict, verify_proxy, request_to_json
 
 
 def clean_json():
@@ -43,26 +48,52 @@ def get_proxy_from_list():
     从.list文件中读取代理信息，获取ip，port ，type
     未用request请求.list文件的原因：需要翻墙才能下载。只能手动翻墙，手动下载
     """
+    proxy_queue = Queue()
     with open("C:/Users/Administrator/Desktop/proxy.list", "r") as f:
         data = f.read()
         proxies_list = data.split('\n')  # 拆分开返回的数据
-
         clean_json()  # 手动清空json文件
 
         # 总数-1的目的是，读文件的时候，总会多读1行
         for i in range(len(proxies_list) - 1):
             proxy_json = json.loads(proxies_list[i])  # print(str(i) + proxies_list[i])
             type, host, port = info_proxy_dict(proxy_json)  # 提取字典信息，重新赋值
-            proxy = {'type': type, 'host': host, 'port': port}
-
-            # 代理测试通过，就写入到json文件
-            if verify_proxy(proxy):
-                proxy['hp'] = 9  # 新增一个hp键，0开始计数
-                proxy['id'] = i  # 新增一个id键，方便回溯修改
-                write_proxy(proxy)
+            proxy = {type: type + '://' + host + ':' + str(port)}  # 封装为一个request形式的proxy
+            proxy_queue.put(proxy)  # 加入队列
 
         f.close()  # 关闭文件
+    return proxy_queue
+
+
+class ThreadVerify(threading.Thread):
+    def __init__(self, id, session, in_queue, out_queue):
+        super().__init__()
+        self.id = id
+        self.session = session
+        self.in_queue = in_queue  # 未测试的代理
+        self.out_queue = out_queue  # 测试合格的代理
+
+    def run(self):
+        while not self.in_queue.empty():
+            proxy = self.in_queue.get()
+            if verify_proxy(self.session, proxy, self.id):
+                proxy_pass = request_to_json(proxy)
+                proxy_pass['hp'] = 9  # 新增一个hp键，0开始计数
+                # id键在这里无法确定，只有在写文件时赋值
+                self.out_queue.put(proxy_pass)
+            self.in_queue.task_done()
+            time.sleep(random.randint(1, 3))
 
 
 if __name__ == '__main__':
-    get_proxy_from_list()  # 获取代理，存入json
+    session = MySession()
+    proxy_queue = get_proxy_from_list()  # 读.list代理，存入队列
+    out_queue = Queue()
+
+    for i in range(2):
+        thread = ThreadVerify(i, session, proxy_queue, out_queue)
+        thread.start()
+
+    proxy_queue.join()
+    print("%s" % out_queue)
+    # write_proxy(proxy)

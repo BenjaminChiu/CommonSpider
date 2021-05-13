@@ -15,8 +15,6 @@ from model.request_model import MyRequest, MySession
 def init():
     session = MySession()
     response = MyRequest(session, cfg.vmess_web).my_get()
-    response.close()
-    response.connection
     selector = etree.HTML(response.text)
     day = selector.xpath("//div[@class='post-outer' and position()=1]/div[@class='post']/article/font/h2/a/@href")  # day是一个list
 
@@ -29,6 +27,8 @@ def init():
         for i in range(len(data)):
             print(data[i], file=f)
         f.close()
+
+    print("今日链接为：%s" % day[0])
 
 
 if __name__ == '__main__':

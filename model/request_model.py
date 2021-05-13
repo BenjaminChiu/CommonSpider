@@ -3,7 +3,7 @@
 
 from requests import Session
 from requests.adapters import HTTPAdapter
-import urllib3.request
+
 import cfg
 from model.request_util import header
 from proxy_host.proxy_json import get_proxy
