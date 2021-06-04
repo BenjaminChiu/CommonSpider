@@ -90,7 +90,7 @@ if __name__ == '__main__':
     proxy_queue = get_proxy_from_list()  # 读.list代理，存入队列
     out_queue = Queue()
 
-    for i in range(2):
+    for i in range(1):
         thread = ThreadVerify(i, session, proxy_queue, out_queue)
         thread.start()
 
