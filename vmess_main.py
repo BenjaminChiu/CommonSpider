@@ -51,7 +51,3 @@ def init():
 
 if __name__ == '__main__':
     init()
-
-    # match_2 = pattern.match('ss://Y2hhY2hhMjAtaWV0Zi1wb2x5MTMwNTpaRUNTbGFUWmVhNWpGTzczNkZBM1J5M0RhWFJBMnFOeDBwY2VZRHpLQ3VZUzhnbDNCNHA4SW53eURDT1N4OUAxNT'
-    #                         'QuMTcuMi4yMTE6MTgzMzI=#https%3a%2f%2fwww.mattkaydiary.com%7c%e7%be%8e%e5%9b%bd%e3%8a%b4%e7%9b%b4%e8%bf%9e')
-    # print("%s" % match_2.string)
