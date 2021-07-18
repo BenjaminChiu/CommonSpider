@@ -10,6 +10,9 @@ from proxy_host.proxy_json import get_proxy
 
 
 class MySession(Session):
+    """
+    通过继承Session，来进行自定义的Session
+    """
 
     def __init__(self):
         super().__init__()
