@@ -40,7 +40,7 @@ def init():
             if pattern_vmess.match(div_data[j]):
                 data_vmess.append(div_data[j])
             elif pattern_trojan.match(div_data[j]):
-                data_trojan.append(data_trojan)
+                data_trojan.append(div_data[j])
             elif pattern_ssr.match(div_data[j]):
                 data_ssr.append(div_data[j])
 
