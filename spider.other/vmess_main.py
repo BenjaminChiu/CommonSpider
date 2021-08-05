@@ -9,8 +9,8 @@ import re
 
 from lxml import etree
 
-import cfg
-from model.my_request import MyRequest, MySession
+from util import cfg
+from util.my_request import MyRequest, MySession
 
 # 正则表达式匹配vmess，匹配可能出现的空格
 pattern_vmess = re.compile(r'^(vmess://)\w')

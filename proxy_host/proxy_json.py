@@ -10,7 +10,7 @@ import random
 
 import requests
 
-import cfg
+from util import cfg
 
 
 def info_proxy_dict(proxy):

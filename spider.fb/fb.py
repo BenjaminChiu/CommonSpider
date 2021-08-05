@@ -13,9 +13,8 @@ import requests
 from lxml import etree
 from selenium import webdriver
 
-import cfg
-from model.my_request import MySession, MyRequest
-from model.request_util import UserAgent_List
+from util.my_request import MySession, MyRequest
+from util.request_util import UserAgent_List
 
 
 def login():

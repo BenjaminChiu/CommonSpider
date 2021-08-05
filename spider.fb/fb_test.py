@@ -1,8 +1,8 @@
 """
-@Desc   : 分体爬虫总是报重定向错误，尝试使用类中 集中爬
-@Time   : 2021-08-05 21:53
+@Desc   : 
+@Time   : 2021-08-05 10:48
 @Author : tank boy
-@File   : fb.1.py
+@File   : fb_test.py
 @coding : utf-8
 """
 
@@ -15,10 +15,8 @@ import os
 from selenium import webdriver
 from bs4 import BeautifulSoup
 
-from model.my_request import MySession
 
-
-class CrawlFb:
+class Crawl_fb:
     def __init__(self, account, password, driver_location):
         self.account = account
         self.password = password
@@ -52,7 +50,7 @@ class CrawlFb:
         self.login()
 
         # requests session
-        s = MySession()
+        s = requests.Session()
 
         # 將cookies放入session中
         for cookie in self.cookies:
@@ -138,4 +136,4 @@ if __name__ == '__main__':
     # crawl
     crawlFB = Crawl_fb(account=account, password=password, driver_location=driver_location)
     crawlFB.crawl(url=url, number=100)
-    crawlFB.to_csv(dir_name='data')
+    crawlFB.to_csv(dir_name='../data')

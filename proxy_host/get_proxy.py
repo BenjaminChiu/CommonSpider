@@ -12,7 +12,7 @@ import threading
 import time
 from queue import Queue
 
-from model.my_request import MySession
+from util.my_request import MySession
 from proxy_host.proxy_json import info_proxy_dict, verify_proxy, request_to_json
 
 

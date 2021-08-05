@@ -4,7 +4,7 @@ import random
 import threading
 import time
 
-from model.my_request import new_request
+from util.my_request import new_request
 
 '''
 request queue2，put response to Queue3
