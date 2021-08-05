@@ -4,7 +4,7 @@ import random
 import threading
 import time
 
-from model.request_model import MyRequest
+from model.my_request import MyRequest
 from proxy_host.proxy_json import proxy_false
 
 '''

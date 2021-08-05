@@ -1,7 +1,7 @@
 import re
 
-from dao.EntityDao import EntityDao
-from model.task_queue import TaskQueue
+from movie_spider.dao.EntityDao import EntityDao
+from my_thread.task_queue import TaskQueue
 
 
 class EntityService:

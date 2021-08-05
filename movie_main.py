@@ -1,9 +1,9 @@
 # import sqlite3
 
 import cfg
-from dao.EntityService import EntityService
-from do_main.dytt import dytt_Lastest
-from model.task_queue import TaskQueue
+from movie_spider.dao.EntityService import EntityService
+from movie_spider.dytt import dytt_Lastest
+from my_thread.task_queue import TaskQueue
 from my_thread.ThreadOne import ThreadOne
 from my_thread.ThreadTwo import ThreadTwo
 

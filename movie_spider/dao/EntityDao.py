@@ -1,6 +1,6 @@
 import pymysql
 
-from model.entity import Entity
+from movie_spider.entity import Entity
 
 
 class EntityDao:

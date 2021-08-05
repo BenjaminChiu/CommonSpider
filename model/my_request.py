@@ -1,10 +1,13 @@
-"""
-@Desc   : request model的一些工具函数
-@Time   : 2021-05-10 16:53
-@Author : tank boy
-@File   : request_util.py
-@coding : utf-8
-"""
+#!/usr/bin/env python
+# coding=utf-8
+
+from requests import Session
+from requests.adapters import HTTPAdapter
+
+import cfg
+from model.request_util import header
+from proxy_host.proxy_json import get_proxy
+
 import random
 
 UserAgent_List = [
@@ -56,12 +59,53 @@ UserAgent_List = [
 ]
 
 header = {
-    'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    'Accept-Encoding': 'gzip, deflate, br',
-    'Accept-Language': 'zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7',
-    'Cache - Control': 'no-cache',
-    # 'Connection': 'keep-alive',
-    'DNT': '1',
-    'Pragma': 'no-cache',
-    'User-Agent': random.choice(UserAgent_List)
+    # 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    # 'accept-Encoding': 'gzip, deflate, br',
+    # 'accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
+    # 'cache-control': 'no-cache',
+    # # 'Connection': 'keep-alive',
+    # # 'cookie': '',
+    # 'dnt': '1',
+    # 'pragma': 'no-cache',
+    'user-agent': random.choice(UserAgent_List)
 }
+
+
+class MySession(Session):
+    """
+    通过继承Session，来进行自定义的Session
+    """
+
+    def __init__(self):
+        super().__init__()
+        self.mount('http://', HTTPAdapter(max_retries=3))  # 重写父类，增加重连次数
+        self.mount('https://', HTTPAdapter(max_retries=3))
+
+
+# 继承request，在request基础上进行二次开发
+# request是一个库，不是类，无法继承
+class MyRequest(object):
+
+    def __init__(self, session, url, *proxy_flag):
+        super().__init__()
+        self.session = session
+        self.url = url
+        self.header = header
+        self.proxy_flag = proxy_flag
+        if self.proxy_flag:
+            # self.proxy = get_proxy()
+            self.proxy = {
+                'http': 'http://127.0.0.1:10809',
+                'https': 'http://127.0.0.1:10809'
+            }
+
+    def my_get(self):
+        """
+        没有将url移到本函数中，是为了更好捆绑url与proxy。方便追踪修改proxy
+        @return:
+        """
+        if self.proxy_flag:
+            # get是一个动作，这个动作的值是response。外面需要接受到response，就需要return get
+            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, proxies=self.proxy)
+        else:
+            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT)

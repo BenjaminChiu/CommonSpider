@@ -11,6 +11,8 @@
 WEBSITE = "http://www.dy1234.net/"
 vmess_web = "https://www.mattkaydiary.com/"
 
+fb = "https://www.facebook.com/"
+
 proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400

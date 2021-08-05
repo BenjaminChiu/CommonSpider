@@ -1,8 +1,8 @@
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 # THREAD_SUM = 5
 import cfg
-from model.request_model import MySession
-from model.request_model import MyRequest
+from model.my_request import MySession
+from model.my_request import MyRequest
 from proxy_host.proxy_json import read_proxy_json
 
 if __name__ == '__main__':

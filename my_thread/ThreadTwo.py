@@ -4,9 +4,7 @@ import random
 import threading
 import time
 
-from do_main.dytt import dytt_Lastest
-from model.request_model import new_request
-from model.task_queue import TaskQueue
+from model.my_request import new_request
 
 '''
 request queue2，put response to Queue3
