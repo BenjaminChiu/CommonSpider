@@ -9,9 +9,6 @@
 # 配置被爬取网站域名
 
 WEBSITE = "http://www.dy1234.net/"
-vmess_web = "https://www.mattkaydiary.com/"
-
-fb = "https://www.facebook.com/"
 
 proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 

@@ -1,8 +1,7 @@
 # import sqlite3
 
 from util import cfg
-from movie_spider.dao.EntityService import EntityService
-from movie_spider.dytt import dytt_Lastest
+
 from my_thread.task_queue import TaskQueue
 from my_thread.ThreadOne import ThreadOne
 from my_thread.ThreadTwo import ThreadTwo

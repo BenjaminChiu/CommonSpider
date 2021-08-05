@@ -5,7 +5,6 @@ from requests import Session
 from requests.adapters import HTTPAdapter
 
 from util import cfg
-from util.request_util import header
 
 import random
 
@@ -58,15 +57,15 @@ UserAgent_List = [
 ]
 
 header = {
-    # 'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
-    # 'accept-Encoding': 'gzip, deflate, br',
-    # 'accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
-    # 'cache-control': 'no-cache',
-    # # 'Connection': 'keep-alive',
-    # # 'cookie': '',
-    # 'dnt': '1',
-    # 'pragma': 'no-cache',
-    'user-agent': random.choice(UserAgent_List)
+    'accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9',
+    'accept-Encoding': 'gzip, deflate, br',
+    'accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
+    'cache-control': 'no-cache',
+    # 'Connection': 'keep-alive',
+    'cookie': 'sb=W2sKYdn3R81XJbvtr7JW3Bw5; datr=W2sKYakT_MTAVexu2_Gg-xyF; locale=zh_CN; wd=1490x799; c_user=100005381614728; spin=r.1004209596_b.trunk_t.1628169793_s.1_v.2_; xs=39:fpqmh5ToiKrt0A:2:1628077194:-1:6774::AcXJmdkvPJtaa8Z6bHb69zxvI8EBMWmg4ZXWGzIJrw; fr=1IEbuTrfVO4nWx39I.AWW6sQZVO4enxPl0_i8GxVyC7iA.BhDAMV.Zf.AAA.0.0.BhDAMV.AWUApRI8Ypg',
+    'dnt': '1',
+    'pragma': 'no-cache',
+    'user-agent': 'facebookexternalhit/1.1'
 }
 
 
@@ -98,13 +97,13 @@ class MyRequest(object):
                 'https': 'http://127.0.0.1:10809'
             }
 
-    def my_get(self):
+    def get(self):
         """
         没有将url移到本函数中，是为了更好捆绑url与proxy。方便追踪修改proxy
         @return:
         """
         if self.proxy_flag:
             # get是一个动作，这个动作的值是response。外面需要接受到response，就需要return get
-            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, proxies=self.proxy)
+            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, proxies=self.proxy, allow_redirects=False)
         else:
-            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT)
+            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False)
