@@ -13,7 +13,7 @@ import time
 from queue import Queue
 
 from util.my_request import MySession
-from proxy_host.proxy_json import info_proxy_dict, verify_proxy, request_to_json
+from my_proxy.proxy_json import info_proxy_dict, verify_proxy, request_to_json
 
 
 def clean_json():
