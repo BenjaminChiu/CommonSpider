@@ -2,16 +2,59 @@
 @Desc   : 测试代理链接
 @Time   : 2021-05-02 21:51
 @Author : tank boy
-@File   : proxy_json.py
+@File   : util_proxy.py
 @coding : utf-8
 """
 import json
-import random
 
+# ================================json 操作===Start===========================
 import requests
 
 from util import cfg
 
+
+def clean_proxy_json():
+    """
+    清空json文件
+    """
+    with open('proxy.json', 'w') as f:
+        f.seek(0)
+        f.truncate()
+        f.close()
+    print("json已清空数据")
+
+
+def write_proxy_json(pass_proxy):
+    """
+    将测试通过的代理写入json文件
+    """
+    temp_json = json.dumps(pass_proxy)
+    with open('proxy.json', 'a+') as f:
+        f.write(temp_json + '\n')
+        f.close()
+    print("已写入：%s" % pass_proxy)
+    # 不使用下面这种方法，是因为pass_proxy是一个Python对象，无法与一个字符串相加
+    # with open('proxy.json', 'w') as f:
+    #     json.dump(pass_proxy + '\n', f)
+
+
+def read_json(url):
+    """
+    通用读取json函数
+    @return: 列表，内容是一行的内容 为 一个元素
+    """
+    data_list = []
+    with open(url, 'r') as f:
+        content = f.readlines()
+        for line in content:
+            line_data = json.loads(line)
+            data_list.append(line_data)
+        f.close()
+    return data_list
+
+
+# ================================json 操作===End==============================
+# =============================格式转化 操作===Start===========================
 
 def info_proxy_dict(proxy):
     """
@@ -20,6 +63,7 @@ def info_proxy_dict(proxy):
     @param proxy:解析字典
     @return:返回三个值
     """
+    print("%s" % proxy)
     type = proxy['type']
     host = proxy['host']
     port = proxy['port']
@@ -44,65 +88,40 @@ def request_to_json(dict):
     @param dict:
     @return:
     """
-    str = dict['http']
+    try:
+        str = dict['http']
+    except KeyError as e:
+        str = dict['https']
+        print("出现了dict['https'] %s" % dict)
     type, host_port = str.split('://')
     host, port = host_port.split(':')
     proxy = {'type': type, 'host': host, 'port': port}
     return proxy
 
 
-def read_proxy_json():
-    """
-    读取json缓存池中的代理到内存cfg.Proxy_Pool。Proxy_Pool由一个个字典组成
-    """
-    # data_path = os.path.abspath('proxy.json')  # 获取文件的路径
-    with open('./proxy.json', 'r') as f:
-        # dict_ip = json.load(f)
-        content = f.readlines()
-        for line in content:
-            proxy = json.loads(line)
-            cfg.Proxy_Pool.append(proxy)  # 添加到全局变量中
-
+# =============================格式转化 操作===End===========================
 
 # 验证方式：1.使用telnet，2.使用下面这个网址
-def verify_proxy(session, dict, *id):
+def verify_proxy(proxy, *id):
     """
     :param dict: 一个字典。可能为json格式、可能为request模式
     :@return pass with True,or False
     """
-    proxy = dict
-    if 'id' in dict:
-        proxy = json_to_request(dict)
+    # proxy = dict
+    # if 'id' in dict:
+    #     proxy = json_to_request(dict)
     try:
         response = requests.get(url="http://icanhazip.com/", timeout=cfg.TIMEOUT, proxies=proxy)  # timeout越小，得到ip越少、质量越高
         proxy_ip = response.text.replace("\n", "")
-        response.close()
-        if proxy_ip == dict['host']:
-            print("子线程%s " % id + "测试代理%s" % dict + "_code=%s" % response.status_code + '_有效')
+        if proxy_ip == proxy['host']:
+            print("测试代理%s" % proxy + "_code=%s" % response.status_code + '_有效')
             return True
         else:
-            print("子线程%s " % id + "测试代理%s" % dict + "_code=%s" % response.status_code + '_无效')
+            print("测试代理%s" % proxy + "_code=%s" % response.status_code + '_无效')
             return False
     except Exception as e:
-        print("子线程%s " % id + "测试代理%s" % dict + "出现未知错误")
+        print("测试代理%s" % proxy + "出现未知错误")
         return False
-
-
-def get_proxy():
-    """
-    返回一个代理，供MyRequest使用
-    json代理池proxy格式：{'type': type, 'host': host, 'port': port, 'hp': hp, 'id': id}
-    request需要的proxy格式：{type:"type://host:port"}
-    二者特点，一个有hp、id的key
-    @return:一个字典，内容为代理
-    """
-    if cfg.Proxy_Pool:
-        pre_data = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
-        proxy = json_to_request(pre_data)
-        print('Request使用代理：%s' % pre_data)
-        return proxy
-    else:
-        return None
 
 
 # 修改对应缓冲区中json的hp值，避免下次脏读
@@ -114,6 +133,7 @@ def proxy_false(request_proxy):
     @param request_proxy: request中的代理
     @return:
     """
+
     if not verify_proxy(request_proxy):
         proxy = request_to_json(request_proxy)
         for i in cfg.Proxy_Pool:
@@ -125,9 +145,5 @@ def proxy_false(request_proxy):
                     i['hp'] = i['hp'] - 1
                     print("修改代理HP：%s" % i)
 
-
-if __name__ == '__main__':
-    read_proxy_json()
-    proxy = get_proxy()  # {'http': 'http://159.8.114.37:8123'}
-
-    proxy_false(proxy)
+    else:
+        print("没参数？：%s" % request_proxy)

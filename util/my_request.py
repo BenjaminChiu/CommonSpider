@@ -4,9 +4,9 @@
 from requests import Session
 from requests.adapters import HTTPAdapter
 
+from my_proxy.io_proxy import proxy_out, cold_proxy_out
+from my_proxy.util_proxy import proxy_false
 from util import cfg
-
-import random
 
 UserAgent_List = [
     "Mozilla/5.0 (Windows NT 4.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/37.0.2049.0 Safari/537.36",
@@ -66,6 +66,7 @@ header = {
     'dnt': '1',
     'pragma': 'no-cache',
     'user-agent': 'facebookexternalhit/1.1'
+    # 'user-agent': random.choice(UserAgent_List)
 }
 
 
@@ -78,6 +79,10 @@ class MySession(Session):
         super().__init__()
         self.mount('http://', HTTPAdapter(max_retries=3))  # 重写父类，增加重连次数
         self.mount('https://', HTTPAdapter(max_retries=3))
+        # 数据由冷备份 到 热更新的代理池
+        # 每请求一次就应该刷新一次代理池（防止代理池枯竭，应该不断地验证 添加代理到代理池）
+        # 当使用代理失败后，应该向代理模块反馈代理信息
+        cold_proxy_out()
 
 
 # 继承request，在request基础上进行二次开发
@@ -91,19 +96,26 @@ class MyRequest(object):
         self.header = header
         self.proxy_flag = proxy_flag
         if self.proxy_flag:
-            # self.proxy = get_proxy()
-            self.proxy = {
-                'http': 'http://127.0.0.1:10809',
-                'https': 'http://127.0.0.1:10809'
-            }
+            self.proxy = proxy_out()
 
     def get(self):
         """
         没有将url移到本函数中，是为了更好捆绑url与proxy。方便追踪修改proxy
+        # get是一个动作，这个动作的值是response。外面需要接受到response，就需要return get
         @return:
         """
-        if self.proxy_flag:
-            # get是一个动作，这个动作的值是response。外面需要接受到response，就需要return get
-            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, proxies=self.proxy, allow_redirects=False)
-        else:
-            return self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False)
+        response = None
+        try:
+            if self.proxy_flag:
+                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False, proxies=self.proxy)
+            else:
+                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False)
+        except Exception as e:
+            print("链接请求异常：%s" % self.url)
+
+        # 将代理进行反馈，单独and response 是为了提前判断是否None，避免后面取status code出错
+        if self.proxy_flag and (not response or response.status_code != 200):
+            print("触发了代理反馈！")
+            proxy_false(self.proxy)
+
+        return response

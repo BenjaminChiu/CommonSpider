@@ -5,7 +5,6 @@
 @File   : fb.py
 @coding : utf-8
 """
-import re
 import time
 
 from bs4 import BeautifulSoup
@@ -78,26 +77,26 @@ class CrawlFb:
             response = MyRequest(self.session, url, True).get()
             print("各个店铺info_url请求状态：%s" % response)
             soup = BeautifulSoup(response.text, 'html.parser')
-
             store_info = []
 
             img_phone = soup.find('img', src='https://static.xx.fbcdn.net/rsrc.php/v3/yj/r/zBXQrqqny9i.png')
             phone = ''
             if img_phone:
                 phone = img_phone.parent.next_sibling.div.text
-            store_info.append(phone)
 
             img_email = soup.find('img', src='https://static.xx.fbcdn.net/rsrc.php/v3/yy/r/vKDzW_MdhyP.png')
             email = ''
             if img_email:
                 email = img_email.parent.next_sibling.div.text
-            store_info.append(email)
 
             img_website = soup.find('img', src='https://static.xx.fbcdn.net/rsrc.php/v3/yV/r/EaDvTjOwxIV.png')
-            website = ''
+            website = url
             if img_website:
                 website = img_website.parent.next_sibling.div.text
+
+            store_info.append(email)
             store_info.append(website)
+            store_info.append(phone)
 
             print('%s' % phone)
             print('%s' % email)
@@ -107,10 +106,11 @@ class CrawlFb:
         with open('C:/Users/Administrator/Desktop/store_s.json', 'w') as f:
             for store in store_s:
                 write_flag = False
-                for info in store:
-                    if info != '':
-                        print(info, file=f)
-                        write_flag = True
+
+                if store[0] or store[1] or store[2]:
+                    print(store[0] + ' ' * 3 + store[1] + ' ' * 3 + store[2], file=f)
+                    write_flag = True
+
                 if write_flag:
                     print('', file=f)
             f.close()

@@ -5,7 +5,7 @@ import threading
 import time
 
 from util.my_request import MyRequest
-from my_proxy.proxy_json import proxy_false
+from my_proxy.util_proxy import proxy_false
 
 '''
 多线程作用：

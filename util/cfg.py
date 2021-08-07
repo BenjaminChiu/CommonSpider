@@ -6,12 +6,6 @@
 @coding : utf-8
 """
 
-# 配置被爬取网站域名
-
-WEBSITE = "http://www.dy1234.net/"
-
-proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
-
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 THREAD_SUM = 128
 
@@ -20,5 +14,13 @@ THREAD_SUM = 128
 # 一个很好的实践方法是把连接超时设为比 3 的倍数略大的一个数值，因为 TCP 数据包重传窗口 (TCP packet retransmission window) 的默认大小是 3。
 TIMEOUT = (10, 16)
 
-# 代理池，两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理
-Proxy_Pool = []
+# 热更新代理池，存在于内存中。由MySession()启动
+# 两种类型 使用字典 不使用列表，列表无法表达较为复杂的代理（id、hp...）
+# {
+#     'http': 'http://127.0.0.1:10809',
+#     'https': 'http://127.0.0.1:10809'
+# }
+Proxy_Pool = [
+    # {"type": "http", "host": "127.0.0.1", "port": "10809", "hp": 8888, "id": 8888},
+    # {"type": "https", "host": "127.0.0.1", "port": "10809", "hp": 8888, "id": 7777}
+]

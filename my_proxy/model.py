@@ -2,7 +2,7 @@
 @Desc   : 一个类 关于 代理，之所以使用类是为数据库调用方便
 @Time   : 2021-02-03 20:34
 @Author : tank boy
-@File   : proxy_model.py
+@File   : model.py
 @coding : utf-8
 """
 
