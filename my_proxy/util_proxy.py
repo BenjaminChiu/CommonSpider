@@ -124,6 +124,8 @@ def verify_proxy(proxy, *id):
         return False
 
 
+# 要想在代理池中修改用过的代理
+# 1. 拿着自己的信息，到池中比对，找到后再修改池中代理的hp值
 # 修改对应缓冲区中json的hp值，避免下次脏读
 def proxy_false(request_proxy):
     """

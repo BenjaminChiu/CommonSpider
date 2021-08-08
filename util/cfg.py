@@ -5,7 +5,6 @@
 @File   : cfg.py
 @coding : utf-8
 """
-
 # 请求网络线程总数, 线程不要调太多, 不然会返回很多 400
 THREAD_SUM = 128
 

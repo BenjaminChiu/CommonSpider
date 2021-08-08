@@ -5,9 +5,16 @@
 @File   : vmess_main.py
 @coding : utf-8
 """
+import os
 import re
+import sys
 
 from lxml import etree
+
+project_name = 'CommonSpider'
+cur_path = os.path.abspath(os.path.dirname(__file__))
+root_path = cur_path[:cur_path.find(project_name) + len(project_name)]
+sys.path.append(root_path)
 
 from util.my_request import MySession, MyRequest
 
@@ -72,9 +79,3 @@ def init():
 
 if __name__ == '__main__':
     init()
-    # s = 'trojan://1f3f9b92-7945-5efb-937a-90ce6040ac8b@tw-cn-hk-relay-1-97861a.dukou.info:5301?sni=tw-1-544.dukouplan3.dev#https%3a%2f%2fwww.mattkaydiary.com%7c%e4%b8%ad%e5%9b%bd%e9%a6%99%e6%b8%af%2f%e4%b8%ad%e5%9b%bd%e5%8f%b0%e6%b9%be%e4%b8%ad%e5%9b%bd(CN)China%2fGuangzhou%2f%e5%b0%8f%e4%b8%9c%e7%9a%84%e7%a8%8b%e5%ba%8f%e6%9c%aa%e8%83%bd%e7%b2%be%e5%87%86%e8%af%86%e5%88%ab(%e5%8f%af%e8%83%bd%e6%98%af%e4%b8%ad%e8%bd%ac%e8%8a%82%e7%82%b9)'
-    # s1 = ' vmess://ew0KICAidiI6ICIyIiwNCiAgInBzIjogImh0dHBzOi8vd3d3Lm1hdHRrYXlkaWFyeS5jb2185Lit5Zu96aaZ5rivL+S4reWbveWPsOa5vihDTilDaGluYS9TaGVuemhlbi/lsI/kuJznmoTnqIvluo/mnKrog73nsr7lh4bor4bliKso5Y+v6IO95piv5Lit6L2s6IqC54K5KSIsDQogICJhZGQiOiAiaGsudGNwYmJyLm5ldCIsDQogICJwb3J0IjogIjgzODgiLA0KICAiaWQiOiAiNjRlMmYyNjQtNWQzZi0xMWViLWE4YmYtZjIzYzkxY2ZiYmM5IiwNCiAgImFpZCI6ICIyIiwNCiAgInNjeSI6ICJhdXRvIiwNCiAgIm5ldCI6ICJ0Y3AiLA0KICAidHlwZSI6ICJub25lIiwNCiAgImhvc3QiOiAiIiwNCiAgInBhdGgiOiAiIiwNCiAgInRscyI6ICJ0bHMiLA0KICAic25pIjogIiINCn0='
-    # # result = pattern_trojan.match(s)
-    #
-    # result1 = pattern_vmess.match(s1.strip())
-    # print('%s' % result1.string)
