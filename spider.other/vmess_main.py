@@ -12,7 +12,7 @@ import sys
 from lxml import etree
 
 project_name = 'CommonSpider'
-cur_path = os.path.abspath(os.path.dirname(__file__))
+cur_path = os.path.abspath(__file__)
 root_path = cur_path[:cur_path.find(project_name) + len(project_name)]
 sys.path.append(root_path)
 
