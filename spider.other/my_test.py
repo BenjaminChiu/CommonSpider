@@ -1,5 +1,7 @@
 import os
 
+from util.my_request import MySession, MyRequest
+
 if __name__ == '__main__':
     # DB = pymysql.connect(host='127.0.0.1', user='root', passwd='root', db='fish_movie', port=3306,charset='utf8')
     # CONN = DB.cursor()
