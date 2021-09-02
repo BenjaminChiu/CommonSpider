@@ -56,31 +56,6 @@ def read_json(url):
 # ================================json 操作===End==============================
 # =============================格式转化 操作===Start===========================
 
-def info_proxy_dict(proxy):
-    """
-    提取字典，给定的键值信息
-    没有解析id、hp，是因为在.list中文件没有这些
-    @param proxy:解析字典
-    @return:返回三个值
-    """
-    print("%s" % proxy)
-    type = proxy['type']
-    host = proxy['host']
-    port = proxy['port']
-    return type, host, port
-
-
-def json_to_request(dict):
-    """
-    将json proxy格式   转为    request proxy格式
-    @param dict:
-    @return:
-    """
-    type, host, port = info_proxy_dict(dict)
-    proxy_string = type + '://' + host + ':' + str(port)
-    proxy = {type: proxy_string}
-    return proxy
-
 
 def request_to_json(dict):
     """

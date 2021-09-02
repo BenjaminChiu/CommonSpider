@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 # coding=utf-8
+import random
 
 from requests import Session
 from requests.adapters import HTTPAdapter
@@ -62,11 +63,11 @@ header = {
     'accept-Language': 'en-US,en;q=0.9,zh-CN;q=0.8,zh;q=0.7',
     'cache-control': 'no-cache',
     # 'Connection': 'keep-alive',
-    'cookie': 'sb=W2sKYdn3R81XJbvtr7JW3Bw5; datr=W2sKYakT_MTAVexu2_Gg-xyF; locale=zh_CN; wd=1490x799; c_user=100005381614728; spin=r.1004209596_b.trunk_t.1628169793_s.1_v.2_; xs=39:fpqmh5ToiKrt0A:2:1628077194:-1:6774::AcXJmdkvPJtaa8Z6bHb69zxvI8EBMWmg4ZXWGzIJrw; fr=1IEbuTrfVO4nWx39I.AWW6sQZVO4enxPl0_i8GxVyC7iA.BhDAMV.Zf.AAA.0.0.BhDAMV.AWUApRI8Ypg',
+    # 'cookie': 'sb=W2sKYdn3R81XJbvtr7JW3Bw5; datr=W2sKYakT_MTAVexu2_Gg-xyF; locale=zh_CN; wd=1490x799; c_user=100005381614728; spin=r.1004209596_b.trunk_t.1628169793_s.1_v.2_; xs=39:fpqmh5ToiKrt0A:2:1628077194:-1:6774::AcXJmdkvPJtaa8Z6bHb69zxvI8EBMWmg4ZXWGzIJrw; fr=1IEbuTrfVO4nWx39I.AWW6sQZVO4enxPl0_i8GxVyC7iA.BhDAMV.Zf.AAA.0.0.BhDAMV.AWUApRI8Ypg',
     'dnt': '1',
     'pragma': 'no-cache',
-    'user-agent': 'facebookexternalhit/1.1'
-    # 'user-agent': random.choice(UserAgent_List)
+    # 'user-agent': 'facebookexternalhit/1.1'
+    'user-agent': random.choice(UserAgent_List)
 }
 
 
@@ -82,7 +83,9 @@ class MySession(Session):
         # 数据由冷备份 到 热更新的代理池
         # 每请求一次就应该刷新一次代理池（防止代理池枯竭，应该不断地验证 添加代理到代理池）
         # 当使用代理失败后，应该向代理模块反馈代理信息
-        cold_proxy_out()
+
+        # 因为代理格式转换问题，暂时关闭
+        # cold_proxy_out()
 
 
 # 继承request，在request基础上进行二次开发
@@ -97,6 +100,7 @@ class MyRequest(object):
         self.proxy_flag = proxy_flag
         if self.proxy_flag:
             self.proxy = proxy_out()
+            # self.proxy = cfg.local_proxxy
 
     def get(self):
         """
@@ -105,17 +109,18 @@ class MyRequest(object):
         @return:
         """
         response = None
+
         try:
             if self.proxy_flag:
-                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False, proxies=self.proxy)
+                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=True, proxies=self.proxy)
             else:
                 response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False)
         except Exception as e:
-            print("链接请求异常：%s" % self.url)
+            print("链接：%s, 请求异常：%s" % (self.url, e))
 
         # 将代理进行反馈，单独and response 是为了提前判断是否None，避免后面取status code出错
-        if self.proxy_flag and (not response or response.status_code != 200):
-            print("触发了代理反馈！")
-            proxy_false(self.proxy)
+        # if self.proxy_flag and (not response or response.status_code != 200):
+        #     print("触发了代理反馈！")
+        #     proxy_false(self.proxy)
 
         return response

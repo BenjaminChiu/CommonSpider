@@ -11,10 +11,10 @@ if __name__ == '__main__':
     # name = dataList[0][0]
     # dao.updateModel('我你妈改了1','宝贝儿','刘杰')
 
-    session = MySession()
-    for i in range(100):
-        response = MyRequest(session, "https://www.baidu.com", True).get()
-        print("%s" % response)
+    # session = MySession()
+    # for i in range(100):
+    #     response = MyRequest(session, "https://www.baidu.com", True).get()
+    #     print("%s" % response)
 
     # var = request.proxy
     # pool = cfg.Proxy_Pool
@@ -23,3 +23,7 @@ if __name__ == '__main__':
     # with open('C:/Users/Administrator/Desktop/store_s.json', 'w') as f:
     #     print('fuck you!', file=f)
     # f.close()
+
+    test = ''
+    if test:
+        print('check')

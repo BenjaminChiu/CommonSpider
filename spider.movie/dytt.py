@@ -10,7 +10,6 @@ import requests
 from lxml import etree
 
 
-
 class dytt_Lastest(object):
 
     # 初始页面即抓取入口，即找到可以大量翻页的地方

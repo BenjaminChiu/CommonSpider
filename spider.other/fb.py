@@ -122,7 +122,7 @@ if __name__ == '__main__':
     # 個人資料
     account = "626640968@qq.com"
     password = "qiupeng..6772000"
-    driver_location = 'C:\\Develop.Tool\\chromedriver.exe'
+    driver_location = 'C:/Develop.Tool/chromedriver.exe'
 
     # 爬取目標 (要使用mbasic的網址)
     url = 'https://mbasic.facebook.com/search/places/?q=mattress+uk&source=filter&isTrending=0'
