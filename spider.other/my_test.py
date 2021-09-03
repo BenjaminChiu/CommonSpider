@@ -24,6 +24,6 @@ if __name__ == '__main__':
     #     print('fuck you!', file=f)
     # f.close()
 
-    test = ''
-    if test:
+    test = []
+    if len(test):
         print('check')

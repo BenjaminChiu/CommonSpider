@@ -32,7 +32,7 @@ pattern_youtube = re.compile(r'^(https://www.youtube.com/)\w')
 
 def step_1(session):
     day = []
-    response = MyRequest(session, vmess_web, True).get()
+    response = MyRequest(session, vmess_web, proxy_flag=True).get()
     if response.status_code == 200:
         print("监测点1：链接成功")
         selector = etree.HTML(response.text)
@@ -40,48 +40,93 @@ def step_1(session):
     return day
 
 
-def step_2(session, day):
-    # data_vmess, data_ssr, data_trojan = []
-    google_drive, pCloud, youtube = '', '', ''
+# def filter_v1(data_list):
+#     data_vmess, data_ssr, data_trojan = [], [], []
+#     for j in range(len(data_list)):
+#         data_list[j] = data_list[j].strip()  # 去除字符串首尾空格
+#
+#         if pattern_vmess.match(data_list[j]):
+#             data_vmess.append(data_list[j])
+#         elif pattern_trojan.match(data_list[j]):
+#             data_trojan.append(data_list[j])
+#         elif pattern_ssr.match(data_list[j]):
+#             data_ssr.append(data_list[j])
+#
+#
+# def filter_v2(data_list):
+#     google_drive_v, pcloud_v, youtube_v = '', '', ''
+#     for j in range(len(data_list)):
+#         data_list[j] = data_list[j].strip()  # 去除字符串首尾空格
+#
+#         if pattern_google_drive.match(data_list[j]):
+#             google_drive_v = data_list[j]
+#         elif pattern_pCloud.match(data_list[j]):
+#             pcloud_v = data_list[j]
+#         elif pattern_youtube.match(data_list[j]):
+#             youtube_v = data_list[j]
 
+
+def filter_v3(data_list, **kwargs):
+    """
+    通用正则表达式 提取流程
+    @param data_list:
+    @param kwargs:
+    @return: 一个二维数组
+    """
+    p_list = kwargs['pattern']
+    num_p_list = len(p_list)
+    v_list = [list() for i in range(num_p_list)]
+
+    for i in range(len(data_list)):
+        data_list[i] = data_list[i].strip()  # 去除字符串首尾空格
+        for j in range(num_p_list):
+            if p_list[j].match(data_list[i]):
+                v_list[j].append(data_list[i])
+    return v_list
+
+
+def step_2(session, day, version):
+    v_list = []
     for i in range(len(day)):
-        response = MyRequest(session, day[i], True).get()
+        response = MyRequest(session, day[i], proxy_flag=True).get()
         if response.status_code == 200:
             print("监测点2：链接成功。当前链接为=%s" % day[i])
             selector = etree.HTML(response.text)
             # 获取到了整个div的所有text，用于后面筛选
             div_data = selector.xpath("//div[@style='-webkit-text-stroke-width: 0px;']/div//text()")
 
-            for j in range(len(div_data)):
-                div_data[j] = div_data[j].strip()  # 去除字符串首尾空格
-                if pattern_google_drive.match(div_data[j]):
-                    google_drive = div_data[j]
-                elif pattern_pCloud.match(div_data[j]):
-                    pCloud = div_data[j]
-                elif pattern_youtube.match(div_data[j]):
-                    youtube = div_data[j]
-
-                # ------------v0.1------Start---------------
-                # if pattern_vmess.match(div_data[j]):
-                #     data_vmess.append(div_data[j])
-                # elif pattern_trojan.match(div_data[j]):
-                #     data_trojan.append(div_data[j])
-                # elif pattern_ssr.match(div_data[j]):
-                #     data_ssr.append(div_data[j])
-                # ------------v0.1------End---------------
+            p_list = []
+            if version == 1:
+                p_list = [pattern_vmess, pattern_ssr, pattern_trojan]
+            elif version == 2:
+                p_list = [pattern_google_drive, pattern_pCloud, pattern_youtube]
+            v_list = filter_v3(div_data, pattern=p_list)
 
             # 能拿到信息，即结束
-            # if len(data_vmess) or len(data_ssr) or len(data_trojan):
-            if google_drive or pCloud or youtube:
+            if len(v_list[0]) or len(v_list[1]) or len(v_list[2]):
                 print("今日链接为：%s" % day[i])
                 print("当前链接的顺位是 %s" % i)
                 break
+    if version == 1:
+        return v_list[0], v_list[1], v_list[2]
+    elif version == 2:
+        print("google_drive:%s" % v_list[0][0])
+        print("pcloud:%s" % v_list[1][0])
+        print("youtube:%s" % v_list[2][0])
+        return v_list[0][0]
 
-    print(google_drive)
-    print(pCloud)
-    print(youtube)
-    return google_drive, pCloud, youtube
-    # return data_vmess, data_ssr, data_trojan
+
+def down_vmess(session, v_1):
+    response = MyRequest(session, v_1, proxy_flag=True, allow_redirects=True).get()
+    # 获取文件名
+    dict_head = dict(response.headers)
+    info = dict_head['Content-Disposition']
+    file_name = info.split('filename=\"')[1].split('\";filename*=')[0]
+
+    with open('C:/A.Drive/Download/' + file_name, 'wb') as file:
+        file.write(response.content)
+        file.close()
+    print('success! The code is %s' % response.status_code)
 
 
 def print2json(data_vmess, data_ssr, data_trojan):
@@ -99,37 +144,15 @@ def print2json(data_vmess, data_ssr, data_trojan):
         for i in range(len(data_trojan)):
             print(data_trojan[i], file=f)
         f.close()
-
-    # with open('C:/Users/Administrator/Desktop/vmess.json', 'w') as f:
-    #     for i in range(len(data_vmess)):
-    #         print(data_vmess[i], file=f)
-    #     f.close()
-    # with open('C:/Users/Administrator/Desktop/trojan.json', 'w') as f:
-    #     for i in range(len(data_trojan)):
-    #         print(data_trojan[i], file=f)
-    #     f.close()
-
     print("三种节点均写入完成！")
-
-
-def down_vmess(session, v_1, v_2, v_3):
-    response = MyRequest(session, v_1, True).get()
-    # 获取文件名
-    dict_head = dict(response.headers)
-    info = dict_head['Content-Disposition']
-    file_name = info.split('filename=\"')[1].split('\";filename*=')[0]
-
-    with open('C:/A.Drive/Download/' + file_name, 'wb') as file:
-        file.write(response.content)
-        file.close()
-    print('success! The code is %s' % response.status_code)
 
 
 if __name__ == '__main__':
     session = MySession()
-
     days = step_1(session)
-    google_drive, pCloud, youtube = step_2(session, days)
 
-    # print2json(v_1, v_2, v_3)
-    down_vmess(session, google_drive, pCloud, youtube)
+    v1, v2, v3 = step_2(session, days, 1)
+    print2json(v1, v2, v3)
+
+    # google_drive = step_2(session, days, 2)
+    # down_vmess(session, google_drive)

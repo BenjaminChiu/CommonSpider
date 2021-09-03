@@ -38,7 +38,7 @@ def write_proxy_json(pass_proxy):
     #     json.dump(pass_proxy + '\n', f)
 
 
-def read_json(url):
+def read_json_my(url):
     """
     通用读取json函数
     @return: 列表，内容是一行的内容 为 一个元素

@@ -5,7 +5,7 @@ import random
 from requests import Session
 from requests.adapters import HTTPAdapter
 
-from my_proxy.io_proxy import proxy_out, cold_proxy_out
+from my_proxy.io_proxy import cold_proxy_out
 from my_proxy.util_proxy import proxy_false
 from util import cfg
 
@@ -85,22 +85,20 @@ class MySession(Session):
         # 当使用代理失败后，应该向代理模块反馈代理信息
 
         # 因为代理格式转换问题，暂时关闭
-        # cold_proxy_out()
+        cold_proxy_out()
 
 
 # 继承request，在request基础上进行二次开发
 # request是一个库，不是类，无法继承
 class MyRequest(object):
 
-    def __init__(self, session, url, *proxy_flag):
+    def __init__(self, session, url, proxy_flag=False, allow_redirects=False):
         super().__init__()
         self.session = session
         self.url = url
         self.header = header
         self.proxy_flag = proxy_flag
-        if self.proxy_flag:
-            self.proxy = proxy_out()
-            # self.proxy = cfg.local_proxxy
+        self.allow_redirects = allow_redirects
 
     def get(self):
         """
@@ -109,18 +107,18 @@ class MyRequest(object):
         @return:
         """
         response = None
+        my_proxy = None
+        if self.proxy_flag:
+            my_proxy = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
 
         try:
-            if self.proxy_flag:
-                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=True, proxies=self.proxy)
-            else:
-                response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=False)
+            response = self.session.get(self.url, headers=self.header, timeout=cfg.TIMEOUT, allow_redirects=self.allow_redirects, proxies=my_proxy)
         except Exception as e:
             print("链接：%s, 请求异常：%s" % (self.url, e))
 
         # 将代理进行反馈，单独and response 是为了提前判断是否None，避免后面取status code出错
-        # if self.proxy_flag and (not response or response.status_code != 200):
-        #     print("触发了代理反馈！")
-        #     proxy_false(self.proxy)
+        if self.proxy_flag and not response and response.status_code != 200:
+            print("触发了代理反馈！")
+            proxy_false(my_proxy)
 
         return response

@@ -20,32 +20,19 @@ import random
 
 import requests
 
-from my_proxy.util_proxy import read_json, verify_proxy, request_to_json, write_proxy_json
+from my_proxy.util_proxy import verify_proxy, request_to_json, write_proxy_json, read_json_my
 from util import cfg
 
 
 # proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
 # ============================Proxy==Out======Start=================================
-# 热更新输出
-def proxy_out():
-    """
-    返回一个代理，供MyRequest使用
-    request需要的字典格式：{type:"type://host:port"}
-    pool 中的代理多一个键，hp
-    @return:一个字典，内容为代理
-    """
-    if cfg.Proxy_Pool:
-        proxy = random.choice(cfg.Proxy_Pool)  # 随机筛选一个
-        print('Request使用代理：%s' % proxy)
-        return proxy
-    else:
-        return None
+# 热更新输出，直接在my_request中 random.choice(cfg.Proxy_Pool)
 
 
 # 冷备份 到 热更新，只需启动一次
 def cold_proxy_out():
-    data_list = read_json('C:/A.Drive/Develop/WorkSpace/PC.Spider.Web/CommonSpider/my_proxy/proxy.json')
+    data_list = read_json_my('C:/A.Drive/Develop/WorkSpace/PC.Spider.Web/CommonSpider/my_proxy/proxy.json')
     for line in data_list:
         cfg.Proxy_Pool.append(line)
 
@@ -61,7 +48,7 @@ def info_proxy_from_list():
     从.list文件中读取代理信息，获取ip，port ，type
     未用request请求.list文件的原因：需要翻墙才能下载。只能手动翻墙，手动下载
     """
-    data_list = read_json("C:/Users/Administrator/Desktop/proxy.list")
+    data_list = read_json_my("C:/Users/Administrator/Desktop/proxy.list")
     proxy_list = []
     # for line in data_list:
     #     type, host, port = info_proxy_dict(line)  # 提取字典信息，重新赋值
