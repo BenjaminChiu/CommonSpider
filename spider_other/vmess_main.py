@@ -18,6 +18,7 @@ sys.path.append(root_path)
 
 from util.my_request import MySession, MyRequest
 
+proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 vmess_web = "https://www.mattkaydiary.com/"
 
 # 正则表达式匹配vmess，匹配可能出现的空格
@@ -116,7 +117,7 @@ def step_2(session, day, version):
         return v_list[0][0]
 
 
-def down_vmess(session, v_1):
+def down_file(session, v_1):
     response = MyRequest(session, v_1, proxy_flag=True, allow_redirects=True).get()
     # 获取文件名
     dict_head = dict(response.headers)
@@ -155,4 +156,4 @@ if __name__ == '__main__':
     print2json(v1, v2, v3)
 
     # google_drive = step_2(session, days, 2)
-    # down_vmess(session, google_drive)
+    # down_file(session, google_drive)

@@ -5,7 +5,7 @@
 @File   : vmess_json.py
 @coding : utf-8
 """
-from vmess_main import *
+from spider_other.vmess_main import *
 
 
 def read_txt(url):

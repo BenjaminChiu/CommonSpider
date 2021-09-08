@@ -5,7 +5,6 @@ import random
 from requests import Session
 from requests.adapters import HTTPAdapter
 
-from my_proxy.io_proxy import cold_proxy_out
 from my_proxy.util_proxy import proxy_false
 from util import cfg
 
@@ -84,8 +83,8 @@ class MySession(Session):
         # 每请求一次就应该刷新一次代理池（防止代理池枯竭，应该不断地验证 添加代理到代理池）
         # 当使用代理失败后，应该向代理模块反馈代理信息
 
-        # 因为代理格式转换问题，暂时关闭
-        cold_proxy_out()
+        # # 因为代理格式转换问题，暂时关闭
+        # cold_proxy_out()
 
 
 # 继承request，在request基础上进行二次开发

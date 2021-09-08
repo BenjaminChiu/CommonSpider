@@ -56,6 +56,31 @@ def read_json_my(url):
 # ================================json 操作===End==============================
 # =============================格式转化 操作===Start===========================
 
+def info_proxy_dict(proxy):
+    """
+    提取字典，给定的键值信息
+    没有解析id、hp，是因为在.list中文件没有这些
+    @param proxy:解析字典
+    @return:返回三个值
+    """
+    print("%s" % proxy)
+    type = proxy['type']
+    host = proxy['host']
+    port = proxy['port']
+    return type, host, port
+
+
+def json_to_request(dict):
+    """
+    将json proxy格式   转为    request proxy格式
+    @param dict:
+    @return:
+    """
+    type, host, port = info_proxy_dict(dict)
+    proxy_string = type + '://' + host + ':' + str(port)
+    proxy = {type: proxy_string}
+    return proxy
+
 
 def request_to_json(dict):
     """
@@ -77,14 +102,11 @@ def request_to_json(dict):
 # =============================格式转化 操作===End===========================
 
 # 验证方式：1.使用telnet，2.使用下面这个网址
-def verify_proxy(proxy, *id):
+def verify_proxy(proxy):
     """
-    :param dict: 一个字典。可能为json格式、可能为request模式
+    :param proxy: 一个字典。
     :@return pass with True,or False
     """
-    # proxy = dict
-    # if 'id' in dict:
-    #     proxy = json_to_request(dict)
     try:
         response = requests.get(url="http://icanhazip.com/", timeout=cfg.TIMEOUT, proxies=proxy)  # timeout越小，得到ip越少、质量越高
         proxy_ip = response.text.replace("\n", "")
@@ -95,7 +117,7 @@ def verify_proxy(proxy, *id):
             print("测试代理%s" % proxy + "_code=%s" % response.status_code + '_无效')
             return False
     except Exception as e:
-        print("测试代理%s" % proxy + "出现未知错误")
+        print("测试代理%s，出现错误%s" % (proxy, e))
         return False
 
 

@@ -16,15 +16,11 @@ request.get_proxy()  从全局变量cfg.Proxy_Pool 获取
 
 """
 
-import random
-
-import requests
-
-from my_proxy.util_proxy import verify_proxy, request_to_json, write_proxy_json, read_json_my
+from my_proxy.util_proxy import *
 from util import cfg
 
+proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
-# proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 
 # ============================Proxy==Out======Start=================================
 # 热更新输出，直接在my_request中 random.choice(cfg.Proxy_Pool)
@@ -48,13 +44,13 @@ def info_proxy_from_list():
     从.list文件中读取代理信息，获取ip，port ，type
     未用request请求.list文件的原因：需要翻墙才能下载。只能手动翻墙，手动下载
     """
-    data_list = read_json_my("C:/Users/Administrator/Desktop/proxy.list")
-    proxy_list = []
-    # for line in data_list:
-    #     type, host, port = info_proxy_dict(line)  # 提取字典信息，重新赋值
-    #     proxy = {type: type + '://' + host + ':' + str(port)}  # 封装为一个request形式的proxy
-    #     proxy_list.append(proxy)
-    return proxy_list
+    proxy_list = read_json_my("C:/Users/Administrator/Desktop/proxy.list")
+    proxy_list_pass = []
+    for line in proxy_list:
+        type, host, port = info_proxy_dict(line)  # 提取字典信息，重新赋值
+        proxy = {type: host + ':' + str(port)}  # 封装为一个request形式的proxy
+        proxy_list.append(proxy)
+    return proxy_list_pass
 
 
 def get_verify_proxy(proxy_list):
@@ -70,11 +66,36 @@ def get_verify_proxy(proxy_list):
 
 
 # ============================Proxy==In======End=================================
+
+
+def v1_in_proxy():
+    # session = MySession()
+    # response = MyRequest(session, proxy_url, proxy_flag=True, allow_redirects=True).get()
+    # proxy_list = response.text.split('\n')
+    # proxy_list.pop()
+
+    proxy_list = []
+
+    with open("C:/Users/Administrator/Desktop/proxy.list", 'r') as f:
+        content = f.readlines()
+        for line in content:
+            line_data = json.loads(line)
+            proxy_list.append(line_data)
+        f.close()
+
+    # input('获取代理完毕！关闭翻墙软件！')
+
+    for proxy in proxy_list:
+        # proxy = json.loads(i)
+        type = proxy['type']
+        host = proxy['host']
+        port = proxy['port']
+        proxy_dict = {type: host + ':' + str(port)}
+        # type + '://' +
+        verify_proxy(proxy_dict)
+
+        # write_proxy_json(proxy_dict)
+
+
 if __name__ == '__main__':
-    proxy_list = info_proxy_from_list()
-    pass_proxy_list = get_verify_proxy(proxy_list)
-    # write_proxy_json(pass_proxy_list)
-    for proxy in pass_proxy_list:
-        write_proxy_json(proxy)
-        cfg.Proxy_Pool.append(proxy)
-    print("success")
+    v1_in_proxy()
