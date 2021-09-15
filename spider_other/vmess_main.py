@@ -82,6 +82,7 @@ def filter_v3(data_list, **kwargs):
         data_list[i] = data_list[i].strip()  # 去除字符串首尾空格
         for j in range(num_p_list):
             if p_list[j].match(data_list[i]):
+                data_list[i] = data_list[i].replace('https%3a%2f%2fwww.mattkaydiary.com%7c', '')
                 v_list[j].append(data_list[i])
     return v_list
 
