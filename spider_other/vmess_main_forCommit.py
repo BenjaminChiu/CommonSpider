@@ -136,7 +136,7 @@ def print2json(data_vmess, data_ssr, data_trojan, filename='total.json'):
     print("爬取到的ssr节点数量为：%s" % len(data_ssr))
     print("爬取到的trojan节点数量为：%s" % len(data_trojan))
     # 使用print写文件，不会有引号问题。三引号可以保留换行格式
-    with open('C:/Users/Administrator/Desktop/'+filename, 'w') as f:
+    with open('C:/Users/Administrator/Desktop/' + filename, 'w') as f:
         for i in range(len(data_ssr)):
             print(data_ssr[i], file=f)
         print('\n\n\n', file=f)
