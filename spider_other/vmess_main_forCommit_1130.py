@@ -73,6 +73,14 @@ def filter_v3(data_list, **kwargs):
     @param data_list:
     @param kwargs:
     @return: 一个二维数组
+    def step_1(session):
+    day = []
+    response = MyRequest(session, vmess_web, proxy_flag=True).get()
+    if response.status_code == 200:
+        print("监测点1：链接成功")
+        selector = etree.HTML(response.text)
+        day = selector.xpath("//div[@class='post-outer']/div[@class='post']/article/font/h2/a/@href")  # day是一个list  div[@class='post-outer' and position()=1]
+    return day
     """
     p_list = kwargs['pattern']
     num_p_list = len(p_list)
