@@ -25,9 +25,19 @@ if __name__ == '__main__':
     #     print('fuck you!', file=f)
     # f.close()
 
-    pattern_ssr = re.compile(r'/www.mattkaydiary.com')
+    pattern_ssr = re.compile(r'^(ss:/|ss://|ssr://)\w')
     test = 'ss://YWVzLTI1Ni1nY206WXlDQmVEZFlYNGNhZEhwQ2trbWRKTHE4QDg0LjE3LjUzLjIyNzo0Mzg5Mw==#https%3a%2f%2fwww.mattkaydiary.com%7c%e7%91%9e%e5%a3%ab(CH)Switzerland%2fZ%c3%bcrich'
-    test = test.replace('https%3a%2f%2fwww.mattkaydiary.com%7c', '')
+    test2 = 'ss:/'
+    test3 = 'ss://'
+    # test = test.replace('https%3a%2f%2fwww.mattkaydiary.com%7c', '')
     # s = pattern_ssr.match(test)
 
-    print('%s' % test)
+    if pattern_ssr.match(test):
+        print('yes1')
+
+    if pattern_ssr.match(test2) or 'ss:/' == test2:
+        print('yes2')
+
+    print('done')
+
+    # print('%s' % test)
