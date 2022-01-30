@@ -1,6 +1,10 @@
+<p align="center">
+<img src="https://s1.ax1x.com/2020/07/22/UbKCpq.png" alt="StreamerHelper" width="100px">
+</p>
+
 # CommonSpider
 
-a template Spider for the most website
+> 🍰 a template Spider for the most website
 
 test changing project name for git
 
@@ -17,11 +21,9 @@ test changing project name for git
 个人猜想：让每个线程进入队列的时候，报告自己当前的index号。而不是，用一个外部线程来监听，这是不准确的。
 
 
-<p align="center">
-<img src="https://s1.ax1x.com/2020/07/22/UbKCpq.png" alt="StreamerHelper" width="100px">
-</p>
 
-> 🍰 Never miss your Streamer again
+
+
 
 [![MIT](https://img.shields.io/github/license/ZhangMingZhao1/StreamerHelper?color=red)](https://github.com/ZhangMingZhao1/StreamerHelper/blob/master/LICENSE)
 [![npm version](https://img.shields.io/npm/v/npm)](https://github.com/ZhangMingZhao1/StreamerHelper/blob/master/package.json)
