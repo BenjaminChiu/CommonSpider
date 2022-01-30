@@ -20,7 +20,6 @@ test changing project name for git
 <p align="center">
 <img src="https://s1.ax1x.com/2020/07/22/UbKCpq.png" alt="StreamerHelper" width="100px">
 </p>
-<h1 align="center">StreamerHelper</h1>
 
 > 🍰 Never miss your Streamer again
 
