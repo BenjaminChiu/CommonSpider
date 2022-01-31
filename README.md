@@ -56,4 +56,8 @@ test changing project name for git
 - [ ] 重启后同时检测本地是否有上传失败的视频文件，并上传。
 - [ ] 增加一个独立脚本遍历download文件夹下的视频文件重新上传(重启上传的折中解决办法，还有解决第一次账号密码配置错误失败上传的问题)
 
+## Special Thanks
 
+Special Thanks [JetBrains](https://www.jetbrains.com/?from=real-url) offering free JetBrains Open Source license
+
+[![JetBrains-logo](https://i.loli.net/2020/10/03/E4h5FZmSfnGIgap.png)](https://www.jetbrains.com/?from=real-url)
