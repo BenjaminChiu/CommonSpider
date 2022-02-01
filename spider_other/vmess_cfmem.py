@@ -18,7 +18,6 @@ sys.path.append(root_path)
 
 from util.my_request import MySession, MyRequest
 
-proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 vmess_web = "https://www.cfmem.com/"
 
 # 剥离并定义代理开关
@@ -38,7 +37,7 @@ def step_1(session):
     day = []
     response = MyRequest(session, vmess_web, proxy_flag=Proxy_flag).get()
     if response.status_code == 200:
-        print("监测点1：链接成功")
+        print("Test1 Status=Success")
         selector = etree.HTML(response.text)
         day = selector.xpath("//div[@class='blog-posts index-post-wrap flex-col']/article/div[@class='entry-header']/h2/a/@href")
         # day是一个list  div[@class='post-outer' and position()=1]
@@ -106,10 +105,10 @@ def step_2(session, day):
     for i in range(len(day)):
         response = MyRequest(session, day[i], proxy_flag=False).get()
         if response.status_code == 200:
-            print("监测点2：链接成功。当前链接为=%s" % day[i])
+            print("Test1 Status=Success.URL=%s" % day[i])
             selector = etree.HTML(response.text)
             # 注意使用'//text()' 和 '/text()'。   //text获取到了整个div的所有text，用于后面筛选。
-            span_data = selector.xpath("//pre[@cid='n0']/span//text()")
+            span_data = selector.xpath("//pre[@cid='n6']/span//text()")
 
             # print("step_2: %s" % span_data)
 
@@ -124,21 +123,21 @@ def step_2(session, day):
 
             if len(server_data_list):
                 # print("今日链接为：%s" % day[i])
-                print("当前链接的顺位是 %s" % i)
+                print("The number of Day List is %s" % i)
                 break
-
-    server_data_list.pop(0)
+    if server_data_list:
+        server_data_list.pop(0)
     return server_data_list
 
 
 def print2json(server_data_list, filename='total.json'):
-    print("爬取到的节点数量为：%s" % len(server_data_list))
+    print("Number of Total Server is=%s" % len(server_data_list))
     # 使用print写文件，不会有引号问题。三引号可以保留换行格式
     with open('C:/Users/Administrator/Desktop/' + filename, 'w') as f:
         for i in range(len(server_data_list)):
             print(server_data_list[i], file=f)
         f.close()
-    print("节点写入完成！")
+    print("Write Down!")
 
 
 if __name__ == '__main__':
