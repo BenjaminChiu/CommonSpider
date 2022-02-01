@@ -21,6 +21,9 @@ from util.my_request import MySession, MyRequest
 proxy_url = 'https://raw.githubusercontent.com/fate0/proxylist/master/proxy.list'
 vmess_web = "https://www.cfmem.com/"
 
+# 剥离并定义代理开关
+Proxy_flag = False
+
 # 正则表达式匹配vmess，匹配可能出现的空格
 pattern_ssr = re.compile(r'^(ss:/|ss://|ssr://)\w')
 pattern_vmess = re.compile(r'^(vmess://)\w')
@@ -33,7 +36,7 @@ pattern_youtube = re.compile(r'^(https://www.youtube.com/)\w')
 
 def step_1(session):
     day = []
-    response = MyRequest(session, vmess_web, proxy_flag=False).get()
+    response = MyRequest(session, vmess_web, proxy_flag=Proxy_flag).get()
     if response.status_code == 200:
         print("监测点1：链接成功")
         selector = etree.HTML(response.text)
