@@ -108,7 +108,7 @@ def step_2(session, day):
             print("Test1 Status=Success.URL=%s" % day[i])
             selector = etree.HTML(response.text)
             # 注意使用'//text()' 和 '/text()'。   //text获取到了整个div的所有text，用于后面筛选。
-            span_data = selector.xpath("//pre[@cid='n6']/span//text()")
+            span_data = selector.xpath("//span[@class='cm-comment']/pre/span//text()")
 
             # print("step_2: %s" % span_data)
 
