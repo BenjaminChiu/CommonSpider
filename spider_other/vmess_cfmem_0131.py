@@ -43,31 +43,6 @@ def step_1(session):
     return day
 
 
-# def filter_v1(data_list):
-#     data_vmess, data_ssr, data_trojan = [], [], []
-#     for j in range(len(data_list)):
-#         data_list[j] = data_list[j].strip()  # 去除字符串首尾空格
-#
-#         if pattern_vmess.match(data_list[j]):
-#             data_vmess.append(data_list[j])
-#         elif pattern_trojan.match(data_list[j]):
-#             data_trojan.append(data_list[j])
-#         elif pattern_ssr.match(data_list[j]):
-#             data_ssr.append(data_list[j])
-#
-#
-# def filter_v2(data_list):
-#     google_drive_v, pcloud_v, youtube_v = '', '', ''
-#     for j in range(len(data_list)):
-#         data_list[j] = data_list[j].strip()  # 去除字符串首尾空格
-#
-#         if pattern_google_drive.match(data_list[j]):
-#             google_drive_v = data_list[j]
-#         elif pattern_pCloud.match(data_list[j]):
-#             pcloud_v = data_list[j]
-#         elif pattern_youtube.match(data_list[j]):
-#             youtube_v = data_list[j]
-
 
 def filter_v3(data_list, **kwargs):
     """
