@@ -19,9 +19,9 @@ from queue import Queue
 
 class TaskQueue(object):
     # 将三层队列初始化
-    Queue_1 = Queue()
-    Queue_2 = Queue()
-    Queue_3 = Queue(200)
+    Queue_1 = Queue()  # 分页队列：item是页
+    Queue_2 = Queue()  # 每页上的内容
+    Queue_3 = Queue(200)  # request这个内容后，里面的所有字段(属性)
 
     def __init__(self):
         pass
