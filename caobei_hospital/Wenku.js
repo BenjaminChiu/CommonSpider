@@ -61,7 +61,6 @@
 
             styleInit(css_buttom);
 
-
         }
     });
 
