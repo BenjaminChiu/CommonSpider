@@ -16,7 +16,8 @@
 // @require           https://cdn.staticfile.org/clipboard.js/2.0.11/clipboard.min.js
 // ==/UserScript==
 
-(function() {
+(function ()
+{
     'use strict';
 
     document.addEventListener("keydown", function (fuckEvent)
@@ -24,46 +25,22 @@
         if (fuckEvent.key === "F9")
         {
 
+            console.log("let's fuck! Fangfang.")
 
-            var download2 = "<div id='wenkujiexi-download-pro'style='display: block;line-height: 42px; text-align: center; vertical-align: top; background-color: #25ae84; cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 165px; z-index: 9999;'><a href='"
-                + "' target='_blank' style='font-size:18px;color:#fff;display: block; height: 100%; padding: 2px 11px;'>下载该文档[PRO]</a></div>";
-            $("body").append(download2);
+            let DllButton = "<div id='fuck.this.shit' " +
+                "style='display: block; line-height: 42px; text-align: center; vertical-align: top; background-color: #25ae84; " +
+                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 165px; z-index: 9999;'>" +
+                "<a href='' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                "<a href='' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>让芳芳给我吹箫</a>" +
+                "</div>";
+
+            $("body").append(DllButton);
 
 
-            var css_buttom = "#_copy{width:72px;height:42px;background:red;color:#fff;position:absolute;z-index:1000;display:flex;justify-content:center;align-items:center;border-radius:3px;font-size:14px;cursor:pointer}#select-tooltip,#sfModal,.modal-backdrop,div[id^=reader-helper]{display:none!important}.modal-open{overflow:auto!important}._sf_adjust_body{padding-right:0!important}";
 
-            function styleInit(css, ref) {
-                if (ref === void 0) ref = {};
-                var insertAt = ref.insertAt;
-                if (!css || typeof document === 'undefined') {
-                    return;
-                }
-                var head = document.head || document.getElementsByTagName('head')[0];
-                var style = document.createElement('style');
-                style.type = 'text/css';
-
-                if (insertAt === 'top') {
-                    if (head.firstChild) {
-                        head.insertBefore(style, head.firstChild);
-                    } else {
-                        head.appendChild(style);
-                    }
-                } else {
-                    head.appendChild(style);
-                }
-
-                if (style.styleSheet) {
-                    style.styleSheet.cssText = css;
-                } else {
-                    style.appendChild(document.createTextNode(css));
-                }
-            }
-
-            styleInit(css_buttom);
 
         }
     });
 
 
-
-}) ();
+})();
