@@ -20,6 +20,9 @@
 {
     'use strict';
 
+
+
+
     document.addEventListener("keydown", function (fuckEvent)
     {
         if (fuckEvent.key === "F9")
@@ -27,19 +30,26 @@
 
             console.log("let's fuck! Fangfang.")
 
+            function JustATest()
+            {
+                alert("suck my dick.");
+            }
+
+
             let DllButton = "<div id='fuck.this.shit' " +
-                "style='display: block; line-height: 42px; text-align: center; vertical-align: top; background-color: #25ae84; " +
-                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 165px; z-index: 9999;'>" +
-                "<a href='' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                "<a href='' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>让芳芳给我吹箫</a>" +
+                "style='display: block; line-height: 38px; text-align: center; vertical-align: top; background-color: #25ae84; " +
+                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 154px; z-index: 9999;'>" +
+                "<a target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                "<a href='javascript:void(0);' onclick='JustATest' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
 
-
-
-
         }
+
+
+
+
     });
 
 
