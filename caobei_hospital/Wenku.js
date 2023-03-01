@@ -28,11 +28,7 @@
     {
         if (fuckEvent.key === "F9")
         {
-
-            console.log("let's fuck! Fangfang.")
-
-
-
+            console.log("let's fuck! Fangfang.");
 
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 38px; text-align: center; vertical-align: top; background-color: #25ae84; " +
@@ -42,12 +38,16 @@
                 "</div>";
 
             $("body").append(DllButton);
-            $("#zhuanzhen").onclick(JustATest());
+            $("#zhuanzhen").click(function()
+            {
+                    JustATest();
+            });
 
         }
 
         function JustATest()
         {
+            console.log("suck my cock!");
             alert("suck my shit.");
         }
 
