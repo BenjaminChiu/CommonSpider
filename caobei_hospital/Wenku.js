@@ -13,7 +13,6 @@
 // @match             *://*.ithome.com/*
 // @match        *://*.scwjxx.cn/*
 // @require           https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
-// @require           https://cdn.staticfile.org/clipboard.js/2.0.11/clipboard.min.js
 // ==/UserScript==
 
 (function ()
@@ -32,7 +31,7 @@
 
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 38px; text-align: center; vertical-align: top; background-color: #25ae84; " +
-                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 154px; z-index: 9999;'>" +
+                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 102px; z-index: 9999;'>" +
                 "<a target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
                 "<a id='zhuanzhen' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
@@ -40,7 +39,7 @@
             $("body").append(DllButton);
             $("#zhuanzhen").click(function()
             {
-                    JustATest();
+                JustATest();
             });
 
         }
