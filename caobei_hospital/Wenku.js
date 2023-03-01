@@ -1,8 +1,8 @@
 // ==UserScript==
-// @name              [Wenku Doc Download]百度文库wenku加强破解版，百度文库会员免费解析下载，百度文库文档下载和复制内容/文本选中复制/百度文库下载器/VIP文档免费下载/全文阅读/开启右键复制
+// @name              悬浮窗测试
 // @namespace         greasyfork-script
 // @version           1.2.4
-// @description       百度文库wenku加强破解版，百度文库会员免费解析下载，百度文库文档下载和复制内容，百度文库下载卷文档、共享文档、VIP文档内容复制/解除网站不允许复制的限制，文本选中后点击复制按钮即可复制，主要用于百度文库、道客巴巴、腾讯文档、豆丁网、知乎、思否社区、无忧考网、语雀、学习啦、蓬勃范文、力扣等,保持源文件排版导出PDF文件，解除继续阅读限制，净化弹窗/广告，开启文库本地VIP，秒传链接提取/用于提取和生成百度网盘秒传链接
+// @description       测试一个串串
 // @author            greasyfork-script
 // @antifeature       ads
 // @antifeature       membership
@@ -23,6 +23,7 @@
 
 
 
+
     document.addEventListener("keydown", function (fuckEvent)
     {
         if (fuckEvent.key === "F9")
@@ -30,21 +31,24 @@
 
             console.log("let's fuck! Fangfang.")
 
-            function JustATest()
-            {
-                alert("suck my dick.");
-            }
+
 
 
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 38px; text-align: center; vertical-align: top; background-color: #25ae84; " +
                 "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 154px; z-index: 9999;'>" +
                 "<a target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                "<a href='javascript:void(0);' onclick='JustATest' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
+                "<a id='zhuanzhen' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
+            $("#zhuanzhen").onclick(JustATest());
 
+        }
+
+        function JustATest()
+        {
+            alert("suck my shit.");
         }
 
 
