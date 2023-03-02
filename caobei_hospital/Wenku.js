@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.1.9
+// @version      0.1.10
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -48,18 +48,18 @@
     // 转诊表 所需变量 start
     const zhuanZhen_hospital = "射洪市人民医院";
     const section = "内科";
-    const zhuanZhen_doctor = "张三";
-    const our_doctor = "李四";
-    const our_doctor_tel = "13002834662";
+    const zhuanZhen_doctor = "王平";
+    const our_doctor = "王祥茂";
+    const our_doctor_tel = "13547784526";
 
     // 初步印象
-    const zhuanZhen_textarea_0 = "测试窗口数据1";
+    const zhuanZhen_textarea_0 = "没明显症状。";
     // 转出原因
-    const zhuanZhen_textarea_1 = "测试窗口数据2";
+    const zhuanZhen_textarea_1 = "血压控制不稳定。";
     // 既往史
-    const zhuanZhen_textarea_2 = "测试窗口数据3";
+    const zhuanZhen_textarea_2 = "患者多年高血压病史。";
     // 治疗经过
-    const zhuanZhen_textarea_3 = "测试窗口数据4";
+    const zhuanZhen_textarea_3 = "经过治疗，血压控制依然不稳定。";
     // 转诊表 所需变量 End
 
 
@@ -72,12 +72,13 @@
     fkVueEvent.eventType = 'message'
 
 
+    // =======转诊单======Start=========
 
 
     // =======转诊单======Start=========
     function zhuanZhen()
     {
-        console.log("suck my cock!");
+        console.log("正在使用转诊单填充功能.");
         let form_s = $('form');
         for (let i=0; i<form_s.length; i++)
         {
