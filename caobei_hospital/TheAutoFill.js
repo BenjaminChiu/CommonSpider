@@ -72,7 +72,8 @@
             {
                 console.log("找到目标form");
                 // 获取所有行，并且遍历所有行
-                let tr_s = form_s[i].getElementsByTagName("tr");
+                // let tr_s = form_s[i].getElementsByTagName("tr");
+                let tr_s = document.getElementsByTagName("tr");
                 for (let j=0; j<tr_s.length; j++)
                 {
                     if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
@@ -120,10 +121,12 @@
                             else if (divs[i].innerText.includes('1粗筛阴性') && !divs[i].className.includes('checked'))
                                 divs[i].click();
                         }
+                        console.log("老年人健康评估完成.");
                     }
 
                     else if (tr_s[j].innerText.includes("心电图"))
                     {
+                        console.log("完成心电图的操作.");
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
@@ -133,7 +136,7 @@
                         // let inputs = tr_s[j].getElementsByTagName("input");
                         // inputs[0].value = "轻微心电左偏";
                         // inputs[0].dispatchEvent(fkVueEvent);
-                        console.log("完成心电图的操作.")
+                        console.log("完成心电图的操作.");
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
                     {
