@@ -58,6 +58,8 @@
         const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
         // 高血糖 随机血糖
         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2);
+        // 修改体检表标签
+        let edit_flag = false;
         // 体检表 所需变量 end
 
 
@@ -68,12 +70,15 @@
         for (let i=0; i<form_s.length; i++)
         {
             // 找到了目标form表单
-            if (form_s[i].innerText.includes('体检日期') && form_s[i].innerText.includes('责任医生'))
+            if (form_s[i].innerText.includes('体检日期') && form_s[i].innerText.includes('责任医生') && !edit_flag)
             {
-                console.log("找到目标form");
+                console.log("找到体检表form");
+                // 只允许修改一次
+                edit_flag = true;
+
                 // 获取所有行，并且遍历所有行
-                // let tr_s = form_s[i].getElementsByTagName("tr");
-                let tr_s = document.getElementsByTagName("tr");
+                // const tr_s = form_s[i].getElementsByTagName("tr");
+                const tr_s = document.getElementsByTagName("tr");
                 for (let j=0; j<tr_s.length; j++)
                 {
                     if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
@@ -97,16 +102,16 @@
 
                         console.log("找到血压栏");
                     }
-                    else if (tr_s[j].innerText.includes("右侧"))
-                    {
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = blood_pressure_high_2;
-                        inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = blood_pressure_low_2;
-                        inputs[1].dispatchEvent(fkVueEvent);
-
-                        console.log("找到右侧血压栏");
-                    }
+                    // else if (tr_s[j].innerText.includes("右侧"))
+                    // {
+                    //     let inputs = tr_s[j].getElementsByTagName("input");
+                    //     inputs[0].value = blood_pressure_high_2;
+                    //     inputs[0].dispatchEvent(fkVueEvent);
+                    //     inputs[1].value = blood_pressure_low_2;
+                    //     inputs[1].dispatchEvent(fkVueEvent);
+                    //
+                    //     console.log("找到右侧血压栏");
+                    // }
 
 
                     // ========老年人专有功能=======Start=========
@@ -126,16 +131,16 @@
 
                     else if (tr_s[j].innerText.includes("心电图"))
                     {
-                        console.log("完成心电图的操作.");
+                        console.log("进入心电图的操作.");
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
-                            if (divs[i].innerText.includes('1正常') && !divs[i].className.includes('checked'))
+                            if (divs[i].innerText.includes('2') && !divs[i].className.includes('checked'))
                                 divs[i].click();
                         }
-                        // let inputs = tr_s[j].getElementsByTagName("input");
-                        // inputs[0].value = "轻微心电左偏";
-                        // inputs[0].dispatchEvent(fkVueEvent);
+                        // let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        // textarea_s[0].value = "轻微心电左偏";
+                        // textarea_s[0].dispatchEvent(fkVueEvent);
                         console.log("完成心电图的操作.");
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -169,13 +174,19 @@
 
                         textarea_s[1].value = "流感疫苗、肺炎疫苗";
                         textarea_s[1].dispatchEvent(fkVueEvent);
-                        console.log("完成危险因素控制的操作.")
+                        console.log("完成危险因素控制的操作.");
                     }
 
 
 
 
                 }
+
+
+                let textarea = $('#xdtycmc');
+                textarea.value = "轻微心电轴左偏";
+                textarea.dispatchEvent(fkVueEvent);
+
                 console.log("测试使用.End");
             }
         }
