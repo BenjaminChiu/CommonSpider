@@ -121,7 +121,53 @@
                                 divs[i].click();
                         }
                     }
+
+                    else if (tr_s[j].innerText.includes("心电图"))
+                    {
+                        const divs = tr_s[j].getElementsByTagName("div");
+                        for (let i = 0; i < divs.length; i++)
+                        {
+                            if (divs[i].innerText.includes('1正常') && !divs[i].className.includes('checked'))
+                                divs[i].click();
+                        }
+                        // let inputs = tr_s[j].getElementsByTagName("input");
+                        // inputs[0].value = "轻微心电左偏";
+                        // inputs[0].dispatchEvent(fkVueEvent);
+                        console.log("完成心电图的操作.")
+                    }
+                    else if (tr_s[j].innerText.includes("腹部B超"))
+                    {
+                        const divs = tr_s[j].getElementsByTagName("div");
+                        for (let i = 0; i < divs.length; i++)
+                        {
+                            if (divs[i].innerText.includes('1正常') && !divs[i].className.includes('checked'))
+                                divs[i].click();
+                        }
+                        // let inputs = tr_s[j].getElementsByTagName("input");
+                        // inputs[0].value = "轻微心电左偏";
+                        // inputs[0].dispatchEvent(fkVueEvent);
+                        console.log("完成B超的操作.")
+                    }
                     // ========老年人专有功能=======End===========
+
+                    else if (tr_s[j].innerText.includes("危险因素控制"))
+                    {
+                        const divs = tr_s[j].getElementsByTagName("div");
+                        for (let i = 0; i < divs.length; i++)
+                        {
+                            if ((divs[i].innerText.includes('3') || divs[i].innerText.includes('4')
+                                    || divs[i].innerText.includes('6') || divs[i].innerText.includes('7'))
+                                && !divs[i].className.includes('checked'))
+                                divs[i].click();
+                        }
+                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        textarea_s[0].value = "预防骨质疏松与跌倒";
+                        textarea_s[0].dispatchEvent(fkVueEvent);
+
+                        textarea_s[1].value = "流感疫苗、肺炎疫苗";
+                        textarea_s[1].dispatchEvent(fkVueEvent);
+                        console.log("完成危险因素控制的操作.")
+                    }
 
 
 
