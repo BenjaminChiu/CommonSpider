@@ -9,6 +9,7 @@
 // @match        *://*.ithome.com/*
 // @match        *://*.scwjxx.cn/*
 // @require      https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
+// @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
 // ==/UserScript==
 
 (function ()
@@ -18,13 +19,16 @@
 
 
 
-
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
     // 所以如果想给这类加料的输入框或者选择框用原生JS赋值，设置vlaue属性过后就必须手动触发一下input或change事件。
-    const fkVueEvent = document.createEvent('Event');
-    fkVueEvent.initEvent("input", true, true);//如果是select选择框把"input"改成"change"
-    fkVueEvent.eventType = 'message';
+    // const fkVueEvent = document.createEvent('HTMLEvents');
+    // fkVueEvent.initEvent("input", true, true);//如果是select选择框把"input"改成"change"
+    // fkVueEvent.eventType = 'message';
+
+    const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
+    const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
+
 
 
     // =======体检表======Start=========
@@ -66,6 +70,48 @@
 
 
 
+
+        // ====Start======第4页监听器=================
+        // 解决点击第4页时，自动取消“4锻炼”按钮
+        const div_s  = document.getElementsByTagName("div")
+        for (let i=0; i<div_s.length; i++)
+        {
+            if (div_s[i].innerText === "第4页")
+            {
+                console.log(i + "@@@@@@@@@找到第4页了" + div_s[i].innerText + "End***********");
+                div_s[i].addEventListener("mousedown", function (fuckEvent)
+                {
+                    console.log("给第4页添加鼠标触发事件成功。")
+                    for (let j=0; j<div_s.length; j++)
+                    {
+                        // && !div_s[j].className.includes('checked')
+                        if (div_s[j].innerText === '4锻炼')
+                        {
+                            console.log("找到4锻炼啦，哈哈哈哈");
+                            setTimeout(function ()
+                            {
+                                console.log("触发setTimeout");
+                                div_s[j].click();
+                            }, 1500);
+                        }
+
+
+                    }
+                });
+            }
+        }
+        // ====End======第4页监听器=================
+
+
+
+
+
+
+
+
+
+
+
         let form_s = $('form');
         for (let i=0; i<form_s.length; i++)
         {
@@ -81,14 +127,38 @@
                 const tr_s = document.getElementsByTagName("tr");
                 for (let j=0; j<tr_s.length; j++)
                 {
-                    if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
+                    if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        // inputs[0].focus();
+                        inputs[0].value = $.cookie("tiJianDate");
+                        inputs[0].dispatchEvent(new Event("change", {view: window, bubbles: true, cancelable: true}));
+
+
+
+
+                        // let dom = document.querySelector('#selector')
+                        // let evt = new InputEvent('input', {
+                        //     inputType: 'insertText',
+                        //     data: st,
+                        //     dataTransfer: null,
+                        //     isComposing: false
+                        // });
+                        // dom.value = '输入的内容';
+                        // dom.dispatchEvent(evt);
+
+
+
+
+
+                    }
+                    else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_temperature;
                         inputs[0].dispatchEvent(fkVueEvent);
                         inputs[1].value = pulse_rate;
                         inputs[1].dispatchEvent(fkVueEvent);
-                        console.log("找到了体温栏");
                     }
                     else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
                     {
@@ -99,19 +169,17 @@
                         inputs[1].dispatchEvent(fkVueEvent);
                         inputs[2].value = blood_pressure_low;
                         inputs[2].dispatchEvent(fkVueEvent);
-
-                        console.log("找到血压栏");
                     }
-                    // else if (tr_s[j].innerText.includes("右侧"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = blood_pressure_high_2;
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    //     inputs[1].value = blood_pressure_low_2;
-                    //     inputs[1].dispatchEvent(fkVueEvent);
-                    //
-                    //     console.log("找到右侧血压栏");
-                    // }
+                    else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
+                    {
+                        console.log("我他妈进入右侧血压了！");
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = blood_pressure_high_2;
+                        inputs[0].dispatchEvent(fkVueEvent);
+                        inputs[1].value = blood_pressure_low_2;
+                        inputs[1].dispatchEvent(fkVueEvent);
+                        console.log("找到右侧血压栏");
+                    }
 
 
                     // ========老年人专有功能=======Start=========
@@ -138,9 +206,9 @@
                             if (divs[i].innerText.includes('2') && !divs[i].className.includes('checked'))
                                 divs[i].click();
                         }
-                        // let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        // textarea_s[0].value = "轻微心电左偏";
-                        // textarea_s[0].dispatchEvent(fkVueEvent);
+                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        textarea_s[0].value = "轻微心电左偏";
+                        textarea_s[0].dispatchEvent(fkVueEvent);
                         console.log("完成心电图的操作.");
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -174,20 +242,8 @@
 
                         textarea_s[1].value = "流感疫苗、肺炎疫苗";
                         textarea_s[1].dispatchEvent(fkVueEvent);
-                        console.log("完成危险因素控制的操作.");
                     }
-
-
-
-
                 }
-
-
-                let textarea = $('#xdtycmc');
-                textarea.value = "轻微心电轴左偏";
-                textarea.dispatchEvent(fkVueEvent);
-
-                console.log("测试使用.End");
             }
         }
     }
@@ -197,8 +253,6 @@
     // =======转诊单======Start=========
     function zhuanZhen()
     {
-        console.log("正在使用转诊单填充功能.");
-
 
         // 转诊表 所需变量 start
         const zhuanZhen_hospital = "射洪市人民医院";
@@ -225,8 +279,6 @@
             // 找到了目标form表单
             if (form_s[i].innerText.includes('双向转诊单') && form_s[i].innerText.includes('双向转诊(转出)单'))
             {
-                console.log("找到目标form");
-
                 let inputs = form_s[i].getElementsByTagName("input");
                 inputs[9].value = zhuanZhen_hospital;
                 inputs[9].dispatchEvent(fkVueEvent);
@@ -264,7 +316,6 @@
                 textarea_s[3].dispatchEvent(fkVueEvent);
 
 
-                console.log("测试使用.End");
             }
         }
     }
@@ -277,13 +328,14 @@
     {
         if (fuckEvent.key === "F9")
         {
-            console.log("You have pressed F9");
-
             let DllButton = "<div id='fuck.this.shit' " +
-                "style='display: block; line-height: 38px; text-align: center; vertical-align: top; background-color: #25ae84; " +
+                "style='display: block; line-height: 22px; text-align: center; vertical-align: top; background-color: #25ae84; " +
                 "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 102px; z-index: 9999;'>" +
-                "<a id='tiJian_a' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                "<a id='zhuanzhen_a' target='_blank' style='font-size:16px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
+                "<input id = 'tiJianDate' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'tiJianDoctor' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
@@ -295,8 +347,29 @@
             {
                 zhuanZhen();
             });
+
+            $("#tiJianDate")[0].addEventListener("focusout", function ()
+            {
+                $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
+            });
+            $("#tiJianDoctor")[0].addEventListener("focusout", function ()
+            {
+                $.cookie('tiJianDoctor', $("#tiJianDoctor")[0].value, { expires: 365, path: '/' });
+            });
+            $("#DoctorTel")[0].addEventListener("focusout", function ()
+            {
+                $.cookie('DoctorTel', $("#DoctorTel")[0].value, { expires: 365, path: '/' });
+            });
+
+
+
         }
     });
+
+
+
+
+
 
 
 
