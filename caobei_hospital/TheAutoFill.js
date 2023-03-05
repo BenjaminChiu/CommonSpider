@@ -137,26 +137,26 @@
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_temperature;
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = pulse_rate;
+                        inputs[1].value = pulse_rate.toString();
                         inputs[1].dispatchEvent(fkVueEvent);
                     }
                     else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = respiratory_rate;
+                        inputs[0].value = respiratory_rate.toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = blood_pressure_high;
+                        inputs[1].value = blood_pressure_high.toString();
                         inputs[1].dispatchEvent(fkVueEvent);
-                        inputs[2].value = blood_pressure_low;
+                        inputs[2].value = blood_pressure_low.toString();
                         inputs[2].dispatchEvent(fkVueEvent);
                     }
                     else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
                     {
                         console.log("我他妈进入右侧血压了！");
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = blood_pressure_high_2;
+                        inputs[0].value = blood_pressure_high_2.toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = blood_pressure_low_2;
+                        inputs[1].value = blood_pressure_low_2.toString();
                         inputs[1].dispatchEvent(fkVueEvent);
                         console.log("找到右侧血压栏");
                     }
