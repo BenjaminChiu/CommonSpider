@@ -31,7 +31,7 @@
 
 
 
-    // =======体检表======Start=========
+    // ===1111====体检表======Start=========
     function tiJian()
     {
         console.log("正在使用体检表填充功能.");
@@ -118,7 +118,6 @@
             // 找到了目标form表单
             if (form_s[i].innerText.includes('体检日期') && form_s[i].innerText.includes('责任医生') && !edit_flag)
             {
-                console.log("找到体检表form");
                 // 只允许修改一次
                 edit_flag = true;
 
@@ -130,27 +129,8 @@
                     if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        // inputs[0].focus();
                         inputs[0].value = $.cookie("tiJianDate");
-                        inputs[0].dispatchEvent(new Event("change", {view: window, bubbles: true, cancelable: true}));
-
-
-
-
-                        // let dom = document.querySelector('#selector')
-                        // let evt = new InputEvent('input', {
-                        //     inputType: 'insertText',
-                        //     data: st,
-                        //     dataTransfer: null,
-                        //     isComposing: false
-                        // });
-                        // dom.value = '输入的内容';
-                        // dom.dispatchEvent(evt);
-
-
-
-
-
+                        inputs[0].dispatchEvent(fkVueEvent_change);
                     }
                     else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                     {
@@ -184,17 +164,45 @@
 
                     // ========老年人专有功能=======Start=========
                     else if (tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
-                        || tr_s[j].innerText.includes("老年人情感状态*"))
+                        || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估"))
                     {
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
-                            if (divs[i].innerText.includes('2基本满意') && !divs[i].className.includes('checked'))
+                            if ((divs[i].innerText.includes('2基本满意') || divs[i].innerText.includes('1粗筛阴性')
+                                    || divs[i].innerText.includes('1可自理')) && !divs[i].className.includes('checked'))
                                 divs[i].click();
-                            else if (divs[i].innerText.includes('1粗筛阴性') && !divs[i].className.includes('checked'))
-                                divs[i].click();
+
                         }
                         console.log("老年人健康评估完成.");
+
+                        setTimeout(function ()
+                        {
+                            console.log("触发老年人生活自理能力评估表.");
+                            let table_s = document.getElementsByClassName('ant-modal-content');
+                            for (let i=0; i<table_s.length; i++)
+                            {
+                                if (table_s[i].innerText.includes("老年人生活自理能力评估表"))
+                                {
+                                    const table_divs = table_s[i].getElementsByTagName("div")
+                                    for (let j=0; j<table_divs.length; j++)
+                                    {
+                                        if (table_divs[j].innerText.includes('0分') && table_divs[j].innerText.includes('独立完成')
+                                            && table_divs[j].className.includes('ant-tag-checkable')
+                                            && !table_divs[j].className.includes('ant-tag-checkable-checked'))
+                                            table_divs[j].click();
+                                    }
+                                    const button_s = table_s[i].getElementsByTagName("button")
+                                    for (let k=0; k<button_s.length; k++)
+                                    {
+                                        if (button_s[k].innerText.includes('保存'))
+                                            button_s[k].click();
+                                    }
+                                }
+
+                            }
+
+                        }, 600);
                     }
 
                     else if (tr_s[j].innerText.includes("心电图"))
@@ -203,12 +211,12 @@
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
-                            if (divs[i].innerText.includes('2') && !divs[i].className.includes('checked'))
+                            if (divs[i].innerText.includes('1正常') && !divs[i].className.includes('checked'))
                                 divs[i].click();
                         }
-                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        textarea_s[0].value = "轻微心电左偏";
-                        textarea_s[0].dispatchEvent(fkVueEvent);
+                        // let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        // textarea_s[0].value = "轻微心电左偏";
+                        // textarea_s[0].dispatchEvent(fkVueEvent);
                         console.log("完成心电图的操作.");
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -247,7 +255,88 @@
             }
         }
     }
-    // =======体检表======End=========
+    // ===1111====体检表======End=========
+
+    //===2222====医养结合======Start========
+    function yyjh()
+    {
+        console.log("正在使用体检表填充功能.");
+        // 修改医养结合标志
+        let edit_flag = false;
+
+        let the_fk_iframe = document.getElementById("yyjfForm");
+        let iframe_doc = the_fk_iframe.contentWindow.document;
+        // 跨域获取document
+        let form_s = iframe_doc.getElementsByTagName("form");
+        for (let i=0; i<form_s.length; i++)
+        {
+            // 找到了目标form表单
+            if (form_s[i].innerText.includes('床上运动'))
+            {
+                // 只允许修改一次
+                edit_flag = true;
+
+                console.log("找到医养结合form，牛逼.");
+
+                const div_row_s = form_s[i].getElementsByTagName("div");
+                for (let j=0; j<div_row_s.length; j++)
+                {
+                    if (div_row_s[j].innerText.includes("服务日期") && div_row_s[j].className === "ant-row")
+                    {
+                        let inputs = div_row_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("tiJianDate");
+                        inputs[0].dispatchEvent(fkVueEvent_change);
+                    }
+                    else if (div_row_s[j].innerText.includes("服务方式") && div_row_s[j].className === "ant-row")
+                    {
+                        let lable_s = div_row_s[j].getElementsByTagName("label");
+                        for (let k = 0; k < lable_s.length; k++)
+                        {
+                            if (lable_s[k].innerText.includes('门诊') && !lable_s[k].className.includes('checked'))
+                                lable_s[k].click();
+                        }
+                    }
+                    else if (div_row_s[j].innerText.includes("健康情况") && div_row_s[j].className === "ant-row")
+                    {
+                        let lable_s = div_row_s[j].getElementsByTagName("label");
+                        for (let k = 0; k < lable_s.length; k++)
+                        {
+                            if (lable_s[k].innerText.includes('无') && !lable_s[k].className.includes('checked'))
+                                lable_s[k].click();
+                        }
+                    }
+                    else if (div_row_s[j].innerText.includes("服务内容记录") && div_row_s[j].className === "ant-row")
+                    {
+                        let div_row_row_s = div_row_s[j].getElementsByTagName("div");
+                        for (let k = 0; k < div_row_row_s.length; k++)
+                        {
+                            if (div_row_row_s[k].innerText.includes('康复指导') && div_row_row_s[k].className === "ant-row")
+                            {
+                                let fk_label_s = div_row_row_s[k].getElementsByTagName("label");
+                                for (let z = 0; z < fk_label_s.length; z++)
+                                {
+                                    if ((fk_label_s[z].innerText === "穿衣训练，教会穿脱衣裤、鞋袜的方法" || fk_label_s[z].innerText === "教会选择食物及进食的方法"
+                                        || fk_label_s[z].innerText === "指导床上运动的目的、方法及注意事项" || fk_label_s[z].innerText === "安全防护指导")
+                                        && !fk_label_s[z].className.includes("checked"))
+                                        fk_label_s[z].click();
+
+                                }
+
+
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    }
+    //===2222====医养结合======End========
+
+
 
 
     // =======转诊单======Start=========
@@ -258,8 +347,6 @@
         const zhuanZhen_hospital = "射洪市人民医院";
         const section = "内科";
         const zhuanZhen_doctor = "王平";
-        const our_doctor = "王祥茂";
-        const our_doctor_tel = "13547784526";
 
         // 初步印象
         const zhuanZhen_textarea_0 = "没明显症状。";
@@ -282,40 +369,29 @@
                 let inputs = form_s[i].getElementsByTagName("input");
                 inputs[9].value = zhuanZhen_hospital;
                 inputs[9].dispatchEvent(fkVueEvent);
-
                 // inputs[16].value = zhuanZhen_hospital;
                 // inputs[16].dispatchEvent(fkVueEvent);
-
                 inputs[10].value = section;
                 inputs[10].dispatchEvent(fkVueEvent);
-
                 inputs[11].value = zhuanZhen_doctor;
                 inputs[11].dispatchEvent(fkVueEvent);
-
-                inputs[12].value = our_doctor;
+                inputs[12].value = $.cookie("tiJianDate");
                 inputs[12].dispatchEvent(fkVueEvent);
-
-                inputs[20].value = our_doctor;
+                inputs[20].value = $.cookie("tiJianDate");
                 inputs[20].dispatchEvent(fkVueEvent);
-
-                inputs[21].value = our_doctor_tel;
+                inputs[21].value = $.cookie("DoctorTel");
                 inputs[21].dispatchEvent(fkVueEvent);
 
-
+                // 4行备注
                 let textarea_s = form_s[i].getElementsByTagName("textarea");
                 textarea_s[0].value = zhuanZhen_textarea_0;
                 textarea_s[0].dispatchEvent(fkVueEvent);
-
                 textarea_s[1].value = zhuanZhen_textarea_1;
                 textarea_s[1].dispatchEvent(fkVueEvent);
-
                 textarea_s[2].value = zhuanZhen_textarea_2;
                 textarea_s[2].dispatchEvent(fkVueEvent);
-
                 textarea_s[3].value = zhuanZhen_textarea_3;
                 textarea_s[3].dispatchEvent(fkVueEvent);
-
-
             }
         }
     }
@@ -335,6 +411,7 @@
                 "<input id = 'tiJianDoctor' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
 
@@ -342,6 +419,10 @@
             $("#tiJian_a").click(function ()
             {
                 tiJian();
+            });
+            $("#yyjh_a").click(function ()
+            {
+                yyjh();
             });
             $("#zhuanzhen_a").click(function()
             {
