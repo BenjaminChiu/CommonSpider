@@ -401,9 +401,9 @@
                 inputs[10].dispatchEvent(fkVueEvent);
                 inputs[11].value = zhuanZhen_doctor;
                 inputs[11].dispatchEvent(fkVueEvent);
-                inputs[12].value = $.cookie("tiJianDate");
+                inputs[12].value = $.cookie("tiJianDoctor");
                 inputs[12].dispatchEvent(fkVueEvent);
-                inputs[20].value = $.cookie("tiJianDate");
+                inputs[20].value = $.cookie("tiJianDoctor");
                 inputs[20].dispatchEvent(fkVueEvent);
                 inputs[21].value = $.cookie("DoctorTel");
                 inputs[21].dispatchEvent(fkVueEvent);
