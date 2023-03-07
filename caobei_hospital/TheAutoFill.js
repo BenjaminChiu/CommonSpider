@@ -27,6 +27,7 @@
     // fkVueEvent.eventType = 'message';
 
     const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
+    const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
 
 
@@ -219,62 +220,26 @@
                         console.log("进入尿蛋白栏");
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿蛋白
-                        // input_s[0].focus();
                         input_s[0].value = "-";
                         input_s[0].dispatchEvent(fkVueEvent);
-                        input_s[0].blur();
-                        // input_s[0].dispatchEvent(fkVueEvent);
+                        input_s[0].dispatchEvent(fkVueEvent_blur);
                         // 尿糖
-                        // input_s[1].focus();
                         input_s[1].value = "+++";
-                        // input_s[1].blur();  //失去焦点
                         input_s[1].dispatchEvent(fkVueEvent);
-                        // input_s[1].blur();
-
-                        setTimeout(function ()
-                        {
-                            input_s[0].blur();
-                            input_s[1].blur();
-                            let div_s = tr_s[j].getElementsByTagName("div");
-                            for (let k=0; k<div_s.length; k++)
-                            {
-                                div_s[k].blur();
-                            }
-                            console.log("我带你们打.");
-
-                        }, 500)
-
+                        input_s[1].dispatchEvent(fkVueEvent_blur);
                     }
                     else if(tr_s[j].innerText.includes("尿酮体"))
                     {
                         console.log("进入尿酮体栏");
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿酮体
-                        // input_s[0].focus();
                         input_s[0].value = "+-";
-                        // input_s[0].blur();  //失去焦点
                         input_s[0].dispatchEvent(fkVueEvent);
-                        // input_s[0].blur();
+                        input_s[0].dispatchEvent(fkVueEvent_blur);
                         // 尿潜血
-                        // input_s[1].focus();
                         input_s[1].value = "+-";
-                        // input_s[1].blur();  //失去焦点
                         input_s[1].dispatchEvent(fkVueEvent);
-                        // input_s[1].blur();
-
-
-                        // setTimeout(function ()
-                        // {
-                        //     input_s[0].blur();
-                        //     input_s[1].blur();
-                        //     let div_s = tr_s[j].getElementsByTagName("div");
-                        //     for (let k=0; k<div_s.length; k++)
-                        //     {
-                        //         div_s[k].blur();
-                        //     }
-                        //
-                        // }, 500)
-
+                        input_s[1].dispatchEvent(fkVueEvent_blur);
                     }
 
                     else if (tr_s[j].innerText.includes("心电图"))
@@ -299,10 +264,6 @@
                             if (divs[i].innerText.includes('1正常') && !divs[i].className.includes('checked'))
                                 divs[i].click();
                         }
-                        // let inputs = tr_s[j].getElementsByTagName("input");
-                        // inputs[0].value = "轻微心电左偏";
-                        // inputs[0].dispatchEvent(fkVueEvent);
-                        console.log("完成B超的操作.")
                     }
                     // ========老年人专有功能=======End===========
 
@@ -483,7 +444,7 @@
                 "<input id = 'tiJianDoctor' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
+                // "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
                 "</div>";
 
