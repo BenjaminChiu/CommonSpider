@@ -209,23 +209,71 @@
                                     button_s[1].click();
                                     console.log("找到保存按钮了");
                                 }
-
                             }
-
                         }, 600);
                     }
 
 
-                    else if (tr_s[j].innerText.includes("尿蛋白") || tr_s[j].innerText.includes("尿酮体"))
+                    else if (tr_s[j].innerText.includes("尿蛋白"))
                     {
-                        console.log("进入尿了哦");
+                        console.log("进入尿蛋白栏");
                         let input_s = tr_s[j].getElementsByTagName("input");
-                        for (let k=0; k<input_s.length; k++)
+                        // 尿蛋白
+                        input_s[0].focus();
+                        input_s[0].value = "-";
+                        input_s[0].dispatchEvent(fkVueEvent);
+                        input_s[0].blur();
+                        input_s[0].dispatchEvent(fkVueEvent);
+                        // 尿糖
+                        input_s[1].focus();
+                        input_s[1].value = "+++";
+                        input_s[1].blur();  //失去焦点
+                        input_s[1].dispatchEvent(fkVueEvent);
+                        input_s[1].blur();
+
+                        setTimeout(function ()
                         {
-                            input_s[k].click();
-                            input_s[k].value = "-";
-                            input_s[k].dispatchEvent(fkVueEvent_change);
-                        }
+                            input_s[0].blur();
+                            input_s[1].blur();
+                            let div_s = tr_s[j].getElementsByTagName("div");
+                            for (let k=0; k<div_s.length; k++)
+                            {
+                                div_s[k].blur();
+                            }
+
+                        }, 500)
+
+                    }
+                    else if(tr_s[j].innerText.includes("尿酮体"))
+                    {
+                        console.log("进入尿酮体栏");
+                        let input_s = tr_s[j].getElementsByTagName("input");
+                        // 尿酮体
+                        input_s[0].focus();
+                        input_s[0].value = "+-";
+                        input_s[0].blur();  //失去焦点
+                        input_s[0].dispatchEvent(fkVueEvent);
+                        input_s[0].blur();
+                        // 尿潜血
+                        input_s[1].focus();
+                        input_s[1].value = "+-";
+                        input_s[1].blur();  //失去焦点
+                        input_s[1].dispatchEvent(fkVueEvent);
+                        input_s[1].blur();
+
+
+                        setTimeout(function ()
+                        {
+                            input_s[0].blur();
+                            input_s[1].blur();
+                            let div_s = tr_s[j].getElementsByTagName("div");
+                            for (let k=0; k<div_s.length; k++)
+                            {
+                                div_s[k].blur();
+                            }
+
+                        }, 500)
+
                     }
 
                     else if (tr_s[j].innerText.includes("心电图"))
