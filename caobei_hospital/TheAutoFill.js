@@ -131,6 +131,19 @@
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = $.cookie("tiJianDate");
                         inputs[0].dispatchEvent(fkVueEvent_change);
+
+                        let div_s = tr_s[j].getElementsByTagName("div");
+                        for (let k=0; k<div_s.length; k++)
+                        {
+                            if (div_s[k].hasAttribute('title'));
+                            {
+                                div_s[k].setAttribute('title', '邱磊 (射洪市曹碑镇卫生院)');
+                                div_s[k].dispatchEvent(fkVueEvent_change);
+                                inputs[1].value = '邱磊 (射洪市曹碑镇卫生院)';
+                                inputs[1].dispatchEvent(fkVueEvent_change);
+                            }
+
+                        }
                     }
                     else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                     {
@@ -200,6 +213,19 @@
                             }
 
                         }, 600);
+                    }
+
+
+                    else if (tr_s[j].innerText.includes("尿蛋白") || tr_s[j].innerText.includes("尿酮体"))
+                    {
+                        console.log("进入尿了哦");
+                        let input_s = tr_s[j].getElementsByTagName("input");
+                        for (let k=0; k<input_s.length; k++)
+                        {
+                            input_s[k].click();
+                            input_s[k].value = "-";
+                            input_s[k].dispatchEvent(fkVueEvent_change);
+                        }
                     }
 
                     else if (tr_s[j].innerText.includes("心电图"))
@@ -372,9 +398,9 @@
                 inputs[10].dispatchEvent(fkVueEvent);
                 inputs[11].value = zhuanZhen_doctor;
                 inputs[11].dispatchEvent(fkVueEvent);
-                inputs[12].value = $.cookie("tiJianDate");
+                inputs[12].value = $.cookie("tiJianDoctor");
                 inputs[12].dispatchEvent(fkVueEvent);
-                inputs[20].value = $.cookie("tiJianDate");
+                inputs[20].value = $.cookie("tiJianDoctor");
                 inputs[20].dispatchEvent(fkVueEvent);
                 inputs[21].value = $.cookie("DoctorTel");
                 inputs[21].dispatchEvent(fkVueEvent);
