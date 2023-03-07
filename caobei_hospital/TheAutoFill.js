@@ -193,11 +193,8 @@
                                             table_divs[j].click();
                                     }
                                     const button_s = table_s[i].getElementsByTagName("button")
-                                    for (let k=0; k<button_s.length; k++)
-                                    {
-                                        if (button_s[k].innerText.includes('保存'))
-                                            button_s[k].click();
-                                    }
+                                    button_s[1].click();
+                                    console.log("找到保存按钮了");
                                 }
 
                             }
