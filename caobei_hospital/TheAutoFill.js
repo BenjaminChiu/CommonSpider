@@ -373,7 +373,7 @@
 
 
     // =======转诊单======Start=========
-    function zhuanZhen()
+    function zhuanZhen(suger)
     {
 
         // 转诊表 所需变量 start
@@ -384,11 +384,17 @@
         // 初步印象
         const zhuanZhen_textarea_0 = "没明显症状。";
         // 转出原因
-        const zhuanZhen_textarea_1 = "血压控制不稳定。";
+        let zhuanZhen_textarea_1 = "血压控制不稳定。";
+        if (suger != null)
+            zhuanZhen_textarea_1 = "血糖控制不稳定";
         // 既往史
-        const zhuanZhen_textarea_2 = "患者多年高血压病史。";
+        let zhuanZhen_textarea_2 = "患者多年高血压病史。";
+        if (suger != null)
+            zhuanZhen_textarea_2 = "患者多年糖尿病病史。";
         // 治疗经过
-        const zhuanZhen_textarea_3 = "经过治疗，血压控制依然不稳定。";
+        let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不稳定。";
+        if (suger != null)
+            zhuanZhen_textarea_3 = "经过治疗，血糖控制依然不稳定。";
         // 转诊表 所需变量 End
 
 
@@ -445,7 +451,8 @@
                 "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
                 // "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
-                "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>塞满转诊表</a>" +
+                "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血压--转诊表</a>" +
+                "<a id='zhuanzhen_a_suger' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血糖--转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
@@ -460,6 +467,10 @@
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();
+            });
+            $("#zhuanzhen_a_suger").click(function()
+            {
+                zhuanZhen('suger');
             });
 
             $("#tiJianDate")[0].addEventListener("focusout", function ()
