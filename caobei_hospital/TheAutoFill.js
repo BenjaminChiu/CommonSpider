@@ -18,7 +18,6 @@
 
 
 
-
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
     // 所以如果想给这类加料的输入框或者选择框用原生JS赋值，设置vlaue属性过后就必须手动触发一下input或change事件。
@@ -29,7 +28,6 @@
     const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
-
 
 
     // ===1111====体检表======Start=========
@@ -490,7 +488,6 @@
 
         }
     });
-
 
 
 
