@@ -6,7 +6,6 @@
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
-// @match        *://*.ithome.com/*
 // @match        *://*.scwjxx.cn/*
 // @require      https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
