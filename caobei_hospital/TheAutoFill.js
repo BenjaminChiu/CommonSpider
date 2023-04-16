@@ -371,11 +371,10 @@
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 22px; text-align: center; vertical-align: top; background-color: #25ae84; " +
                 "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 102px; z-index: 9999;'>" +
-                "<input id = 'tiJianDate' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'tiJianDoctor' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                // "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血压--转诊表</a>" +
                 "<a id='zhuanzhen_a_suger' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血糖--转诊表</a>" +
                 "</div>";
@@ -385,10 +384,6 @@
             {
                 tiJian();
             });
-            // $("#yyjh_a").click(function ()
-            // {
-            //     yyjh();
-            // });
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();
