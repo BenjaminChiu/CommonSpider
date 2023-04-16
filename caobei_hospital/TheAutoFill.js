@@ -41,16 +41,17 @@
         // 脉搏
         const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
         // 呼吸频率
-        const respiratory_rate = Math.floor(Math.random() * (21 - 16 + 1)) + 16;
+        const respiratory_rate = Math.floor(Math.random() * (19 - 15 + 1)) + 15;
         // 高压
-        const blood_pressure_high = Math.floor(Math.random() * (138 - 128 + 1)) + 128;
+        const blood_pressure_high = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
         // 低压
-        const blood_pressure_low = Math.floor(Math.random() * (88 - 78 + 1)) + 78;
+        const blood_pressure_low = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
         // 高压
-        const blood_pressure_high_2 = Math.floor(Math.random() * (138 - 129 + 1)) + 129;
+        const blood_pressure_high_2 = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
         // 低压
-        const blood_pressure_low_2 = Math.floor(Math.random() * (88 - 78 + 1)) + 78;
-        // 血红蛋白
+        const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
+
+        /* // 血红蛋白
         const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
         // 白细胞
         const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
@@ -59,7 +60,8 @@
         // 血糖
         const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
         // 高血糖 随机血糖
-        const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2);
+        const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
+
         // 修改体检表标签
         let edit_flag = false;
         // 体检表 所需变量 end
@@ -133,7 +135,7 @@
                         let div_s = tr_s[j].getElementsByTagName("div");
                         for (let k=0; k<div_s.length; k++)
                         {
-                            if (div_s[k].hasAttribute('title'));
+                            if (div_s[k].hasAttribute('title'))
                             {
                                 div_s[k].setAttribute('title', '邱磊 (射洪市曹碑镇卫生院)');
                                 div_s[k].dispatchEvent(fkVueEvent_change);
@@ -275,7 +277,7 @@
                                 divs[i].click();
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        textarea_s[0].value = "预防骨质疏松与跌倒";
+                        textarea_s[0].value = "预防骨质疏松、预防跌倒";
                         textarea_s[0].dispatchEvent(fkVueEvent);
 
                         textarea_s[1].value = "流感疫苗、肺炎疫苗";
@@ -290,84 +292,7 @@
 
 
 
-    //===2222====医养结合======Start========
-    function yyjh()
-    {
-        console.log("正在使用体检表填充功能.");
-        // 修改医养结合标志
-        let edit_flag = false;
 
-        let the_fk_iframe = document.getElementById("yyjfForm");
-        let iframe_doc = the_fk_iframe.contentWindow.document;
-        // 跨域获取document
-        let form_s = iframe_doc.getElementsByTagName("form");
-        for (let i=0; i<form_s.length; i++)
-        {
-            // 找到了目标form表单
-            if (form_s[i].innerText.includes('床上运动'))
-            {
-                // 只允许修改一次
-                edit_flag = true;
-
-                console.log("找到医养结合form，牛逼.");
-
-                const div_row_s = form_s[i].getElementsByTagName("div");
-                for (let j=0; j<div_row_s.length; j++)
-                {
-                    if (div_row_s[j].innerText.includes("服务日期") && div_row_s[j].className === "ant-row")
-                    {
-                        let inputs = div_row_s[j].getElementsByTagName("input");
-                        inputs[0].value = $.cookie("tiJianDate");
-                        inputs[0].dispatchEvent(fkVueEvent_change);
-                    }
-                    else if (div_row_s[j].innerText.includes("服务方式") && div_row_s[j].className === "ant-row")
-                    {
-                        let lable_s = div_row_s[j].getElementsByTagName("label");
-                        for (let k = 0; k < lable_s.length; k++)
-                        {
-                            if (lable_s[k].innerText.includes('门诊') && !lable_s[k].className.includes('checked'))
-                                lable_s[k].click();
-                        }
-                    }
-                    else if (div_row_s[j].innerText.includes("健康情况") && div_row_s[j].className === "ant-row")
-                    {
-                        let lable_s = div_row_s[j].getElementsByTagName("label");
-                        for (let k = 0; k < lable_s.length; k++)
-                        {
-                            if (lable_s[k].innerText.includes('无') && !lable_s[k].className.includes('checked'))
-                                lable_s[k].click();
-                        }
-                    }
-                    else if (div_row_s[j].innerText.includes("服务内容记录") && div_row_s[j].className === "ant-row")
-                    {
-                        let div_row_row_s = div_row_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < div_row_row_s.length; k++)
-                        {
-                            if (div_row_row_s[k].innerText.includes('康复指导') && div_row_row_s[k].className === "ant-row")
-                            {
-                                let fk_label_s = div_row_row_s[k].getElementsByTagName("label");
-                                for (let z = 0; z < fk_label_s.length; z++)
-                                {
-                                    if ((fk_label_s[z].innerText === "穿衣训练，教会穿脱衣裤、鞋袜的方法" || fk_label_s[z].innerText === "教会选择食物及进食的方法"
-                                        || fk_label_s[z].innerText === "指导床上运动的目的、方法及注意事项" || fk_label_s[z].innerText === "安全防护指导")
-                                        && !fk_label_s[z].className.includes("checked"))
-                                        fk_label_s[z].click();
-
-                                }
-
-
-                            }
-
-                        }
-                    }
-
-                }
-
-            }
-
-        }
-    }
-    //===2222====医养结合======End========
 
 
 
@@ -460,10 +385,10 @@
             {
                 tiJian();
             });
-            $("#yyjh_a").click(function ()
-            {
-                yyjh();
-            });
+            // $("#yyjh_a").click(function ()
+            // {
+            //     yyjh();
+            // });
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();
