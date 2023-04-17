@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.1.13
+// @version      0.1.13.1
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -41,16 +41,17 @@
         // 脉搏
         const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
         // 呼吸频率
-        const respiratory_rate = Math.floor(Math.random() * (21 - 16 + 1)) + 16;
+        const respiratory_rate = Math.floor(Math.random() * (19 - 15 + 1)) + 15;
         // 高压
-        const blood_pressure_high = Math.floor(Math.random() * (138 - 128 + 1)) + 128;
+        const blood_pressure_high = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
         // 低压
-        const blood_pressure_low = Math.floor(Math.random() * (88 - 78 + 1)) + 78;
+        const blood_pressure_low = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
         // 高压
-        const blood_pressure_high_2 = Math.floor(Math.random() * (138 - 129 + 1)) + 129;
+        const blood_pressure_high_2 = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
         // 低压
-        const blood_pressure_low_2 = Math.floor(Math.random() * (88 - 78 + 1)) + 78;
-        // 血红蛋白
+        const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
+
+        /* // 血红蛋白
         const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
         // 白细胞
         const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
@@ -59,7 +60,8 @@
         // 血糖
         const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
         // 高血糖 随机血糖
-        const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2);
+        const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
+
         // 修改体检表标签
         let edit_flag = false;
         // 体检表 所需变量 end
@@ -133,7 +135,7 @@
                         let div_s = tr_s[j].getElementsByTagName("div");
                         for (let k=0; k<div_s.length; k++)
                         {
-                            if (div_s[k].hasAttribute('title'));
+                            if (div_s[k].hasAttribute('title'))
                             {
                                 div_s[k].setAttribute('title', '邱磊 (射洪市曹碑镇卫生院)');
                                 div_s[k].dispatchEvent(fkVueEvent_change);
@@ -275,7 +277,7 @@
                                 divs[i].click();
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        textarea_s[0].value = "预防骨质疏松与跌倒";
+                        textarea_s[0].value = "预防骨质疏松、预防跌倒";
                         textarea_s[0].dispatchEvent(fkVueEvent);
 
                         textarea_s[1].value = "流感疫苗、肺炎疫苗";
@@ -369,11 +371,10 @@
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 22px; text-align: center; vertical-align: top; background-color: #25ae84; " +
                 "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 102px; z-index: 9999;'>" +
-                "<input id = 'tiJianDate' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'tiJianDoctor' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'DoctorTel' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                // "<a id='yyjh_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>一键医养结合</a>" +
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血压--转诊表</a>" +
                 "<a id='zhuanzhen_a_suger' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血糖--转诊表</a>" +
                 "</div>";
@@ -383,10 +384,6 @@
             {
                 tiJian();
             });
-            // $("#yyjh_a").click(function ()
-            // {
-            //     yyjh();
-            // });
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();

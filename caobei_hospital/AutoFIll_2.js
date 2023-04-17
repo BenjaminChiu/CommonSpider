@@ -1,6 +1,5 @@
 document.addEventListener("keydown", function (fuckEvent)
 {
-
     if (fuckEvent.key === "F9")
     {
         console.log("You have pressed F9");
@@ -350,9 +349,6 @@ document.addEventListener("keydown", function (fuckEvent)
         }
     }
     //===2222====医养结合======End========
-
-
-
 
 });
 
