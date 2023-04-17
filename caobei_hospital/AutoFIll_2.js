@@ -1,5 +1,6 @@
 document.addEventListener("keydown", function (fuckEvent)
 {
+
     if (fuckEvent.key === "F9")
     {
         console.log("You have pressed F9");
@@ -268,5 +269,90 @@ document.addEventListener("keydown", function (fuckEvent)
         // }
 
     }
+
+
+    // 代码暂存间
+    //===2222====医养结合======Start========
+    function yyjh()
+    {
+        console.log("正在使用体检表填充功能.");
+        // 修改医养结合标志
+        let edit_flag = false;
+
+        let the_fk_iframe = document.getElementById("yyjfForm");
+        let iframe_doc = the_fk_iframe.contentWindow.document;
+        // 跨域获取document
+        let form_s = iframe_doc.getElementsByTagName("form");
+        for (let i=0; i<form_s.length; i++)
+        {
+            // 找到了目标form表单
+            if (form_s[i].innerText.includes('床上运动'))
+            {
+                // 只允许修改一次
+                edit_flag = true;
+
+                console.log("找到医养结合form，牛逼.");
+
+                const div_row_s = form_s[i].getElementsByTagName("div");
+                for (let j=0; j<div_row_s.length; j++)
+                {
+                    if (div_row_s[j].innerText.includes("服务日期") && div_row_s[j].className === "ant-row")
+                    {
+                        let inputs = div_row_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("tiJianDate");
+                        inputs[0].dispatchEvent(fkVueEvent_change);
+                    }
+                    else if (div_row_s[j].innerText.includes("服务方式") && div_row_s[j].className === "ant-row")
+                    {
+                        let lable_s = div_row_s[j].getElementsByTagName("label");
+                        for (let k = 0; k < lable_s.length; k++)
+                        {
+                            if (lable_s[k].innerText.includes('门诊') && !lable_s[k].className.includes('checked'))
+                                lable_s[k].click();
+                        }
+                    }
+                    else if (div_row_s[j].innerText.includes("健康情况") && div_row_s[j].className === "ant-row")
+                    {
+                        let lable_s = div_row_s[j].getElementsByTagName("label");
+                        for (let k = 0; k < lable_s.length; k++)
+                        {
+                            if (lable_s[k].innerText.includes('无') && !lable_s[k].className.includes('checked'))
+                                lable_s[k].click();
+                        }
+                    }
+                    else if (div_row_s[j].innerText.includes("服务内容记录") && div_row_s[j].className === "ant-row")
+                    {
+                        let div_row_row_s = div_row_s[j].getElementsByTagName("div");
+                        for (let k = 0; k < div_row_row_s.length; k++)
+                        {
+                            if (div_row_row_s[k].innerText.includes('康复指导') && div_row_row_s[k].className === "ant-row")
+                            {
+                                let fk_label_s = div_row_row_s[k].getElementsByTagName("label");
+                                for (let z = 0; z < fk_label_s.length; z++)
+                                {
+                                    if ((fk_label_s[z].innerText === "穿衣训练，教会穿脱衣裤、鞋袜的方法" || fk_label_s[z].innerText === "教会选择食物及进食的方法"
+                                            || fk_label_s[z].innerText === "指导床上运动的目的、方法及注意事项" || fk_label_s[z].innerText === "安全防护指导")
+                                        && !fk_label_s[z].className.includes("checked"))
+                                        fk_label_s[z].click();
+
+                                }
+
+
+                            }
+
+                        }
+                    }
+
+                }
+
+            }
+
+        }
+    }
+    //===2222====医养结合======End========
+
+
+
+
 });
 
