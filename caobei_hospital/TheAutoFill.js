@@ -73,29 +73,22 @@
 
         // ====Start======第4页监听器=================
         // 解决点击第4页时，自动取消“4锻炼”按钮
-        const div_s  = document.getElementsByTagName("div")
+        const div_s  = document.getElementsByTagName("div");
         for (let i=0; i<div_s.length; i++)
         {
             if (div_s[i].innerText === "第4页")
             {
-                console.log(i + "@@@@@@@@@找到第4页了" + div_s[i].innerText + "End***********");
                 div_s[i].addEventListener("mousedown", function (fuckEvent)
                 {
-                    console.log("给第4页添加鼠标触发事件成功。")
                     for (let j=0; j<div_s.length; j++)
                     {
-                        // && !div_s[j].className.includes('checked')
-                        if (div_s[j].innerText === '4锻炼')
+                        if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
                         {
-                            console.log("找到4锻炼啦，哈哈哈哈");
                             setTimeout(function ()
                             {
-                                console.log("触发setTimeout");
                                 div_s[j].click();
                             }, 1500);
                         }
-
-
                     }
                 });
             }
@@ -104,8 +97,21 @@
 
 
 
-
-
+        // 自动识别模块
+        // 1. 获取姓名
+        let OldManName = '';
+        let name_div_s = $('div.ant-col');
+        for (let i=0; i<name_div_s.length; i++)
+        {
+            if (name_div_s[i].innerText.includes('姓名'))
+            {
+                OldManName= name_div_s[i].getElementsByTagName("span")[0].innerText;
+                // 一个值就够，终结循环
+                if (OldManName !== '' && OldManName !== undefined)
+                    break;
+            }
+        }
+        console.log("当前病人：" + OldManName);
 
 
 
@@ -137,9 +143,9 @@
                         {
                             if (div_s[k].hasAttribute('title'))
                             {
-                                div_s[k].setAttribute('title', '邱磊 (射洪市曹碑镇卫生院)');
+                                div_s[k].setAttribute('title', '王芳 (射洪市曹碑镇卫生院)');
                                 div_s[k].dispatchEvent(fkVueEvent_change);
-                                inputs[1].value = '邱磊 (射洪市曹碑镇卫生院)';
+                                inputs[1].value = '王芳 (射洪市曹碑镇卫生院)';
                                 inputs[1].dispatchEvent(fkVueEvent_change);
                             }
 
@@ -165,13 +171,11 @@
                     }
                     else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
                     {
-                        console.log("我他妈进入右侧血压了！");
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = blood_pressure_high_2.toString();
                         inputs[0].dispatchEvent(fkVueEvent);
                         inputs[1].value = blood_pressure_low_2.toString();
                         inputs[1].dispatchEvent(fkVueEvent);
-                        console.log("找到右侧血压栏");
                     }
 
 
@@ -187,11 +191,9 @@
                                 divs[i].click();
 
                         }
-                        console.log("老年人健康评估完成.");
 
                         setTimeout(function ()
                         {
-                            console.log("触发老年人生活自理能力评估表.");
                             let table_s = document.getElementsByClassName('ant-modal-content');
                             for (let i=0; i<table_s.length; i++)
                             {
@@ -207,7 +209,6 @@
                                     }
                                     const button_s = table_s[i].getElementsByTagName("button")
                                     button_s[1].click();
-                                    console.log("找到保存按钮了");
                                 }
                             }
                         }, 600);
@@ -216,7 +217,6 @@
 
                     else if (tr_s[j].innerText.includes("尿蛋白"))
                     {
-                        console.log("进入尿蛋白栏");
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿蛋白
                         input_s[0].value = "-";
@@ -229,7 +229,6 @@
                     }
                     else if(tr_s[j].innerText.includes("尿酮体"))
                     {
-                        console.log("进入尿酮体栏");
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿酮体
                         input_s[0].value = "+-";
@@ -243,7 +242,6 @@
 
                     else if (tr_s[j].innerText.includes("心电图"))
                     {
-                        console.log("进入心电图的操作.");
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
@@ -253,7 +251,6 @@
                         // let textarea_s = tr_s[j].getElementsByTagName("textarea");
                         // textarea_s[0].value = "轻微心电左偏";
                         // textarea_s[0].dispatchEvent(fkVueEvent);
-                        console.log("完成心电图的操作.");
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
                     {
