@@ -107,7 +107,7 @@
             {
                 OldManName= name_div_s[i].getElementsByTagName("span")[0].innerText;
                 // 一个值就够，终结循环
-                if (OldManName !== '' && OldManName !== undefined)
+                if (OldManName !== '' && OldManName !== '姓名' && OldManName !== undefined)
                     break;
             }
         }
