@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.1.13.1
+// @version      0.1.13.2
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -41,7 +41,7 @@
         // 脉搏
         const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
         // 呼吸频率
-        const respiratory_rate = Math.floor(Math.random() * (19 - 15 + 1)) + 15;
+        const respiratory_rate = Math.floor(Math.random() * (20 - 16 + 1)) + 16;
         // 高压
         const blood_pressure_high = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
         // 低压
@@ -52,15 +52,15 @@
         const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
 
         /* // 血红蛋白
-        const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
-        // 白细胞
-        const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
-        // 血小板
-        const blood_platelet = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
-        // 血糖
-        const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
-        // 高血糖 随机血糖
-        const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
+         const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
+         // 白细胞
+         const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
+         // 血小板
+         const blood_platelet = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
+         // 血糖
+         const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
+         // 高血糖 随机血糖
+         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
 
         // 修改体检表标签
         let edit_flag = false;
@@ -183,7 +183,7 @@
                         for (let i = 0; i < divs.length; i++)
                         {
                             if ((divs[i].innerText.includes('2基本满意') || divs[i].innerText.includes('1粗筛阴性')
-                                    || divs[i].innerText.includes('1可自理')) && !divs[i].className.includes('checked'))
+                                || divs[i].innerText.includes('1可自理')) && !divs[i].className.includes('checked'))
                                 divs[i].click();
 
                         }
@@ -302,25 +302,34 @@
     {
 
         // 转诊表 所需变量 start
-        const zhuanZhen_hospital = "射洪市人民医院";
-        const section = "内科";
-        const zhuanZhen_doctor = "王平";
-
+        let zhuanZhen_hospital = "射洪市人民医院";
+        let section = "内科";
+        let zhuanZhen_doctor = "王老师";
         // 初步印象
-        const zhuanZhen_textarea_0 = "没明显症状。";
+        let zhuanZhen_textarea_0 = "患者无明显自觉症状。";
         // 转出原因
-        let zhuanZhen_textarea_1 = "血压控制不稳定。";
-        if (suger != null)
-            zhuanZhen_textarea_1 = "血糖控制不稳定";
+        let zhuanZhen_textarea_1 = "血压控制不满意。";
         // 既往史
-        let zhuanZhen_textarea_2 = "患者多年高血压病史。";
-        if (suger != null)
-            zhuanZhen_textarea_2 = "患者多年糖尿病病史。";
+        let zhuanZhen_textarea_2 = "患者有多年高血压病史。";
         // 治疗经过
-        let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不稳定。";
+        let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不满意。";
+
+
         if (suger != null)
-            zhuanZhen_textarea_3 = "经过治疗，血糖控制依然不稳定。";
+        {
+            zhuanZhen_hospital = "射洪市人民医院";
+            section = "内分泌科";
+            zhuanZhen_doctor = "赵老师";
+
+            zhuanZhen_textarea_1 = "血糖控制不满意";
+            zhuanZhen_textarea_2 = "患者多年糖尿病病史。";
+            zhuanZhen_textarea_3 = "经过治疗，血糖控制依然不满意。";
+        }
+
+
+
         // 转诊表 所需变量 End
+
 
 
 
@@ -370,7 +379,7 @@
         {
             let DllButton = "<div id='fuck.this.shit' " +
                 "style='display: block; line-height: 22px; text-align: center; vertical-align: top; background-color: #25ae84; " +
-                "cursor: pointer; color: #fff; margin-bottom: 2px; position: fixed; left: 0; top: 358px; width: 102px; z-index: 9999;'>" +
+                "cursor: pointer; color: #fff; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 9999;'>" +
                 "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
