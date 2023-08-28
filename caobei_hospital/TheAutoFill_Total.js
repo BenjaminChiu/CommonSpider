@@ -293,7 +293,6 @@
 
 
 
-
     // =======转诊单======Start=========
     function zhuanZhen(suger)
     {
@@ -307,7 +306,7 @@
         // 转出原因
         let zhuanZhen_textarea_1 = "血压控制不满意。";
         // 既往史
-        let zhuanZhen_textarea_2 = "患者有多年高血压病史。";
+        let zhuanZhen_textarea_2 = "患者有高血压病史。";
         // 治疗经过
         let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不满意。";
 
@@ -318,15 +317,17 @@
             section = "内分泌科";
             zhuanZhen_doctor = "赵老师";
 
-            zhuanZhen_textarea_1 = "血糖控制不满意";
-            zhuanZhen_textarea_2 = "患者多年糖尿病病史。";
-            zhuanZhen_textarea_3 = "经过治疗，血糖控制依然不满意。";
+            zhuanZhen_textarea_1 = "空腹血糖控制不满意";
+            zhuanZhen_textarea_2 = "患者有糖尿病病史。";
+            zhuanZhen_textarea_3 = "经过治疗，空腹血糖控制依然不满意。";
         }
 
 
 
         // 转诊表 所需变量 End
 
+        // 给定一个确认弹窗
+        let writeIn_Doctor = confirm("是否填充村医姓名及村医电话？");
 
 
 
@@ -343,14 +344,22 @@
                 // inputs[16].dispatchEvent(fkVueEvent);
                 inputs[10].value = section;
                 inputs[10].dispatchEvent(fkVueEvent);
+
                 inputs[11].value = zhuanZhen_doctor;
                 inputs[11].dispatchEvent(fkVueEvent);
-                inputs[12].value = $.cookie("tiJianDoctor");
-                inputs[12].dispatchEvent(fkVueEvent);
-                inputs[20].value = $.cookie("tiJianDoctor");
-                inputs[20].dispatchEvent(fkVueEvent);
-                inputs[21].value = $.cookie("DoctorTel");
-                inputs[21].dispatchEvent(fkVueEvent);
+
+                if (writeIn_Doctor)
+                {
+                    inputs[12].value = $.cookie("tiJianDoctor");
+                    inputs[12].dispatchEvent(fkVueEvent);
+
+                    inputs[20].value = $.cookie("tiJianDoctor");
+                    inputs[20].dispatchEvent(fkVueEvent);
+
+                    inputs[21].value = $.cookie("DoctorTel");
+                    inputs[21].dispatchEvent(fkVueEvent);
+                }
+
 
                 // 4行备注
                 let textarea_s = form_s[i].getElementsByTagName("textarea");
