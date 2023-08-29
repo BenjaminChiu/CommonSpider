@@ -28,6 +28,12 @@
     const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
 
+    // 字典 村医的联系方式
+    const cun_doctor_tel =
+        {"王祥茂":"13547784526", "胥德顺":"13882507277", "王晏":"15108117003", "覃蒲昌":"15082588136", "蒲兴周":"15181944660",
+            "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284", "王平":"18980189346",
+            "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
+
 
     // ===1111====体检表======Start=========
     function tiJian()
@@ -327,7 +333,16 @@
         // 转诊表 所需变量 End
 
         // 给定一个确认弹窗
-        let writeIn_Doctor = confirm("是否填充村医姓名及村医电话？");
+        // let writeIn_Doctor = confirm("是否填充村医姓名及村医电话？");
+
+        // 转诊的村医姓名
+        let cun_doctor = $.cookie("tiJianDoctor");
+        let button_s = $('button');
+        for (let i=0; i< button_s.length; i++)
+        {
+            if (button_s[i].innerText.includes('健康档案'))
+                cun_doctor = button_s[i].childNodes[3].innerText
+        }
 
 
 
@@ -340,25 +355,25 @@
                 let inputs = form_s[i].getElementsByTagName("input");
                 inputs[9].value = zhuanZhen_hospital;
                 inputs[9].dispatchEvent(fkVueEvent);
-                // inputs[16].value = zhuanZhen_hospital;
-                // inputs[16].dispatchEvent(fkVueEvent);
+                inputs[16].value = zhuanZhen_hospital;
+                inputs[16].dispatchEvent(fkVueEvent);
                 inputs[10].value = section;
                 inputs[10].dispatchEvent(fkVueEvent);
 
                 inputs[11].value = zhuanZhen_doctor;
                 inputs[11].dispatchEvent(fkVueEvent);
 
-                if (writeIn_Doctor)
-                {
-                    inputs[12].value = $.cookie("tiJianDoctor");
-                    inputs[12].dispatchEvent(fkVueEvent);
+                // 自动捕获村医
+                inputs[12].value = cun_doctor;
+                inputs[12].dispatchEvent(fkVueEvent);
 
-                    inputs[20].value = $.cookie("tiJianDoctor");
-                    inputs[20].dispatchEvent(fkVueEvent);
+                inputs[20].value = cun_doctor;
+                inputs[20].dispatchEvent(fkVueEvent);
 
-                    inputs[21].value = $.cookie("DoctorTel");
-                    inputs[21].dispatchEvent(fkVueEvent);
-                }
+                inputs[21].value = cun_doctor_tel[cun_doctor];  // 用村医姓名查找村医的电话号码
+                console.log("fucking Test.Tel="+inputs[21].value+";Doc="+inputs[20].value);
+                inputs[21].dispatchEvent(fkVueEvent);
+
 
 
                 // 4行备注
@@ -371,6 +386,8 @@
                 textarea_s[2].dispatchEvent(fkVueEvent);
                 textarea_s[3].value = zhuanZhen_textarea_3;
                 textarea_s[3].dispatchEvent(fkVueEvent);
+
+                break;
             }
         }
     }
