@@ -402,6 +402,7 @@
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+                textarea_s[0].dispatchEvent(fkVueEvent);
 
                 break;
             }
