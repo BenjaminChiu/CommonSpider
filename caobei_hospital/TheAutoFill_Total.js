@@ -296,9 +296,6 @@
 
 
 
-
-
-
     // =======转诊单======Start=========
     function zhuanZhen(suger)
     {
@@ -332,13 +329,11 @@
 
         // 转诊表 所需变量 End
 
-        // 给定一个确认弹窗
-        // let writeIn_Doctor = confirm("是否填充村医姓名及村医电话？");
 
         // 转诊的村医姓名
         let cun_doctor = $.cookie("tiJianDoctor");
         let button_s = $('button');
-        for (let i=0; i< button_s.length; i++)
+        for (let i= 0; i< button_s.length; i++)
         {
             if (button_s[i].innerText.includes('健康档案'))
                 cun_doctor = button_s[i].childNodes[3].innerText
@@ -394,6 +389,31 @@
     // =======转诊单======End=========
 
 
+    // ======随访结局=====Start==========
+    function suiFangResult()
+    {
+        // 给定一个确认弹窗
+        let the_Result = confirm("随访结局是否满意？\n'确认'代表满意！'取消'代表不满意！");
+
+        let tr_s = $('tr');     // 找table中的一行tr
+        for (let i=0; i<tr_s.length; i++)
+        {
+            if (tr_s[i].innerText.includes('随访结局'))
+            {
+                let textarea_s = tr_s[i].getElementsByTagName("textarea");
+                textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+
+                break;
+            }
+        }
+
+    }
+    // ======随访结局=====End==========
+
+
+
+
+
 
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
@@ -401,42 +421,61 @@
         if (fuckEvent.key === "F9")
         {
             let DllButton = "<div id='fuck.this.shit' " +
-                "style='display: block; line-height: 22px; text-align: center; vertical-align: top; background-color: #25ae84; " +
-                "cursor: pointer; color: #fff; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 9999;'>" +
-                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
-                "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "style='display: block; line-height: 22px; text-align: center; vertical-align: center; background-color: #25ae84; " +
+                "cursor: pointer; color: #fff; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 8888;'>" +
+
                 "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+
+                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                // "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                // "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血压--转诊表</a>" +
+                "<a id='suiFangResult_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>随访结局</a>" +
+
                 "<a id='zhuanzhen_a_suger' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血糖--转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
+
             $("#tiJian_a").click(function ()
             {
                 tiJian();
             });
+
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();
             });
+
             $("#zhuanzhen_a_suger").click(function()
             {
                 zhuanZhen('suger');
             });
 
+
+            $("#suiFangResult_a").click(function()
+            {
+                suiFangResult();
+            });
+
+
+
+
             $("#tiJianDate")[0].addEventListener("focusout", function ()
             {
                 $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
             });
-            $("#tiJianDoctor")[0].addEventListener("focusout", function ()
-            {
-                $.cookie('tiJianDoctor', $("#tiJianDoctor")[0].value, { expires: 365, path: '/' });
-            });
-            $("#DoctorTel")[0].addEventListener("focusout", function ()
-            {
-                $.cookie('DoctorTel', $("#DoctorTel")[0].value, { expires: 365, path: '/' });
-            });
+
+            // $("#tiJianDoctor")[0].addEventListener("focusout", function ()
+            // {
+            //     $.cookie('tiJianDoctor', $("#tiJianDoctor")[0].value, { expires: 365, path: '/' });
+            // });
+            //
+            // $("#DoctorTel")[0].addEventListener("focusout", function ()
+            // {
+            //     $.cookie('DoctorTel', $("#DoctorTel")[0].value, { expires: 365, path: '/' });
+            // });
 
 
 
