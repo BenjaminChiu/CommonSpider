@@ -16,7 +16,6 @@
     'use strict';
 
 
-
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
     // 所以如果想给这类加料的输入框或者选择框用原生JS赋值，设置vlaue属性过后就必须手动触发一下input或change事件。
@@ -34,9 +33,7 @@
             "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284", "王平":"18980189346",
             "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
 
-    // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
-    // 高血压为True；糖尿病为False
-    let sickness_status = true;
+
 
 
     // ===1111====体检表======Start=========
@@ -297,15 +294,13 @@
     // ===1111====体检表======End=========
 
 
-
-
-
-    // =======转诊单======Start=========
-    function zhuanZhen()
+    // ===========获取是高血压还是糖尿病随访==========
+    function get_sickness_status()
     {
-        console.log("测试使用，已进入转诊函数");
+        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
+        // 高血压为True；糖尿病为False
+        let sickness_status = true;
 
-        // 获取是高血压还是糖尿病
         let sickness_div_s = $('div.header-left.right-header:first');
         for(let i=0; i<sickness_div_s.length; i++)
         {
@@ -315,10 +310,22 @@
                     sickness_status = true;
                 else if (sickness_div_s[i].innerText.includes('糖尿病'))
                     sickness_status = false;
-                
+
+                break;
             }
-            
         }
+
+        return sickness_status;
+    }
+
+
+    // =======转诊单======Start=========
+    function zhuanZhen()
+    {
+        console.log("测试使用，已进入转诊函数");
+
+        // 获取是高血压还是糖尿病
+        let sickness_flag = get_sickness_status();
 
 
 
@@ -337,7 +344,7 @@
         let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不满意。";
 
 
-        if (!sickness_status)
+        if (!sickness_flag)
         {
             zhuanZhen_hospital = "射洪市人民医院";
             section = "内分泌科";
@@ -466,10 +473,10 @@
 
             $("body").append(DllButton);
 
-            $("#tiJian_a").click(function ()
-            {
-                tiJian();
-            });
+            // $("#tiJian_a").click(function ()
+            // {
+            //     tiJian();
+            // });
 
             $("#zhuanzhen_a").click(function()
             {
@@ -490,21 +497,10 @@
 
 
 
-            $("#tiJianDate")[0].addEventListener("focusout", function ()
-            {
-                $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
-            });
-
-            // $("#tiJianDoctor")[0].addEventListener("focusout", function ()
+            // $("#tiJianDate")[0].addEventListener("focusout", function ()
             // {
-            //     $.cookie('tiJianDoctor', $("#tiJianDoctor")[0].value, { expires: 365, path: '/' });
+            //     $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
             // });
-            //
-            // $("#DoctorTel")[0].addEventListener("focusout", function ()
-            // {
-            //     $.cookie('DoctorTel', $("#DoctorTel")[0].value, { expires: 365, path: '/' });
-            // });
-
 
 
         }
