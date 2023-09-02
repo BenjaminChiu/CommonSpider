@@ -34,6 +34,10 @@
             "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284", "王平":"18980189346",
             "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
 
+    // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
+    // 高血压为True；糖尿病为False
+    let sickness_status = true;
+
 
     // ===1111====体检表======Start=========
     function tiJian()
@@ -297,8 +301,27 @@
 
 
     // =======转诊单======Start=========
-    function zhuanZhen(suger)
+    function zhuanZhen()
     {
+        console.log("测试使用，已进入转诊函数");
+
+        // 获取是高血压还是糖尿病
+        let sickness_div_s = $('div.header-left.right-header:first');
+        for(let i=0; i<sickness_div_s.length; i++)
+        {
+            if (sickness_div_s[i].innerText.includes('患者随访'))
+            {
+                if (sickness_div_s[i].innerText.includes('高血压'))
+                    sickness_status = true;
+                else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                    sickness_status = false;
+                
+            }
+            
+        }
+
+
+
 
         // 转诊表 所需变量 start
         let zhuanZhen_hospital = "射洪市人民医院";
@@ -314,7 +337,7 @@
         let zhuanZhen_textarea_3 = "经过治疗，血压控制依然不满意。";
 
 
-        if (suger != null)
+        if (!sickness_status)
         {
             zhuanZhen_hospital = "射洪市人民医院";
             section = "内分泌科";
@@ -326,8 +349,8 @@
         }
 
 
-
         // 转诊表 所需变量 End
+
 
 
         // 转诊的村医姓名
@@ -385,6 +408,10 @@
                 break;
             }
         }
+
+
+        console.log("测试使用，已结束执行转诊函数");
+
     }
     // =======转诊单======End=========
 
@@ -425,9 +452,9 @@
                 "style='display: block; line-height: 22px; text-align: center; vertical-align: center; background-color: #25ae84; " +
                 "cursor: pointer; color: #fff; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 8888;'>" +
 
-                "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                // "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                // "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
 
-                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 // "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 // "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
 
