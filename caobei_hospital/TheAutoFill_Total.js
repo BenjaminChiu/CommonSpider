@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.1.13.6
+// @version      0.1.13.7
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -28,10 +28,9 @@
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
 
     // 字典 村医的联系方式
-    const cun_doctor_tel =
-        {"王祥茂":"13547784526", "胥德顺":"13882507277", "王晏":"15108117003", "覃蒲昌":"15082588136", "蒲兴周":"15181944660",
-            "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284", "王平":"18980189346",
-            "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
+    const cun_doctor_tel = {"王祥茂":"13547784526", "胥德顺":"13882507277", "王晏":"15108117003", "覃蒲昌":"15082588136",
+        "蒲兴周":"15181944660", "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284",
+        "王平":"18980189346", "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
 
 
 
@@ -463,7 +462,7 @@
         if (fuckEvent.key === "F9")
         {
             let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
-                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 8888;'>" +
+                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 82px; z-index: 8888;'>" +
 
                 // "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
                 // "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
@@ -471,10 +470,10 @@
                 // "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 // "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
 
-                "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 2px 11px;'" +
+                "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 3px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
                 "<div style='height: 4px;'></div>"+
-                "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 2px 11px;'" +
+                "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 3px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访结局</a>" +
 
                 "</div>";
@@ -492,12 +491,10 @@
             });
 
 
-
             $("#suiFangResult_a").click(function()
             {
                 suiFangResult();
             });
-
 
 
             // $("#tiJianDate")[0].addEventListener("focusout", function ()
