@@ -370,7 +370,7 @@
         }
 
 
-
+        // 填充数据
         let form_s = $('form');
         for (let i=0; i<form_s.length; i++)
         {
@@ -426,6 +426,9 @@
     // ======随访结局=====Start==========
     function suiFangResult()
     {
+        // 获取是高血压还是糖尿病
+        let sickness_flag = get_sickness_status();
+
         // 给定一个确认弹窗
         let the_Result = confirm("随访结局是否满意？\n'确认'代表满意！'取消'代表不满意！");
 
@@ -435,7 +438,11 @@
             if (tr_s[i].innerText.includes('随访结局'))
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
-                textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+                if (sickness_flag)
+                    textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+                else
+                    textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
+
                 textarea_s[0].dispatchEvent(fkVueEvent);
 
                 break;
@@ -455,9 +462,8 @@
     {
         if (fuckEvent.key === "F9")
         {
-            let DllButton = "<div id='fuck.this.shit' " +
-                "style='display: block; line-height: 22px; text-align: center; vertical-align: center; background-color: #25ae84; " +
-                "cursor: pointer; color: #fff; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 8888;'>" +
+            let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
+                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 195px; width: 102px; z-index: 8888;'>" +
 
                 // "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
                 // "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
@@ -465,10 +471,12 @@
                 // "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 // "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
 
-                "<a id='zhuanzhen_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血压--转诊表</a>" +
-                "<a id='suiFangResult_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>随访结局</a>" +
+                "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 2px 11px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
+                "<div style='height: 4px;'></div>"+
+                "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 2px 11px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访结局</a>" +
 
-                "<a id='zhuanzhen_a_suger' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>血糖--转诊表</a>" +
                 "</div>";
 
             $("body").append(DllButton);
@@ -483,17 +491,12 @@
                 zhuanZhen();
             });
 
-            $("#zhuanzhen_a_suger").click(function()
-            {
-                zhuanZhen('suger');
-            });
 
 
             $("#suiFangResult_a").click(function()
             {
                 suiFangResult();
             });
-
 
 
 
