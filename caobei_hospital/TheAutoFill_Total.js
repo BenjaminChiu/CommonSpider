@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.2.0.0
+// @version      0.2.1.0
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -425,16 +425,33 @@
     // ======随访结局=====Start==========
     function suiFangResult()
     {
+        console.log("随访结局测试使用，已进入随访结局函数");
         // 获取是高血压还是糖尿病
         let sickness_flag = get_sickness_status();
 
         // 给定一个确认弹窗
-        let the_Result = confirm("随访结局是否满意？\n'确认'代表满意！'取消'代表不满意！");
+        // let the_Result = confirm("随访结局是否满意？\n'确认'代表满意！'取消'代表不满意！");
+        let the_Result = true;
+
+
+        // 如果先找到了随访结局，没有找到随访分类的flag，怎么办？
 
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i=0; i<tr_s.length; i++)
         {
-            if (tr_s[i].innerText.includes('随访结局'))
+            if (tr_s[i].innerText.includes('此次随访分类'))
+            {
+                let div_s = tr_s[i].getElementsByTagName("div");
+                for (let j=0; j<div_s.length; j++)
+                {
+                    if(div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
+                        the_Result = true;
+                    else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
+                        the_Result = false;
+                }
+
+            }
+            else if (tr_s[i].innerText.includes('随访结局'))
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 if (sickness_flag)
@@ -448,7 +465,9 @@
             }
         }
 
+        console.log("随访结局测试使用，已退出随访结局函数");
     }
+
     // ======随访结局=====End==========
 
 
@@ -485,6 +504,12 @@
             //     tiJian();
             // });
 
+            // $("#tiJianDate")[0].addEventListener("focusout", function ()
+            // {
+            //     $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
+            // });
+
+
             $("#zhuanzhen_a").click(function()
             {
                 zhuanZhen();
@@ -497,10 +522,6 @@
             });
 
 
-            // $("#tiJianDate")[0].addEventListener("focusout", function ()
-            // {
-            //     $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
-            // });
 
 
         }
