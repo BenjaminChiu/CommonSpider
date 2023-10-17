@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.2.1.0
+// @version      0.2.2.0
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -26,11 +26,18 @@
     const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
+    // js原生鼠标点击
+    // const click_Event = new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true});
+
+
 
     // 字典 村医的联系方式
     const cun_doctor_tel = {"王祥茂":"13547784526", "胥德顺":"13882507277", "王晏":"15108117003", "覃蒲昌":"15082588136",
         "蒲兴周":"15181944660", "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284",
-        "王平":"18980189346", "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"}
+        "王平":"18980189346", "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"};
+
+
+
 
 
 
@@ -293,7 +300,7 @@
     // ===1111====体检表======End=========
 
 
-    // ===========获取是高血压还是糖尿病随访==========
+    // =======Util-1====获取是高血压还是糖尿病随访==========
     function get_sickness_status()
     {
         // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
@@ -318,6 +325,27 @@
     }
 
 
+
+    // ========Util-2====获取当前村医生===来自左上角签约信息==========
+    function get_cun_doctor()
+    {
+        // 全局变量，容纳当前村医生
+        let cun_doctor = $.cookie("tiJianDoctor");
+
+        let button_s = $('button');
+        for (let i= 0; i< button_s.length; i++)
+        {
+            if (button_s[i].innerText.includes('健康档案'))
+                cun_doctor = button_s[i].childNodes[3].innerText
+        }
+
+        return cun_doctor;
+    }
+
+
+
+
+
     // =======转诊单======Start=========
     function zhuanZhen()
     {
@@ -325,8 +353,6 @@
 
         // 获取是高血压还是糖尿病
         let sickness_flag = get_sickness_status();
-
-
 
 
         // 转诊表 所需变量 start
@@ -360,13 +386,9 @@
 
 
         // 转诊的村医姓名
-        let cun_doctor = $.cookie("tiJianDoctor");
-        let button_s = $('button');
-        for (let i= 0; i< button_s.length; i++)
-        {
-            if (button_s[i].innerText.includes('健康档案'))
-                cun_doctor = button_s[i].childNodes[3].innerText
-        }
+        let cun_doctor = get_cun_doctor();
+
+
 
 
         // 填充数据
@@ -436,6 +458,10 @@
 
         // 如果先找到了随访结局，没有找到随访分类的flag，怎么办？
 
+        // 设定一个修改flag
+        let result_flag = false;
+        let cun_doctor_flag = false;
+
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i=0; i<tr_s.length; i++)
         {
@@ -459,11 +485,72 @@
                 else
                     textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
 
-                textarea_s[0].dispatchEvent(fkVueEvent);
+                if (!result_flag)
+                {
+                    textarea_s[0].dispatchEvent(fkVueEvent);
+                    result_flag = true;     // 修改完成后，重置修改标志
+                }
 
-                break;
             }
+            else if (tr_s[i].innerText.includes('随访医生'))
+            {
+                // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
+                let div_s = tr_s[i].getElementsByTagName("div");
+                for (let j=0; j<div_s.length; j++)
+                {
+                    if ("combobox" === div_s[j].getAttribute("role"))
+                    {
+                        // div_s[j].dispatchEvent(click_Event);
+                        div_s[j].click();
+                        // 点击两次，实现下拉框复原
+                        setTimeout(function ()
+                        {
+                            div_s[j].click();
+                        }, 300);
+                        break;  // 目的达到，结束循环
+                    }
+                }
+
+
+                // 步骤二：模拟点击选取对应村医生
+
+
+                setTimeout(function ()
+                {
+                    let ul_s = $('ul[role="listbox"]');
+                    for (let j=0; j<ul_s.length; j++)
+                    {
+                        if (ul_s[j].innerText.includes('曹碑镇卫生院'))
+                        {
+                            let li_s = ul_s[j].getElementsByTagName("li");
+                            for (let z=0; z<li_s.length; z++)
+                            {
+                                if (li_s[z].innerText.includes(get_cun_doctor()) && !cun_doctor_flag)
+                                {
+                                    li_s[z].click();
+                                    cun_doctor_flag = true;
+                                }
+
+                            }
+                        }
+                    }
+                }, 700);
+
+
+
+
+            }
+
+
+
         }
+
+
+
+
+
+
+
 
         console.log("随访结局测试使用，已退出随访结局函数");
     }
@@ -480,6 +567,8 @@
     {
         if (fuckEvent.key === "F9")
         {
+            console.log("您已按下F9，实现弹窗，StartFunction");
+
             let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>" +
 
@@ -493,7 +582,7 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
                 "<div style='height: 4px;'></div>"+
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访结局</a>" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>" +
 
                 "</div>";
 
@@ -522,7 +611,7 @@
             });
 
 
-
+            console.log("您已按下F9，实现弹窗，EndFunction");
 
         }
     });
