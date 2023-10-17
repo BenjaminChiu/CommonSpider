@@ -500,13 +500,9 @@
                 {
                     if ("combobox" === div_s[j].getAttribute("role"))
                     {
-                        // div_s[j].dispatchEvent(click_Event);
+                        // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
                         div_s[j].click();
-                        // 点击两次，实现下拉框复原
-                        setTimeout(function ()
-                        {
-                            div_s[j].click();
-                        }, 300);
+
                         break;  // 目的达到，结束循环
                     }
                 }
@@ -534,7 +530,7 @@
                             }
                         }
                     }
-                }, 700);
+                }, 500);
 
 
 
