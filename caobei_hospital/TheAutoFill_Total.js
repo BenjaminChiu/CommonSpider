@@ -500,21 +500,18 @@
                 {
                     if ("combobox" === div_s[j].getAttribute("role"))
                     {
-                        // div_s[j].dispatchEvent(click_Event);
-                        div_s[j].click();
+                        div_s[j].click();   // div_s[j].dispatchEvent(click_Event);
                         // 点击两次，实现下拉框复原
                         setTimeout(function ()
                         {
                             div_s[j].click();
                         }, 300);
-                        break;  // 目的达到，结束循环
+
                     }
                 }
 
 
                 // 步骤二：模拟点击选取对应村医生
-
-
                 setTimeout(function ()
                 {
                     let ul_s = $('ul[role="listbox"]');
@@ -536,9 +533,7 @@
                     }
                 }, 700);
 
-
-
-
+                break;  // 目的达到，结束循环
             }
 
 
