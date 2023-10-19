@@ -465,17 +465,8 @@
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i=0; i<tr_s.length; i++)
         {
-            if (tr_s[i].innerText.includes('随访方式'))
-            {
-                let div_s = tr_s[i].getElementsByTagName("div");
-                for (let j=0; j < div_s.length; j++)
-                {
-                    if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
-                        && !div_s[j].className.includes("checked"))
-                        div_s[j].click();
-                }
-            }
-            else if (tr_s[i].innerText.includes('此次随访分类'))
+
+            if (tr_s[i].innerText.includes('此次随访分类'))
             {
                 let div_s = tr_s[i].getElementsByTagName("div");
                 for (let j=0; j<div_s.length; j++)
@@ -487,6 +478,18 @@
                 }
 
             }
+
+            // else if (tr_s[i].innerText.includes('随访方式'))
+            // {
+            //     let div_s = tr_s[i].getElementsByTagName("div");
+            //     for (let j=0; j < div_s.length; j++)
+            //     {
+            //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
+            //             && !div_s[j].className.includes("checked"))
+            //             div_s[j].click();
+            //     }
+            // }
+
             else if (tr_s[i].innerText.includes('随访结局'))
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
@@ -502,6 +505,7 @@
                 }
 
             }
+
             else if (tr_s[i].innerText.includes('随访医生'))
             {
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
@@ -539,10 +543,6 @@
                         }
                     }
                 }, 500);
-
-
-
-
             }
 
 
