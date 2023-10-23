@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Switch</title>
+  <style>
+     /* 创建一个开关按钮的样式 */
+    .switch_xxx {
+      position: relative;
+      display: inline-block;
+      width: 30px;
+      height: 17px;
+    }
+
+     /* 隐藏开关按钮的输入框 */
+    .switch_xxx input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+     /* 创建滑块的样式 */
+    .slider_xxx {
+      position: absolute;
+      cursor: pointer;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background-color: #ccc;
+      transition: .4s;
+    }
+
+     /* 创建滑块的初始状态 */
+    .slider_xxx:before {
+      position: absolute;
+      content: "";
+      height: 13px;
+      width: 13px;
+      left: 2px;
+      bottom: 2px;
+      background-color: white;
+      transition: .4s;
+    }
+
+     /* 当输入框被选中时，改变滑块的背景颜色 */
+    #togBtn:checked + .slider_xxx {
+      background-color: #2196F3;
+    }
+
+    /* 当输入框被聚焦时，给滑块添加阴影 */
+    #togBtn:focus + .slider_xxx {
+      box-shadow: 0 0 1px #2196F3;
+    }
+
+     /* 当输入框被选中时，移动滑块 */
+    #togBtn:checked + .slider_xxx:before {
+      transform: translateX(13px);
+    }
+
+     /* 创建滑块的圆角样式 */
+    .slider_xxx.round_xxx {
+      border-radius: 17px;
+    }
+
+     /* 创建滑块的圆形样式 */
+    .slider_xxx.round_xxx:before {
+      border-radius: 50%;
+    }
+  </style>
+</head>
+<body>
+  <!-- 创建一个开关按钮 -->
+  <label class="switch_xxx">
+    <input type="checkbox" id="togBtn">
+    <div class="slider_xxx round_xxx"></div>
+  </label>
+
+  <script>
+    // 获取之前的开关状态
+    let previousState = localStorage.getItem('switchState');
+
+    // 如果之前的状态存在，设置开关的状态
+    if (previousState) {
+      document.getElementById("togBtn").checked = previousState === 'true';
+    }
+
+    // 当开关被点击时，切换状态并保存到本地存储
+    document.getElementById("togBtn").addEventListener('change', function() {
+      localStorage.setItem('switchState', this.checked);
+    });
+  </script>
+</body>
+</html>

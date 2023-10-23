@@ -7,6 +7,7 @@
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
+// @match        *://*.baidu.com/*
 // @require      https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
 // ==/UserScript==
@@ -479,15 +480,15 @@
 
             }
 
-            // else if (tr_s[i].innerText.includes('随访方式'))
-            // {
-            //     let div_s = tr_s[i].getElementsByTagName("div");
-            //     for (let j=0; j < div_s.length; j++)
-            //     {
-            //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
-            //             && !div_s[j].className.includes("checked"))
-            //             div_s[j].click();
-            //     }
+                // else if (tr_s[i].innerText.includes('随访方式'))
+                // {
+                //     let div_s = tr_s[i].getElementsByTagName("div");
+                //     for (let j=0; j < div_s.length; j++)
+                //     {
+                //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
+                //             && !div_s[j].className.includes("checked"))
+                //             div_s[j].click();
+                //     }
             // }
 
             else if (tr_s[i].innerText.includes('随访结局'))
@@ -573,6 +574,22 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
+
+            $("body").append('<style>' +
+                '.switch_xxx {position: relative;display: inline-block;width: 30px;height: 17px;}' +
+                '.switch_xxx input {opacity: 0;width: 0;height: 0;}' +
+                '.slider_xxx {position: absolute;cursor: pointer;top: 0;left: 0;right: 0;bottom: 0;background-color: #ccc;transition: .4s;}' +
+                '.slider_xxx:before {position: absolute;content: "";height: 13px;width: 13px;left: 2px;bottom: 2px;background-color: white;transition: .4s;}' +
+                '#togBtn:checked + .slider_xxx {background-color: green;}' +
+                '#togBtn:focus + .slider_xxx {box-shadow: 0 0 1px green;}' +
+                '#togBtn:checked + .slider_xxx:before {transform: translateX(13px);}' +
+                '.slider_xxx.round_xxx {border-radius: 17px;}' +
+                '.slider_xxx.round_xxx:before {border-radius: 50%;}' +
+                '</style>');
+
+
+
+
             let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>" +
 
@@ -585,8 +602,13 @@
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
                 "<div style='height: 4px;'></div>"+
+
+                // "<label style='font-size:10px; color:aquamarine; display: block; height: 100%; padding: 3px 1px;'>" +
+                // "<label class=\"switch_xxx\"><input type=\"checkbox\" id=\"togBtn\"><div class=\"slider_xxx round_xxx\"></div></label>血压</label>" +
+
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>" +
+
 
                 "</div>";
 
