@@ -39,18 +39,12 @@
 
 
 
-
-
-
-
-    // ===1111====体检表======Start=========
-    function tiJian()
+    // =======Util-1====封装人体常见体征数据==========
+    function bodyDATA()
     {
-        console.log("正在使用体检表填充功能.");
 
-
-        // 体检表 所需变量 start
-        // 体温
+        // 人体常见体征数据
+        // 体温   为什么是string？
         const body_temperature = (Math.random() * (36.9 - 36) + 36).toFixed(1);
         // 脉搏
         const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
@@ -65,7 +59,7 @@
         // 低压
         const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
 
-        /* // 血红蛋白
+        // 血红蛋白
          const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
          // 白细胞
          const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
@@ -74,14 +68,82 @@
          // 血糖
          const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
          // 高血糖 随机血糖
-         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
+         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2);
+
+         // 封装数据并返回
+         const bodyDATA = new Map();
+         bodyDATA.set("body_temperature", body_temperature);
+         bodyDATA.set("pulse_rate", pulse_rate);
+         bodyDATA.set("respiratory_rate", respiratory_rate);
+         bodyDATA.set("blood_pressure_high", blood_pressure_high);
+         bodyDATA.set("blood_pressure_low", blood_pressure_low);
+         bodyDATA.set("blood_pressure_high_2", blood_pressure_high_2);
+         bodyDATA.set("blood_pressure_low_2", blood_pressure_low_2);
+
+         bodyDATA.set("hemoglobin", hemoglobin);
+         bodyDATA.set("hemameba", hemameba);
+         bodyDATA.set("blood_platelet", blood_platelet);
+         bodyDATA.set("blood_sugar", blood_sugar);
+         bodyDATA.set("blood_sugar_high", blood_sugar_high);
+
+
+        return bodyDATA;
+    }
+
+
+
+    // =======Util-2====获取是高血压还是糖尿病随访==========
+    function get_sickness_status()
+    {
+        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
+        // 高血压为True；糖尿病为False
+        let sickness_status = true;
+
+        let sickness_div_s = $('div.header-left.right-header:first');
+        for(let i=0; i<sickness_div_s.length; i++)
+        {
+            if (sickness_div_s[i].innerText.includes('患者随访'))
+            {
+                if (sickness_div_s[i].innerText.includes('高血压'))
+                    sickness_status = true;
+                else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                    sickness_status = false;
+
+                break;
+            }
+        }
+
+        return sickness_status;
+    }
+
+
+
+    // ========Util-3====获取当前村医生===来自左上角签约信息==========
+    function get_cun_doctor()
+    {
+        // 全局变量，容纳当前村医生
+        let cun_doctor = $.cookie("tiJianDoctor");
+
+        let button_s = $('button');
+        for (let i= 0; i< button_s.length; i++)
+        {
+            if (button_s[i].innerText.includes('健康档案'))
+                cun_doctor = button_s[i].childNodes[3].innerText
+        }
+
+        return cun_doctor;
+    }
+
+
+
+
+    // ===功能模块-1====体检表======Start=========
+    function tiJian()
+    {
+        console.log("正在使用体检表填充功能.");
 
         // 修改体检表标签
         let edit_flag = false;
-        // 体检表 所需变量 end
-
-
-
 
 
 
@@ -301,53 +363,10 @@
     // ===1111====体检表======End=========
 
 
-    // =======Util-1====获取是高血压还是糖尿病随访==========
-    function get_sickness_status()
-    {
-        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
-        // 高血压为True；糖尿病为False
-        let sickness_status = true;
-
-        let sickness_div_s = $('div.header-left.right-header:first');
-        for(let i=0; i<sickness_div_s.length; i++)
-        {
-            if (sickness_div_s[i].innerText.includes('患者随访'))
-            {
-                if (sickness_div_s[i].innerText.includes('高血压'))
-                    sickness_status = true;
-                else if (sickness_div_s[i].innerText.includes('糖尿病'))
-                    sickness_status = false;
-
-                break;
-            }
-        }
-
-        return sickness_status;
-    }
 
 
 
-    // ========Util-2====获取当前村医生===来自左上角签约信息==========
-    function get_cun_doctor()
-    {
-        // 全局变量，容纳当前村医生
-        let cun_doctor = $.cookie("tiJianDoctor");
-
-        let button_s = $('button');
-        for (let i= 0; i< button_s.length; i++)
-        {
-            if (button_s[i].innerText.includes('健康档案'))
-                cun_doctor = button_s[i].childNodes[3].innerText
-        }
-
-        return cun_doctor;
-    }
-
-
-
-
-
-    // =======转诊单======Start=========
+    // ===功能模块-2====转诊单======Start=========
     function zhuanZhen()
     {
         console.log("测试使用，已进入转诊函数");
@@ -445,7 +464,10 @@
     // =======转诊单======End=========
 
 
-    // ======随访结局=====Start==========
+
+
+
+    // ===功能模块-3===随访结局=====Start==========
     function suiFangResult()
     {
         console.log("随访结局测试使用，已进入随访结局函数");
@@ -603,8 +625,8 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
                 "<div style='height: 4px;'></div>"+
 
-                // "<label style='font-size:10px; color:aquamarine; display: block; height: 100%; padding: 3px 1px;'>" +
-                // "<label class=\"switch_xxx\"><input type=\"checkbox\" id=\"togBtn\"><div class=\"slider_xxx round_xxx\"></div></label>血压</label>" +
+                "<label style='font-size:10px; color:aquamarine; display: block; height: 100%; padding: 3px 1px;'>" +
+                "<label class=\"switch_xxx\"><input type=\"checkbox\" id=\"togBtn\"><div class=\"slider_xxx round_xxx\"></div></label>血压心率</label>" +
 
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>" +
