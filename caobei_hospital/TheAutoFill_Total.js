@@ -7,7 +7,6 @@
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
-// @match        *://*.baidu.com/*
 // @require      https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
 // ==/UserScript==
@@ -39,12 +38,18 @@
 
 
 
-    // =======Util-1====封装人体常见体征数据==========
-    function bodyDATA()
-    {
 
-        // 人体常见体征数据
-        // 体温   为什么是string？
+
+
+
+    // ===1111====体检表======Start=========
+    function tiJian()
+    {
+        console.log("正在使用体检表填充功能.");
+
+
+        // 体检表 所需变量 start
+        // 体温
         const body_temperature = (Math.random() * (36.9 - 36) + 36).toFixed(1);
         // 脉搏
         const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
@@ -59,7 +64,7 @@
         // 低压
         const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
 
-        // 血红蛋白
+        /* // 血红蛋白
          const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
          // 白细胞
          const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
@@ -68,82 +73,14 @@
          // 血糖
          const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
          // 高血糖 随机血糖
-         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2);
-
-         // 封装数据并返回
-         const bodyDATA = new Map();
-         bodyDATA.set("body_temperature", body_temperature);
-         bodyDATA.set("pulse_rate", pulse_rate);
-         bodyDATA.set("respiratory_rate", respiratory_rate);
-         bodyDATA.set("blood_pressure_high", blood_pressure_high);
-         bodyDATA.set("blood_pressure_low", blood_pressure_low);
-         bodyDATA.set("blood_pressure_high_2", blood_pressure_high_2);
-         bodyDATA.set("blood_pressure_low_2", blood_pressure_low_2);
-
-         bodyDATA.set("hemoglobin", hemoglobin);
-         bodyDATA.set("hemameba", hemameba);
-         bodyDATA.set("blood_platelet", blood_platelet);
-         bodyDATA.set("blood_sugar", blood_sugar);
-         bodyDATA.set("blood_sugar_high", blood_sugar_high);
-
-
-        return bodyDATA;
-    }
-
-
-
-    // =======Util-2====获取是高血压还是糖尿病随访==========
-    function get_sickness_status()
-    {
-        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
-        // 高血压为True；糖尿病为False
-        let sickness_status = true;
-
-        let sickness_div_s = $('div.header-left.right-header:first');
-        for(let i=0; i<sickness_div_s.length; i++)
-        {
-            if (sickness_div_s[i].innerText.includes('患者随访'))
-            {
-                if (sickness_div_s[i].innerText.includes('高血压'))
-                    sickness_status = true;
-                else if (sickness_div_s[i].innerText.includes('糖尿病'))
-                    sickness_status = false;
-
-                break;
-            }
-        }
-
-        return sickness_status;
-    }
-
-
-
-    // ========Util-3====获取当前村医生===来自左上角签约信息==========
-    function get_cun_doctor()
-    {
-        // 全局变量，容纳当前村医生
-        let cun_doctor = $.cookie("tiJianDoctor");
-
-        let button_s = $('button');
-        for (let i= 0; i< button_s.length; i++)
-        {
-            if (button_s[i].innerText.includes('健康档案'))
-                cun_doctor = button_s[i].childNodes[3].innerText
-        }
-
-        return cun_doctor;
-    }
-
-
-
-
-    // ===功能模块-1====体检表======Start=========
-    function tiJian()
-    {
-        console.log("正在使用体检表填充功能.");
+         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
 
         // 修改体检表标签
         let edit_flag = false;
+        // 体检表 所需变量 end
+
+
+
 
 
 
@@ -299,7 +236,7 @@
                         input_s[0].dispatchEvent(fkVueEvent);
                         input_s[0].dispatchEvent(fkVueEvent_blur);
                         // 尿糖
-                        input_s[1].value = "+++";
+                        input_s[1].value = "-";
                         input_s[1].dispatchEvent(fkVueEvent);
                         input_s[1].dispatchEvent(fkVueEvent_blur);
                     }
@@ -307,11 +244,11 @@
                     {
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿酮体
-                        input_s[0].value = "+-";
+                        input_s[0].value = "-";
                         input_s[0].dispatchEvent(fkVueEvent);
                         input_s[0].dispatchEvent(fkVueEvent_blur);
                         // 尿潜血
-                        input_s[1].value = "+-";
+                        input_s[1].value = "-";
                         input_s[1].dispatchEvent(fkVueEvent);
                         input_s[1].dispatchEvent(fkVueEvent_blur);
                     }
@@ -363,10 +300,53 @@
     // ===1111====体检表======End=========
 
 
+    // =======Util-1====获取是高血压还是糖尿病随访==========
+    function get_sickness_status()
+    {
+        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
+        // 高血压为True；糖尿病为False
+        let sickness_status = true;
+
+        let sickness_div_s = $('div.header-left.right-header:first');
+        for(let i=0; i<sickness_div_s.length; i++)
+        {
+            if (sickness_div_s[i].innerText.includes('患者随访'))
+            {
+                if (sickness_div_s[i].innerText.includes('高血压'))
+                    sickness_status = true;
+                else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                    sickness_status = false;
+
+                break;
+            }
+        }
+
+        return sickness_status;
+    }
 
 
 
-    // ===功能模块-2====转诊单======Start=========
+    // ========Util-2====获取当前村医生===来自左上角签约信息==========
+    function get_cun_doctor()
+    {
+        // 全局变量，容纳当前村医生
+        let cun_doctor = $.cookie("tiJianDoctor");
+
+        let button_s = $('button');
+        for (let i= 0; i< button_s.length; i++)
+        {
+            if (button_s[i].innerText.includes('健康档案'))
+                cun_doctor = button_s[i].childNodes[3].innerText
+        }
+
+        return cun_doctor;
+    }
+
+
+
+
+
+    // =======转诊单======Start=========
     function zhuanZhen()
     {
         console.log("测试使用，已进入转诊函数");
@@ -464,10 +444,7 @@
     // =======转诊单======End=========
 
 
-
-
-
-    // ===功能模块-3===随访结局=====Start==========
+    // ======随访结局=====Start==========
     function suiFangResult()
     {
         console.log("随访结局测试使用，已进入随访结局函数");
@@ -499,6 +476,17 @@
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
                         the_Result = false;
                 }
+
+            }
+
+            else if (tr_s[i].innerText.includes('血压'))
+            {
+                let input_s = tr_s[i].getElementsByTagName("input");
+                input_s[0].value = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
+                input_s[1].value = Math.floor(Math.random() * (84 - 70 + 1)) + 74;
+
+                input_s[0].dispatchEvent(fkVueEvent);
+                input_s[1].dispatchEvent(fkVueEvent);
 
             }
 
@@ -596,27 +584,11 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-
-            $("body").append('<style>' +
-                '.switch_xxx {position: relative;display: inline-block;width: 30px;height: 17px;}' +
-                '.switch_xxx input {opacity: 0;width: 0;height: 0;}' +
-                '.slider_xxx {position: absolute;cursor: pointer;top: 0;left: 0;right: 0;bottom: 0;background-color: #ccc;transition: .4s;}' +
-                '.slider_xxx:before {position: absolute;content: "";height: 13px;width: 13px;left: 2px;bottom: 2px;background-color: white;transition: .4s;}' +
-                '#togBtn:checked + .slider_xxx {background-color: green;}' +
-                '#togBtn:focus + .slider_xxx {box-shadow: 0 0 1px green;}' +
-                '#togBtn:checked + .slider_xxx:before {transform: translateX(13px);}' +
-                '.slider_xxx.round_xxx {border-radius: 17px;}' +
-                '.slider_xxx.round_xxx:before {border-radius: 50%;}' +
-                '</style>');
-
-
-
-
             let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>" +
 
-                // "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
-                // "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
+                "<a id='tiJian_a' target='_blank' style='font-size:13px; color:#fff; display: block; height: 100%; padding: 2px 11px;'>填充体检表</a>" +
+                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
 
                 // "<input id = 'tiJianDoctor' placeholder='村医生名字' value='" + $.cookie("tiJianDoctor") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
                 // "<input id = 'DoctorTel' placeholder='村医生电话' value='" + $.cookie("DoctorTel") + "' style='width: 90px; height: 22px; text-align:center; color: brown;'>" +
@@ -624,27 +596,22 @@
                 "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
                 "<div style='height: 4px;'></div>"+
-
-                "<label style='font-size:10px; color:aquamarine; display: block; height: 100%; padding: 3px 1px;'>" +
-                "<label class=\"switch_xxx\"><input type=\"checkbox\" id=\"togBtn\"><div class=\"slider_xxx round_xxx\"></div></label>血压心率</label>" +
-
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>" +
-
 
                 "</div>";
 
             $("body").append(DllButton);
 
-            // $("#tiJian_a").click(function ()
-            // {
-            //     tiJian();
-            // });
+            $("#tiJian_a").click(function ()
+            {
+                tiJian();
+            });
 
-            // $("#tiJianDate")[0].addEventListener("focusout", function ()
-            // {
-            //     $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
-            // });
+            $("#tiJianDate")[0].addEventListener("focusout", function ()
+            {
+                $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
+            });
 
 
             $("#zhuanzhen_a").click(function()
