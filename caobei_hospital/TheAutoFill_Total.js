@@ -74,8 +74,10 @@
     // =======Util-2====体检表中所用分辨慢病种类==========
     function get_sickness_status_for_tiJian()
     {
-        let sickness_status_for_tiJian = {'gxy': false, 'tyb': false};
-        let sickness_div = $('#ehrJkztCol')
+        let sickness_status_for_tiJian = {'lao': false, 'gxy': false, 'tyb': false};
+        let sickness_div = $('#ehrJkztCol')[0];
+        if (sickness_div.innerText.includes('老'))
+            sickness_status_for_tiJian = {'lao': true};
         if (sickness_div.innerText.includes('高'))
             sickness_status_for_tiJian = {'gxy': true};
         if (sickness_div.innerText.includes('糖'))
@@ -86,7 +88,7 @@
 
 
 
-    // ========Util-2====获取当前村医生===来自左上角签约信息==========
+    // ========Util-3====获取当前村医生===来自左上角签约信息==========
     function get_cun_doctor()
     {
         // 全局变量，容纳当前村医生
@@ -110,75 +112,15 @@
     {
         console.log("正在使用体检表填充功能.");
 
-
-        // 体检表 所需变量 start
-        // 体温
-        const body_temperature = (Math.random() * (36.9 - 36) + 36).toFixed(1);
-        // 脉搏
-        const pulse_rate = Math.floor(Math.random() * (82 - 68 + 1)) + 68;
-        // 呼吸频率
-        const respiratory_rate = Math.floor(Math.random() * (20 - 16 + 1)) + 16;
-        // 高压
-        const blood_pressure_high = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
-        // 低压
-        const blood_pressure_low = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
-        // 高压
-        const blood_pressure_high_2 = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
-        // 低压
-        const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
+        // 获取是高血压还是糖尿病
+        let sickness_flag = get_sickness_status();
+        // 外部获取 转诊的村医姓名
+        let cun_doctor = get_cun_doctor();
 
 
         // 修改体检表标签
         let edit_flag = false;
-        // 体检表 所需变量 end
-
-
-
-
-
-        // ====Start======第4页监听器=================
-        // 解决点击第4页时，自动取消“4锻炼”按钮
-        const div_s  = document.getElementsByTagName("div");
-        for (let i=0; i<div_s.length; i++)
-        {
-            if (div_s[i].innerText === "第4页")
-            {
-                div_s[i].addEventListener("mousedown", function (fuckEvent)
-                {
-                    for (let j=0; j<div_s.length; j++)
-                    {
-                        if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
-                        {
-                            setTimeout(function ()
-                            {
-                                div_s[j].click();
-                            }, 1500);
-                        }
-                    }
-                });
-            }
-        }
-        // ====End======第4页监听器=================
-
-
-
-        // 自动识别模块
-        // 1. 获取姓名
-        let OldManName = '';
-        let name_div_s = $('div.ant-col');
-        for (let i=0; i<name_div_s.length; i++)
-        {
-            if (name_div_s[i].innerText.includes('姓名'))
-            {
-                OldManName= name_div_s[i].getElementsByTagName("span")[0].innerText;
-                // 一个值就够，终结循环
-                if (OldManName !== '' && OldManName !== '姓名' && OldManName !== undefined)
-                    break;
-            }
-        }
-        console.log("当前病人：" + OldManName);
-
-
+        let cun_doctor_flag = false;
 
 
 
@@ -194,52 +136,76 @@
 
                 // 获取所有行，并且遍历所有行
                 // const tr_s = form_s[i].getElementsByTagName("tr");
-                const tr_s = document.getElementsByTagName("tr");
+                let tr_s = document.getElementsByTagName("tr");
                 for (let j=0; j<tr_s.length; j++)
                 {
                     if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                     {
+                        // 体检日期
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = $.cookie("tiJianDate");
                         inputs[0].dispatchEvent(fkVueEvent_change);
 
+                        // 责任医生 步骤一：点击下拉框
                         let div_s = tr_s[j].getElementsByTagName("div");
                         for (let k=0; k<div_s.length; k++)
                         {
-                            if (div_s[k].hasAttribute('title'))
+                            if ("combobox" === div_s[k].getAttribute("role"))
                             {
-                                div_s[k].setAttribute('title', '王芳 (射洪市曹碑镇卫生院)');
-                                div_s[k].dispatchEvent(fkVueEvent_change);
-                                inputs[1].value = '王芳 (射洪市曹碑镇卫生院)';
-                                inputs[1].dispatchEvent(fkVueEvent_change);
+                                div_s[k].click();
+                                break;  // 仅仅终止本轮内循环。终止目的：防止多次点击下拉框，不好看，效率底下！
                             }
 
                         }
+
+                        // 责任医生 步骤二：模拟点击对应村医
+                        setTimeout(function ()
+                        {
+                            let ul_s = $('ul[role="listbox"]');
+                            for (let j=0; j<ul_s.length; j++)
+                            {
+                                if (ul_s[j].innerText.includes('曹碑镇卫生院'))
+                                {
+                                    let li_s = ul_s[j].getElementsByTagName("li");
+                                    for (let z=0; z<li_s.length; z++)
+                                    {
+                                        // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
+                                        {
+                                            li_s[z].click();
+                                            cun_doctor_flag = true;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }, 500);
+
                     }
                     else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_temperature;
+                        inputs[0].value = body_DATA['body_temperature'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = pulse_rate.toString();
+                        inputs[1].value = body_DATA['pulse_rate'].toString();
                         inputs[1].dispatchEvent(fkVueEvent);
                     }
                     else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = respiratory_rate.toString();
+                        inputs[0].value = body_DATA['respiratory_rate'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = blood_pressure_high.toString();
+                        inputs[1].value = body_DATA['blood_pressure_high'].toString();
                         inputs[1].dispatchEvent(fkVueEvent);
-                        inputs[2].value = blood_pressure_low.toString();
+                        inputs[2].value = body_DATA['blood_pressure_low'].toString();
                         inputs[2].dispatchEvent(fkVueEvent);
                     }
                     else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = blood_pressure_high_2.toString();
+                        inputs[0].value = body_DATA['blood_pressure_high_2'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = blood_pressure_low_2.toString();
+                        inputs[1].value = body_DATA['blood_pressure_low_2'].toString();
                         inputs[1].dispatchEvent(fkVueEvent);
                     }
 
@@ -278,6 +244,7 @@
                             }
                         }, 600);
                     }
+                    // ========老年人专有功能=======End===========
 
 
                     else if (tr_s[j].innerText.includes("尿蛋白"))
@@ -326,7 +293,7 @@
                                 divs[i].click();
                         }
                     }
-                    // ========老年人专有功能=======End===========
+
 
                     else if (tr_s[j].innerText.includes("危险因素控制"))
                     {
@@ -348,6 +315,35 @@
                 }
             }
         }
+
+
+
+        // ====Start======第4页监听器=================
+        // 解决点击第4页时，自动取消“4锻炼”按钮
+        let div_s  = document.getElementsByTagName("div");
+        for (let i=0; i<div_s.length; i++)
+        {
+            if (div_s[i].innerText === "第4页")
+            {
+                div_s[i].addEventListener("mousedown", function (fuckEvent)
+                {
+                    for (let j=0; j<div_s.length; j++)
+                    {
+                        if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
+                        {
+                            setTimeout(function ()
+                            {
+                                div_s[j].click();
+                            }, 1500);
+                        }
+                    }
+                });
+            }
+        }
+        // ====End======第4页监听器=================
+
+
+
     }
 
 
@@ -358,11 +354,13 @@
     {
         console.log("测试使用，已进入转诊函数");
 
-        // 获取是高血压还是糖尿病
+        // 外部获取 是高血压还是糖尿病
         let sickness_flag = get_sickness_status();
+        // 外部获取 转诊的村医姓名
+        let cun_doctor = get_cun_doctor();
 
 
-        // 转诊表 所需变量 start
+        // 步骤一：生成数据     转诊表 所需变量 start
         let zhuanZhen_hospital = "射洪市人民医院";
         let section = "内科";
         let zhuanZhen_doctor = "王老师";
@@ -392,13 +390,10 @@
 
 
 
-        // 转诊的村医姓名
-        let cun_doctor = get_cun_doctor();
 
 
 
-
-        // 填充数据
+        // 步骤二：填充数据
         let form_s = $('form');
         for (let i=0; i<form_s.length; i++)
         {
@@ -457,17 +452,18 @@
         console.log("随访结局测试使用，已进入随访结局函数");
         // 获取是高血压还是糖尿病
         let sickness_flag = get_sickness_status();
+        // 外部获取 转诊的村医姓名
+        let cun_doctor = get_cun_doctor();
 
-        // 给定一个确认弹窗
-        // let the_Result = confirm("随访结局是否满意？\n'确认'代表满意！'取消'代表不满意！");
-        let the_Result = true;
-
-
-        // 如果先找到了随访结局，没有找到随访分类的flag，怎么办？
 
         // 设定一个修改flag
         let result_flag = false;
         let cun_doctor_flag = false;
+        // flag 随访结局是否满意
+        let the_Result = true;
+
+
+
 
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i=0; i<tr_s.length; i++)
@@ -489,8 +485,8 @@
             else if (tr_s[i].innerText.includes('血压'))
             {
                 let input_s = tr_s[i].getElementsByTagName("input");
-                input_s[0].value = Math.floor(Math.random() * (132 - 118 + 1)) + 118;
-                input_s[1].value = Math.floor(Math.random() * (84 - 70 + 1)) + 74;
+                input_s[0].value = body_DATA['blood_pressure_high'];
+                input_s[1].value = body_DATA['blood_pressure_low'];
 
                 input_s[0].dispatchEvent(fkVueEvent);
                 input_s[1].dispatchEvent(fkVueEvent);
@@ -506,7 +502,7 @@
                 //             && !div_s[j].className.includes("checked"))
                 //             div_s[j].click();
                 //     }
-            // }
+                // }
 
             else if (tr_s[i].innerText.includes('随访结局'))
             {
@@ -534,8 +530,7 @@
                     {
                         // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
                         div_s[j].click();
-
-                        break;  // 目的达到，结束循环
+                        break;  // 目的达到，结束内循环
                     }
                 }
 
@@ -551,7 +546,8 @@
                             let li_s = ul_s[j].getElementsByTagName("li");
                             for (let z=0; z<li_s.length; z++)
                             {
-                                if (li_s[z].innerText.includes(get_cun_doctor()) && !cun_doctor_flag)
+                                // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
                                 {
                                     li_s[z].click();
                                     cun_doctor_flag = true;
@@ -561,6 +557,7 @@
                         }
                     }
                 }, 500);
+
             }
 
 
