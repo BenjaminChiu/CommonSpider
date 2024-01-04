@@ -7,7 +7,7 @@
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
-// @require      https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js
+// @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
 // ==/UserScript==
 
@@ -36,6 +36,14 @@
         "蒲兴周":"15181944660", "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284",
         "王平":"18980189346", "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"};
 
+    // 体征数据：体温、脉搏、呼吸频率、高压、低压
+    let body_DATA = {'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
+    'pulse_rate': Math.floor(Math.random() * (82 - 68 + 1)) + 68,
+    'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
+    'blood_pressure_high': Math.floor(Math.random() * (132 - 118 + 1)) + 118,
+    'blood_pressure_low': Math.floor(Math.random() * (86 - 74 + 1)) + 74,
+    'blood_pressure_high_2': Math.floor(Math.random() * (133 - 118 + 1)) + 118,
+    'blood_pressure_low_2': Math.floor(Math.random() * (86 - 74 + 1)) + 74}
 
 
 
@@ -63,13 +71,26 @@
         return sickness_status;
     }
 
+    // =======Util-2====体检表中所用分辨慢病种类==========
+    function get_sickness_status_for_tiJian()
+    {
+        let sickness_status_for_tiJian = {'gxy': false, 'tyb': false};
+        let sickness_div = $('#ehrJkztCol')
+        if (sickness_div.innerText.includes('高'))
+            sickness_status_for_tiJian = {'gxy': true};
+        if (sickness_div.innerText.includes('糖'))
+            sickness_status_for_tiJian = {'tyb': true};
+
+        return sickness_status_for_tiJian;
+    }
+
 
 
     // ========Util-2====获取当前村医生===来自左上角签约信息==========
     function get_cun_doctor()
     {
         // 全局变量，容纳当前村医生
-        let cun_doctor = $.cookie("tiJianDoctor");
+        let cun_doctor = '王祥茂';
 
         let button_s = $('button');
         for (let i= 0; i< button_s.length; i++)
@@ -106,21 +127,10 @@
         // 低压
         const blood_pressure_low_2 = Math.floor(Math.random() * (86 - 74 + 1)) + 74;
 
-        /* // 血红蛋白
-         const hemoglobin = Math.floor(Math.random() * (155 - 115 + 1)) + 115;
-         // 白细胞
-         const hemameba = (Math.random() * (10 - 4) + 4).toFixed(2);
-         // 血小板
-         const blood_platelet = Math.floor(Math.random() * (300 - 100 + 1)) + 100;
-         // 血糖
-         const blood_sugar = (Math.random() * (6 - 4) + 4).toFixed(2);
-         // 高血糖 随机血糖
-         const blood_sugar_high = (Math.random() * (12 - 6.2) + 6.2).toFixed(2); */
 
         // 修改体检表标签
         let edit_flag = false;
         // 体检表 所需变量 end
-
 
 
 
