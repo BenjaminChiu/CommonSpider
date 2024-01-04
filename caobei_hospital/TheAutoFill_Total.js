@@ -112,8 +112,8 @@
     {
         console.log("正在使用体检表填充功能.");
 
-        // 获取是高血压还是糖尿病
-        let sickness_flag = get_sickness_status();
+        // 获取 老 高 糖 状态
+        let sickness_flag = get_sickness_status_for_tiJian();
         // 外部获取 转诊的村医姓名
         let cun_doctor = get_cun_doctor();
 
@@ -121,6 +121,7 @@
         // 修改体检表标签
         let edit_flag = false;
         let cun_doctor_flag = false;
+
 
 
 
@@ -211,14 +212,15 @@
 
 
                     // ========老年人专有功能=======Start=========
-                    else if (tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
+                    else if ((tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
                         || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估"))
+                        && sickness_flag['lao'])
                     {
-                        const divs = tr_s[j].getElementsByTagName("div");
+                        let divs = tr_s[j].getElementsByTagName("div");
                         for (let i = 0; i < divs.length; i++)
                         {
-                            if ((divs[i].innerText.includes('2基本满意') || divs[i].innerText.includes('1粗筛阴性')
-                                || divs[i].innerText.includes('1可自理')) && !divs[i].className.includes('checked'))
+                            if ((divs[i].innerText.includes('2基本满意') || divs[i].innerText.includes('1粗筛阴性') || divs[i].innerText.includes('1可自理'))
+                                && !divs[i].className.includes('checked'))
                                 divs[i].click();
 
                         }
@@ -242,7 +244,7 @@
                                     button_s[1].click();
                                 }
                             }
-                        }, 600);
+                        }, 400);
                     }
                     // ========老年人专有功能=======End===========
 
