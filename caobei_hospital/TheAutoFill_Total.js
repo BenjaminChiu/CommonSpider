@@ -39,10 +39,52 @@
 
 
 
+    // =======Util-1====获取是高血压还是糖尿病随访==========
+    function get_sickness_status()
+    {
+        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
+        // 高血压为True；糖尿病为False
+        let sickness_status = true;
+
+        let sickness_div_s = $('div.header-left.right-header:first');
+        for(let i=0; i<sickness_div_s.length; i++)
+        {
+            if (sickness_div_s[i].innerText.includes('患者随访'))
+            {
+                if (sickness_div_s[i].innerText.includes('高血压'))
+                    sickness_status = true;
+                else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                    sickness_status = false;
+
+                break;
+            }
+        }
+
+        return sickness_status;
+    }
 
 
 
-    // ===1111====体检表======Start=========
+    // ========Util-2====获取当前村医生===来自左上角签约信息==========
+    function get_cun_doctor()
+    {
+        // 全局变量，容纳当前村医生
+        let cun_doctor = $.cookie("tiJianDoctor");
+
+        let button_s = $('button');
+        for (let i= 0; i< button_s.length; i++)
+        {
+            if (button_s[i].innerText.includes('健康档案'))
+                cun_doctor = button_s[i].childNodes[3].innerText
+        }
+
+        return cun_doctor;
+    }
+
+
+
+
+    // =========Function-1====体检表=============
     function tiJian()
     {
         console.log("正在使用体检表填充功能.");
@@ -297,56 +339,11 @@
             }
         }
     }
-    // ===1111====体检表======End=========
-
-
-    // =======Util-1====获取是高血压还是糖尿病随访==========
-    function get_sickness_status()
-    {
-        // 为什么将高血压/糖尿病status放在全局变量位置，因为转诊函数和随访结局函数都会用到
-        // 高血压为True；糖尿病为False
-        let sickness_status = true;
-
-        let sickness_div_s = $('div.header-left.right-header:first');
-        for(let i=0; i<sickness_div_s.length; i++)
-        {
-            if (sickness_div_s[i].innerText.includes('患者随访'))
-            {
-                if (sickness_div_s[i].innerText.includes('高血压'))
-                    sickness_status = true;
-                else if (sickness_div_s[i].innerText.includes('糖尿病'))
-                    sickness_status = false;
-
-                break;
-            }
-        }
-
-        return sickness_status;
-    }
-
-
-
-    // ========Util-2====获取当前村医生===来自左上角签约信息==========
-    function get_cun_doctor()
-    {
-        // 全局变量，容纳当前村医生
-        let cun_doctor = $.cookie("tiJianDoctor");
-
-        let button_s = $('button');
-        for (let i= 0; i< button_s.length; i++)
-        {
-            if (button_s[i].innerText.includes('健康档案'))
-                cun_doctor = button_s[i].childNodes[3].innerText
-        }
-
-        return cun_doctor;
-    }
 
 
 
 
-
-    // =======转诊单======Start=========
+    // =========Function-2====转诊单==============
     function zhuanZhen()
     {
         console.log("测试使用，已进入转诊函数");
@@ -441,10 +438,10 @@
         console.log("测试使用，已结束执行转诊函数");
 
     }
-    // =======转诊单======End=========
 
 
-    // ======随访结局=====Start==========
+
+    // =========Function-3====随访结局=============
     function suiFangResult()
     {
         console.log("随访结局测试使用，已进入随访结局函数");
@@ -568,8 +565,6 @@
 
         console.log("随访结局测试使用，已退出随访结局函数");
     }
-
-    // ======随访结局=====End==========
 
 
 
