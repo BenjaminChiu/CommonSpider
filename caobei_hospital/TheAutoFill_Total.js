@@ -312,26 +312,30 @@
                     else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
                     {
                         console.log("慢病备注Debug");
+                        let edit_flag = false;
 
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let k= 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                                edit_flag = true;
+                            }
                         }
 
-                        setTimeout(function ()
+                        if (!edit_flag)
                         {
-                            let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                            if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                                textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                            if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                                textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                            textarea_s[0].dispatchEvent(fkVueEvent);
-                        }, 400);
-
-
-
+                            setTimeout(function ()
+                            {
+                                let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                                if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
+                                    textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
+                                if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
+                                    textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
+                                textarea_s[0].dispatchEvent(fkVueEvent);
+                            }, 400);
+                        }
                     }
 
 
@@ -663,25 +667,40 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
-                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>" +
+            let tiJian_Dll_Flag = true;
+            let suiFang_Dll_Flag = false;
 
-                "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>" +
 
+
+            let DllButton = "";
+
+            let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
+                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>";
+
+            let Btm_DllButton = "</div>";
+
+            let Br_String = "<div style='height: 4px;'></div>";
+
+            let tiJian_String = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>" +
+                "<div style='height: 4px;'></div>"+
                 "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>" ;
 
-                "<div style='height: 4px;'></div>"+
-
-                "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
-
                 "<div style='height: 4px;'></div>"+
-
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>";
 
-                "</div>";
+
+            if(tiJian_Dll_Flag && suiFang_Dll_Flag)
+                DllButton = Pre_DllButton + tiJian_String + Br_String + suiFang_String + Btm_DllButton;
+            else if (tiJian_Dll_Flag && !suiFang_Dll_Flag)
+                DllButton = Pre_DllButton + tiJian_String + Btm_DllButton;
+            else if (!tiJian_Dll_Flag && suiFang_Dll_Flag)
+                DllButton = Pre_DllButton + suiFang_String + Btm_DllButton;
+
+
 
             $("body").append(DllButton);
 
