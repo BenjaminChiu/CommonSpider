@@ -103,10 +103,10 @@
         let body_DATA = {'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
             'pulse_rate': Math.floor(Math.random() * (82 - 68 + 1)) + 68,
             'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
-            'blood_pressure_high': Math.floor(Math.random() * (132 - 118 + 1)) + 118,
-            'blood_pressure_low': Math.floor(Math.random() * (84 - 72 + 1)) + 72,
-            'blood_pressure_high_2': Math.floor(Math.random() * (133 - 118 + 1)) + 116,
-            'blood_pressure_low_2': Math.floor(Math.random() * (82 - 70 + 1)) + 70}
+            'blood_pressure_high': Math.floor(Math.random() * (132 - 115 + 1)) + 115,
+            'blood_pressure_low': Math.floor(Math.random() * (84 - 68 + 1)) + 68,
+            'blood_pressure_high_2': Math.floor(Math.random() * (133 - 114 + 1)) + 114,
+            'blood_pressure_low_2': Math.floor(Math.random() * (82 - 69 + 1)) + 69}
 
         return body_DATA;
     }
@@ -355,22 +355,33 @@
 
                     else if (tr_s[j].innerText.includes("健康摘要"))
                     {
+                        let g_s_1 = "1.减钠增钾，饮食清淡。2.合理膳食，科学食养。3.吃动平衡，健康体重。4.戒烟限酒，心理平衡。5.监测血压，自我管理。";
+                        let g_s_2 = "合理膳食，饮食清淡，吃动平衡，健康体重。戒烟限酒，监测血压，自我管理。";
+                        let g_s = [g_s_1, g_s_2];
+
+
+                        let t_s_1 = "1.食物多样，养成和建立合理膳食习惯。2.能量适宜，控制超重肥胖和预防消瘦。3.主食定量，优选全谷物和低血糖生成指数食物。4.积极运动，改善体质和胰岛素敏感性。" +
+                            "5.清淡饮食，限制饮酒，预防和延缓并发症。6.食养有道，合理选择应用食药物质。7.规律进餐，合理加餐，促进餐后血糖稳定。8.自我管理，定期营养咨询，提高血糖控制能力";
+                        let t_s_2 = "饮食多样，合理膳食。主食定量，积极运动。清淡饮食，规律进餐。";
+                        let t_s = [t_s_1, t_s_2];
+
+                        let u_s_1 = "食物多样、搭配合理，符合平衡膳食要求。能量供给与机体需要相适应，吃动平衡，维持健康体重。保证优质蛋白质、矿物质、维生素的供给。" +
+                            "烹制食物适合咀嚼、吞咽和消化。饮食清淡，注意食品卫生。食物摄入无法满足需要时，合理进行营养素补充。";
+                        let u_s_2 = "食物多样、搭配合理。吃动平衡，健康体重。保证优质蛋白质、矿物质、维生素的供给";
+                        let u_s = [u_s_1, u_s_2];
+
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                            textarea_s[0].value = "二型糖尿病";
+                            textarea_s[0].value = g_s[Math.floor(Math.random()*g_s.length)];
                         else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-
+                            textarea_s[0].value = t_s[Math.floor(Math.random()*t_s.length)];
                         else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-
+                            textarea_s[0].value = t_s[Math.floor(Math.random()*t_s.length)];
                         else
-                        {
-
-                        }
+                            textarea_s[0].value = u_s[Math.floor(Math.random()*u_s.length)];
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
-
-
                     }
 
 
