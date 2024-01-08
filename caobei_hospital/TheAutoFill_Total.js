@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.2.2.0
+// @version      0.3.0.1
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -668,7 +668,7 @@
             console.log("您已按下F9，实现弹窗，StartFunction");
 
             let tiJian_Dll_Flag = true;
-            let suiFang_Dll_Flag = false;
+            let suiFang_Dll_Flag = true;
 
 
 
