@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.2
+// @version      0.3.0.3
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -62,13 +62,9 @@
             if (sickness_div_s[i].innerText.includes('患者随访'))
             {
                 if (sickness_div_s[i].innerText.includes('高血压'))
-                {
                     sickness_status = true;
-                }
                 else if (sickness_div_s[i].innerText.includes('糖尿病'))
-                {
                     sickness_status = false;
-                }
 
                 break;
             }
@@ -83,17 +79,11 @@
         let sickness_status_for_tiJian = {'lao': false, 'gxy': false, 'tyb': false};
         let sickness_div = $('#ehrJkztCol')[0];
         if (sickness_div.innerText.includes('老'))
-        {
             sickness_status_for_tiJian.lao = true;
-        }
         if (sickness_div.innerText.includes('高'))
-        {
             sickness_status_for_tiJian.gxy = true;
-        }
         if (sickness_div.innerText.includes('糖'))
-        {
             sickness_status_for_tiJian.tyb = true;
-        }
 
         return sickness_status_for_tiJian;
     }
@@ -109,9 +99,7 @@
         for (let i = 0; i < button_s.length; i++)
         {
             if (button_s[i].innerText.includes('健康档案'))
-            {
                 cun_doctor = button_s[i].childNodes[3].innerText
-            }
         }
 
         return cun_doctor;
@@ -380,9 +368,7 @@
                             if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
                                     || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
                                 && !divs[k].className.includes('checked'))
-                            {
                                 divs[k].click();
-                            }
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
                         textarea_s[0].value = "预防骨质疏松、预防跌倒";
@@ -444,7 +430,7 @@
         {
             if (div_s[i].innerText === "第4页")
             {
-                div_s[i].addEventListener("mousedown", function (fuckEvent)
+                div_s[i].addEventListener("mousedown", function ()
                 {
                     for (let j = 0; j < div_s.length; j++)
                     {
@@ -693,8 +679,8 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let tiJian_Dll_Flag = true;
-            let suiFang_Dll_Flag = true;
+            let tiJian_Dll_Flag = false;
+            let suiFang_Dll_Flag = false;
 
 
             let DllButton = "";
