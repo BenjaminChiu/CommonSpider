@@ -30,14 +30,23 @@
     // const click_Event = new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true});
 
 
-
     // 字典 村医的联系方式
-    const cun_doctor_tel = {"王祥茂":"13547784526", "胥德顺":"13882507277", "王晏":"15108117003", "覃蒲昌":"15082588136",
-        "蒲兴周":"15181944660", "付建兴":"13882549411", "任朝龙":"15182548314", "胥学领":"15388349328", "蒲泽华":"15983086284",
-        "王平":"18980189346", "廖先志":"19827454586", "杨荣":"15328520078", "赵中全":"15108117301", "王军":"18280866037"};
-
-
-
+    const cun_doctor_tel = {
+        "王祥茂": "13547784526",
+        "胥德顺": "13882507277",
+        "王晏": "15108117003",
+        "覃蒲昌": "15082588136",
+        "蒲兴周": "15181944660",
+        "付建兴": "13882549411",
+        "任朝龙": "15182548314",
+        "胥学领": "15388349328",
+        "蒲泽华": "15983086284",
+        "王平": "18980189346",
+        "廖先志": "19827454586",
+        "杨荣": "15328520078",
+        "赵中全": "15108117301",
+        "王军": "18280866037"
+    };
 
 
     // =======Util-1====获取是高血压还是糖尿病随访==========
@@ -48,14 +57,18 @@
         let sickness_status = true;
 
         let sickness_div_s = $('div.header-left.right-header:first');
-        for(let i=0; i<sickness_div_s.length; i++)
+        for (let i = 0; i < sickness_div_s.length; i++)
         {
             if (sickness_div_s[i].innerText.includes('患者随访'))
             {
                 if (sickness_div_s[i].innerText.includes('高血压'))
+                {
                     sickness_status = true;
+                }
                 else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                {
                     sickness_status = false;
+                }
 
                 break;
             }
@@ -70,11 +83,17 @@
         let sickness_status_for_tiJian = {'lao': false, 'gxy': false, 'tyb': false};
         let sickness_div = $('#ehrJkztCol')[0];
         if (sickness_div.innerText.includes('老'))
+        {
             sickness_status_for_tiJian.lao = true;
+        }
         if (sickness_div.innerText.includes('高'))
+        {
             sickness_status_for_tiJian.gxy = true;
+        }
         if (sickness_div.innerText.includes('糖'))
+        {
             sickness_status_for_tiJian.tyb = true;
+        }
 
         return sickness_status_for_tiJian;
     }
@@ -87,10 +106,12 @@
         let cun_doctor = '王祥茂';
 
         let button_s = $('button');
-        for (let i= 0; i< button_s.length; i++)
+        for (let i = 0; i < button_s.length; i++)
         {
             if (button_s[i].innerText.includes('健康档案'))
+            {
                 cun_doctor = button_s[i].childNodes[3].innerText
+            }
         }
 
         return cun_doctor;
@@ -100,17 +121,18 @@
     function get_body_DATA()
     {
         // 体征数据：体温、脉搏、呼吸频率、高压、低压
-        let body_DATA = {'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
+        let body_DATA = {
+            'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
             'pulse_rate': Math.floor(Math.random() * (82 - 68 + 1)) + 68,
             'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
             'blood_pressure_high': Math.floor(Math.random() * (132 - 115 + 1)) + 115,
             'blood_pressure_low': Math.floor(Math.random() * (84 - 68 + 1)) + 68,
             'blood_pressure_high_2': Math.floor(Math.random() * (133 - 114 + 1)) + 114,
-            'blood_pressure_low_2': Math.floor(Math.random() * (82 - 69 + 1)) + 69}
+            'blood_pressure_low_2': Math.floor(Math.random() * (82 - 69 + 1)) + 69
+        }
 
         return body_DATA;
     }
-
 
 
     // =========Function-1====体检表=============
@@ -131,11 +153,8 @@
         let cun_doctor_flag = false;
 
 
-
-
-
         let form_s = $('form');
-        for (let i=0; i<form_s.length; i++)
+        for (let i = 0; i < form_s.length; i++)
         {
             // 找到了目标form表单
             if (form_s[i].innerText.includes('体检日期') && form_s[i].innerText.includes('责任医生') && !edit_flag)
@@ -146,7 +165,7 @@
                 // 获取所有行，并且遍历所有行
                 // const tr_s = form_s[i].getElementsByTagName("tr");
                 let tr_s = document.getElementsByTagName("tr");
-                for (let j=0; j<tr_s.length; j++)
+                for (let j = 0; j < tr_s.length; j++)
                 {
                     if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                     {
@@ -157,7 +176,7 @@
 
                         // 责任医生 步骤一：点击下拉框
                         let div_s = tr_s[j].getElementsByTagName("div");
-                        for (let k=0; k<div_s.length; k++)
+                        for (let k = 0; k < div_s.length; k++)
                         {
                             if ("combobox" === div_s[k].getAttribute("role"))
                             {
@@ -170,12 +189,12 @@
                         setTimeout(function ()
                         {
                             let ul_s = $('ul[role="listbox"]');
-                            for (let k=0; k<ul_s.length; k++)
+                            for (let k = 0; k < ul_s.length; k++)
                             {
                                 if (ul_s[k].innerText.includes('曹碑镇卫生院'))
                                 {
                                     let li_s = ul_s[k].getElementsByTagName("li");
-                                    for (let z=0; z<li_s.length; z++)
+                                    for (let z = 0; z < li_s.length; z++)
                                     {
                                         // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
                                         if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
@@ -220,7 +239,7 @@
 
                     // ========老年人专有功能=======Start=========
                     else if ((tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
-                        || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估"))
+                            || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估"))
                         && sickness_flag['lao'])
                     {
                         let divs = tr_s[j].getElementsByTagName("div");
@@ -228,23 +247,27 @@
                         {
                             if ((divs[k].innerText.includes('2基本满意') || divs[k].innerText.includes('1粗筛阴性') || divs[k].innerText.includes('1可自理'))
                                 && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
 
                         setTimeout(function ()
                         {
                             let table_s = document.getElementsByClassName('ant-modal-content');
-                            for (let k=0; k<table_s.length; k++)
+                            for (let k = 0; k < table_s.length; k++)
                             {
                                 if (table_s[k].innerText.includes("老年人生活自理能力评估表"))
                                 {
                                     const table_divs = table_s[k].getElementsByTagName("div")
-                                    for (let z=0; z<table_divs.length; z++)
+                                    for (let z = 0; z < table_divs.length; z++)
                                     {
                                         if (table_divs[z].innerText.includes('0分') && table_divs[z].innerText.includes('独立完成')
                                             && table_divs[z].className.includes('ant-tag-checkable')
                                             && !table_divs[z].className.includes('ant-tag-checkable-checked'))
+                                        {
                                             table_divs[z].click();
+                                        }
                                     }
                                     const button_s = table_s[k].getElementsByTagName("button")
                                     button_s[1].click();
@@ -257,10 +280,12 @@
                     else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
                     {
                         const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k= 0; k < divs.length; k++)
+                        for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
 
@@ -277,7 +302,7 @@
                         input_s[1].dispatchEvent(fkVueEvent);
                         input_s[1].dispatchEvent(fkVueEvent_blur);
                     }
-                    else if(tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
+                    else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
                     {
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿酮体
@@ -296,7 +321,9 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -305,7 +332,9 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
 
@@ -315,7 +344,7 @@
                         let edit_flag = false;
 
                         const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k= 0; k < divs.length; k++)
+                        for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
                             {
@@ -330,9 +359,13 @@
                             {
                                 let textarea_s = tr_s[j].getElementsByTagName("textarea");
                                 if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
+                                {
                                     textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
+                                }
                                 if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
+                                {
                                     textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
+                                }
                                 textarea_s[0].dispatchEvent(fkVueEvent);
                             }, 400);
                         }
@@ -347,7 +380,9 @@
                             if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
                                     || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
                                 && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
                         textarea_s[0].value = "预防骨质疏松、预防跌倒";
@@ -377,19 +412,24 @@
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                            textarea_s[0].value = g_s[Math.floor(Math.random()*g_s.length)];
+                        {
+                            textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
+                        }
                         else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = t_s[Math.floor(Math.random()*t_s.length)];
+                        {
+                            textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        }
                         else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = t_s[Math.floor(Math.random()*t_s.length)];
+                        {
+                            textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        }
                         else
-                            textarea_s[0].value = u_s[Math.floor(Math.random()*u_s.length)];
+                        {
+                            textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
+                        }
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
                     }
-
-
-
 
 
                 }
@@ -397,17 +437,16 @@
         }
 
 
-
         // ====Start======第4页监听器=================
         // 解决点击第4页时，自动取消“4锻炼”按钮
-        let div_s  = document.getElementsByTagName("div");
-        for (let i=0; i<div_s.length; i++)
+        let div_s = document.getElementsByTagName("div");
+        for (let i = 0; i < div_s.length; i++)
         {
             if (div_s[i].innerText === "第4页")
             {
                 div_s[i].addEventListener("mousedown", function (fuckEvent)
                 {
-                    for (let j=0; j<div_s.length; j++)
+                    for (let j = 0; j < div_s.length; j++)
                     {
                         if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
                         {
@@ -423,10 +462,7 @@
         // ====End======第4页监听器=================
 
 
-
     }
-
-
 
 
     // =========Function-2====转诊单==============
@@ -469,13 +505,9 @@
         // 转诊表 所需变量 End
 
 
-
-
-
-
         // 步骤二：填充数据
         let form_s = $('form');
-        for (let i=0; i<form_s.length; i++)
+        for (let i = 0; i < form_s.length; i++)
         {
             // 找到了目标form表单
             if (form_s[i].innerText.includes('双向转诊单') && form_s[i].innerText.includes('双向转诊(转出)单'))
@@ -499,9 +531,8 @@
                 inputs[20].dispatchEvent(fkVueEvent);
 
                 inputs[21].value = cun_doctor_tel[cun_doctor];  // 用村医姓名查找村医的电话号码
-                console.log("fucking Test.Tel="+inputs[21].value+";Doc="+inputs[20].value);
+                console.log("fucking Test.Tel=" + inputs[21].value + ";Doc=" + inputs[20].value);
                 inputs[21].dispatchEvent(fkVueEvent);
-
 
 
                 // 4行备注
@@ -525,7 +556,6 @@
     }
 
 
-
     // =========Function-3====随访结局=============
     function suiFangResult()
     {
@@ -545,21 +575,23 @@
         let the_Result = true;
 
 
-
-
         let tr_s = $('tr');     // 找table中的一行tr
-        for (let i=0; i<tr_s.length; i++)
+        for (let i = 0; i < tr_s.length; i++)
         {
 
             if (tr_s[i].innerText.includes('此次随访分类'))
             {
                 let div_s = tr_s[i].getElementsByTagName("div");
-                for (let j=0; j<div_s.length; j++)
+                for (let j = 0; j < div_s.length; j++)
                 {
-                    if(div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
+                    if (div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
+                    {
                         the_Result = true;
+                    }
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
+                    {
                         the_Result = false;
+                    }
                 }
 
             }
@@ -584,15 +616,19 @@
                 //             && !div_s[j].className.includes("checked"))
                 //             div_s[j].click();
                 //     }
-                // }
+            // }
 
             else if (tr_s[i].innerText.includes('随访结局'))
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 if (sickness_flag)
+                {
                     textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+                }
                 else
+                {
                     textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
+                }
 
                 if (!result_flag)
                 {
@@ -606,7 +642,7 @@
             {
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
                 let div_s = tr_s[i].getElementsByTagName("div");
-                for (let j=0; j<div_s.length; j++)
+                for (let j = 0; j < div_s.length; j++)
                 {
                     if ("combobox" === div_s[j].getAttribute("role"))
                     {
@@ -621,12 +657,12 @@
                 setTimeout(function ()
                 {
                     let ul_s = $('ul[role="listbox"]');
-                    for (let j=0; j<ul_s.length; j++)
+                    for (let j = 0; j < ul_s.length; j++)
                     {
                         if (ul_s[j].innerText.includes('曹碑镇卫生院'))
                         {
                             let li_s = ul_s[j].getElementsByTagName("li");
-                            for (let z=0; z<li_s.length; z++)
+                            for (let z = 0; z < li_s.length; z++)
                             {
                                 // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
                                 if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
@@ -643,21 +679,11 @@
             }
 
 
-
         }
-
-
-
-
-
 
 
         console.log("随访结局测试使用，已退出随访结局函数");
     }
-
-
-
-
 
 
     // 程序入口
@@ -671,7 +697,6 @@
             let suiFang_Dll_Flag = true;
 
 
-
             let DllButton = "";
 
             let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
@@ -682,31 +707,36 @@
             let Br_String = "<div style='height: 4px;'></div>";
 
             let tiJian_String = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>" +
-                "<div style='height: 4px;'></div>"+
+                "<div style='height: 4px;'></div>" +
                 "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>" ;
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>";
 
             let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
-                "<div style='height: 4px;'></div>"+
+                "<div style='height: 4px;'></div>" +
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>";
 
 
-            if(tiJian_Dll_Flag && suiFang_Dll_Flag)
+            if (tiJian_Dll_Flag && suiFang_Dll_Flag)
+            {
                 DllButton = Pre_DllButton + tiJian_String + Br_String + suiFang_String + Btm_DllButton;
+            }
             else if (tiJian_Dll_Flag && !suiFang_Dll_Flag)
+            {
                 DllButton = Pre_DllButton + tiJian_String + Btm_DllButton;
+            }
             else if (!tiJian_Dll_Flag && suiFang_Dll_Flag)
+            {
                 DllButton = Pre_DllButton + suiFang_String + Btm_DllButton;
-
+            }
 
 
             $("body").append(DllButton);
 
             $("#tiJianDate")[0].addEventListener("focusout", function ()
             {
-                $.cookie('tiJianDate', $("#tiJianDate")[0].value, { expires: 365, path: '/' });
+                $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
             });
 
             $("#tiJian_a").click(function ()
@@ -714,21 +744,18 @@
                 tiJian();
             });
 
-            $("#zhuanzhen_a").click(function()
+            $("#zhuanzhen_a").click(function ()
             {
                 zhuanZhen();
             });
 
-            $("#suiFangResult_a").click(function()
+            $("#suiFangResult_a").click(function ()
             {
                 suiFangResult();
             });
 
         }
     });
-
-
-
 
 
 })();
