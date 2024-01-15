@@ -703,12 +703,13 @@
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
-        if (fuckEvent.key === "F9")
+        let useFlag = false;
+        if (fuckEvent.key === "F9" && useFlag)
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let tiJian_Dll_Flag = false;
-            let suiFang_Dll_Flag = false;
+            let tiJian_Dll_Flag = true;
+            let suiFang_Dll_Flag = true;
 
 
             let DllButton = "";
