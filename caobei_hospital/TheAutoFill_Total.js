@@ -707,8 +707,8 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let tiJian_Dll_Flag = true;
-            let suiFang_Dll_Flag = true;
+            let tiJian_Dll_Flag = false;
+            let suiFang_Dll_Flag = false;
 
 
             let DllButton = "";
