@@ -106,19 +106,30 @@
     }
 
     // =========Util-4====产生体征数据==================
-    function get_body_DATA()
+    function get_body_DATA(gao)
     {
         // 体征数据：体温、脉搏、呼吸频率、高压、低压
         let body_DATA = {
             'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
-            'pulse_rate': Math.floor(Math.random() * (82 - 68 + 1)) + 68,
-            'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
-            'blood_pressure_high': Math.floor(Math.random() * (132 - 115 + 1)) + 115,
-            'blood_pressure_low': Math.floor(Math.random() * (84 - 68 + 1)) + 68,
-            'blood_pressure_high_2': Math.floor(Math.random() * (133 - 114 + 1)) + 114,
-            'blood_pressure_low_2': Math.floor(Math.random() * (82 - 69 + 1)) + 69
+            'pulse_rate': Math.floor(Math.random() * (82 - 64 + 1)) + 64,
+            'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16
         }
 
+        // 传入高血压患者
+        if (gao)
+        {
+            body_DATA['blood_pressure_high'] = Math.floor(Math.random() * (132 - 115 + 1)) + 115;
+            body_DATA['blood_pressure_low'] = Math.floor(Math.random() * (84 - 68 + 1)) + 68;
+            body_DATA['blood_pressure_high_2'] = Math.floor(Math.random() * (133 - 114 + 1)) + 114;
+            body_DATA['blood_pressure_low_2'] = Math.floor(Math.random() * (82 - 69 + 1)) + 69;
+        }
+        else
+        {
+            body_DATA['blood_pressure_high'] = Math.floor(Math.random() * (126 - 102 + 1)) + 102;
+            body_DATA['blood_pressure_low'] = Math.floor(Math.random() * (78 - 64 + 1)) + 64;
+            body_DATA['blood_pressure_high_2'] = Math.floor(Math.random() * (128 - 101 + 1)) + 101;
+            body_DATA['blood_pressure_low_2'] = Math.floor(Math.random() * (79 - 62 + 1)) + 62;
+        }
         return body_DATA;
     }
 
@@ -134,6 +145,7 @@
         let cun_doctor = get_cun_doctor();
         // 外部获取体征数据
         let body_DATA = get_body_DATA();
+        let body_DATA_gao = get_body_DATA("gao")
 
 
         // 修改体检表标签
@@ -210,17 +222,33 @@
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_DATA['respiratory_rate'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = body_DATA['blood_pressure_high'].toString();
+                        if (sickness_flag["gxy"])
+                        {
+                            inputs[1].value = body_DATA_gao['blood_pressure_high'].toString();
+                            inputs[2].value = body_DATA_gao['blood_pressure_low'].toString();
+                        }
+                        else
+                        {
+                            inputs[1].value = body_DATA['blood_pressure_high'].toString();
+                            inputs[2].value = body_DATA['blood_pressure_low'].toString();
+                        }
                         inputs[1].dispatchEvent(fkVueEvent);
-                        inputs[2].value = body_DATA['blood_pressure_low'].toString();
                         inputs[2].dispatchEvent(fkVueEvent);
                     }
                     else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_DATA['blood_pressure_high_2'].toString();
+                        if (sickness_flag["gxy"])
+                        {
+                            inputs[0].value = body_DATA_gao['blood_pressure_high_2'].toString();
+                            inputs[1].value = body_DATA_gao['blood_pressure_low_2'].toString();
+                        }
+                        else
+                        {
+                            inputs[0].value = body_DATA['blood_pressure_high_2'].toString();
+                            inputs[1].value = body_DATA['blood_pressure_low_2'].toString();
+                        }
                         inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = body_DATA['blood_pressure_low_2'].toString();
                         inputs[1].dispatchEvent(fkVueEvent);
                     }
 
@@ -679,8 +707,8 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let tiJian_Dll_Flag = false;
-            let suiFang_Dll_Flag = false;
+            let tiJian_Dll_Flag = true;
+            let suiFang_Dll_Flag = true;
 
 
             let DllButton = "";
