@@ -263,9 +263,7 @@
                         {
                             if ((divs[k].innerText.includes('2基本满意') || divs[k].innerText.includes('1粗筛阴性') || divs[k].innerText.includes('1可自理'))
                                 && !divs[k].className.includes('checked'))
-                            {
                                 divs[k].click();
-                            }
                         }
 
                         setTimeout(function ()
@@ -281,9 +279,7 @@
                                         if (table_divs[z].innerText.includes('0分') && table_divs[z].innerText.includes('独立完成')
                                             && table_divs[z].className.includes('ant-tag-checkable')
                                             && !table_divs[z].className.includes('ant-tag-checkable-checked'))
-                                        {
                                             table_divs[z].click();
-                                        }
                                     }
                                     const button_s = table_s[k].getElementsByTagName("button")
                                     button_s[1].click();
@@ -299,9 +295,7 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
-                            {
                                 divs[k].click();
-                            }
                         }
                     }
 
@@ -337,9 +331,7 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                            {
                                 divs[k].click();
-                            }
                         }
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -348,9 +340,7 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                            {
                                 divs[k].click();
-                            }
                         }
                     }
 
@@ -375,13 +365,9 @@
                             {
                                 let textarea_s = tr_s[j].getElementsByTagName("textarea");
                                 if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                                {
                                     textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                                }
                                 if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                                {
                                     textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                                }
                                 textarea_s[0].dispatchEvent(fkVueEvent);
                             }, 400);
                         }
@@ -426,21 +412,13 @@
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
-                        }
                         else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        }
                         else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        }
                         else
-                        {
                             textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
-                        }
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
                     }
@@ -599,13 +577,9 @@
                 for (let j = 0; j < div_s.length; j++)
                 {
                     if (div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
-                    {
                         the_Result = true;
-                    }
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
-                    {
                         the_Result = false;
-                    }
                 }
 
             }
@@ -636,13 +610,9 @@
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 if (sickness_flag)
-                {
                     textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
-                }
                 else
-                {
                     textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
-                }
 
                 if (!result_flag)
                 {
