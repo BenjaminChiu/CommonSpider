@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.3
+// @version      0.3.0.4
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -62,9 +62,13 @@
             if (sickness_div_s[i].innerText.includes('患者随访'))
             {
                 if (sickness_div_s[i].innerText.includes('高血压'))
+                {
                     sickness_status = true;
+                }
                 else if (sickness_div_s[i].innerText.includes('糖尿病'))
+                {
                     sickness_status = false;
+                }
 
                 break;
             }
@@ -79,11 +83,17 @@
         let sickness_status_for_tiJian = {'lao': false, 'gxy': false, 'tyb': false};
         let sickness_div = $('#ehrJkztCol')[0];
         if (sickness_div.innerText.includes('老'))
+        {
             sickness_status_for_tiJian.lao = true;
+        }
         if (sickness_div.innerText.includes('高'))
+        {
             sickness_status_for_tiJian.gxy = true;
+        }
         if (sickness_div.innerText.includes('糖'))
+        {
             sickness_status_for_tiJian.tyb = true;
+        }
 
         return sickness_status_for_tiJian;
     }
@@ -99,7 +109,9 @@
         for (let i = 0; i < button_s.length; i++)
         {
             if (button_s[i].innerText.includes('健康档案'))
+            {
                 cun_doctor = button_s[i].childNodes[3].innerText
+            }
         }
 
         return cun_doctor;
@@ -263,7 +275,9 @@
                         {
                             if ((divs[k].innerText.includes('2基本满意') || divs[k].innerText.includes('1粗筛阴性') || divs[k].innerText.includes('1可自理'))
                                 && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
 
                         setTimeout(function ()
@@ -279,7 +293,9 @@
                                         if (table_divs[z].innerText.includes('0分') && table_divs[z].innerText.includes('独立完成')
                                             && table_divs[z].className.includes('ant-tag-checkable')
                                             && !table_divs[z].className.includes('ant-tag-checkable-checked'))
+                                        {
                                             table_divs[z].click();
+                                        }
                                     }
                                     const button_s = table_s[k].getElementsByTagName("button")
                                     button_s[1].click();
@@ -295,7 +311,9 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
 
@@ -331,7 +349,9 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
                     else if (tr_s[j].innerText.includes("腹部B超"))
@@ -340,7 +360,9 @@
                         for (let k = 0; k < divs.length; k++)
                         {
                             if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                     }
 
@@ -365,9 +387,13 @@
                             {
                                 let textarea_s = tr_s[j].getElementsByTagName("textarea");
                                 if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
+                                {
                                     textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
+                                }
                                 if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
+                                {
                                     textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
+                                }
                                 textarea_s[0].dispatchEvent(fkVueEvent);
                             }, 400);
                         }
@@ -382,7 +408,9 @@
                             if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
                                     || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
                                 && !divs[k].className.includes('checked'))
+                            {
                                 divs[k].click();
+                            }
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
                         textarea_s[0].value = "预防骨质疏松、预防跌倒";
@@ -398,7 +426,6 @@
                         let g_s_2 = "合理膳食，饮食清淡，吃动平衡，健康体重。戒烟限酒，监测血压，自我管理。";
                         let g_s = [g_s_1, g_s_2];
 
-
                         let t_s_1 = "1.食物多样，养成和建立合理膳食习惯。2.能量适宜，控制超重肥胖和预防消瘦。3.主食定量，优选全谷物和低血糖生成指数食物。4.积极运动，改善体质和胰岛素敏感性。" +
                             "5.清淡饮食，限制饮酒，预防和延缓并发症。6.食养有道，合理选择应用食药物质。7.规律进餐，合理加餐，促进餐后血糖稳定。8.自我管理，定期营养咨询，提高血糖控制能力。9.戒烟限酒，享受健康生活。";
                         let t_s_2 = "饮食多样，合理膳食。主食定量，积极运动。戒烟限酒，清淡饮食，规律进餐。";
@@ -412,13 +439,21 @@
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
+                        {
                             textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
+                        }
                         else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
+                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        }
                         else if (sickness_flag["gxy"] && sickness_flag["tyb"])
+                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        }
                         else
+                        {
                             textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
+                        }
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
                     }
@@ -577,9 +612,13 @@
                 for (let j = 0; j < div_s.length; j++)
                 {
                     if (div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
+                    {
                         the_Result = true;
+                    }
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
+                    {
                         the_Result = false;
+                    }
                 }
 
             }
@@ -610,9 +649,13 @@
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 if (sickness_flag)
+                {
                     textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
+                }
                 else
+                {
                     textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
+                }
 
                 if (!result_flag)
                 {
