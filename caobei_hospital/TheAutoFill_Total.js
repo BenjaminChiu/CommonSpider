@@ -747,17 +747,11 @@
 
 
             if (tiJian_Dll_Flag && suiFang_Dll_Flag)
-            {
                 DllButton = Pre_DllButton + tiJian_String + Br_String + suiFang_String + Btm_DllButton;
-            }
             else if (tiJian_Dll_Flag && !suiFang_Dll_Flag)
-            {
                 DllButton = Pre_DllButton + tiJian_String + Btm_DllButton;
-            }
             else if (!tiJian_Dll_Flag && suiFang_Dll_Flag)
-            {
                 DllButton = Pre_DllButton + suiFang_String + Btm_DllButton;
-            }
 
 
             $("body").append(DllButton);
