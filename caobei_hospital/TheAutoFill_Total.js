@@ -62,13 +62,9 @@
             if (sickness_div_s[i].innerText.includes('患者随访'))
             {
                 if (sickness_div_s[i].innerText.includes('高血压'))
-                {
                     sickness_status = true;
-                }
                 else if (sickness_div_s[i].innerText.includes('糖尿病'))
-                {
                     sickness_status = false;
-                }
 
                 break;
             }
@@ -83,17 +79,11 @@
         let sickness_status_for_tiJian = {'lao': false, 'gxy': false, 'tyb': false};
         let sickness_div = $('#ehrJkztCol')[0];
         if (sickness_div.innerText.includes('老'))
-        {
             sickness_status_for_tiJian.lao = true;
-        }
         if (sickness_div.innerText.includes('高'))
-        {
             sickness_status_for_tiJian.gxy = true;
-        }
         if (sickness_div.innerText.includes('糖'))
-        {
             sickness_status_for_tiJian.tyb = true;
-        }
 
         return sickness_status_for_tiJian;
     }
@@ -109,9 +99,7 @@
         for (let i = 0; i < button_s.length; i++)
         {
             if (button_s[i].innerText.includes('健康档案'))
-            {
                 cun_doctor = button_s[i].childNodes[3].innerText
-            }
         }
 
         return cun_doctor;
@@ -387,13 +375,9 @@
                             {
                                 let textarea_s = tr_s[j].getElementsByTagName("textarea");
                                 if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                                {
                                     textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                                }
                                 if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                                {
                                     textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                                }
                                 textarea_s[0].dispatchEvent(fkVueEvent);
                             }, 400);
                         }
@@ -439,21 +423,13 @@
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
-                        }
                         else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        }
                         else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-                        {
                             textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        }
                         else
-                        {
                             textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
-                        }
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
                     }
@@ -612,13 +588,9 @@
                 for (let j = 0; j < div_s.length; j++)
                 {
                     if (div_s[j].innerText.includes("1控制满意") && div_s[j].className.includes('checked'))
-                    {
                         the_Result = true;
-                    }
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
-                    {
                         the_Result = false;
-                    }
                 }
 
             }
