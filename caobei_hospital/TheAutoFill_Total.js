@@ -575,7 +575,13 @@
         // 外部获取 转诊的村医姓名
         let cun_doctor = get_cun_doctor();
         // 外部获取体征数据
-        let body_DATA = get_body_DATA();
+        let body_DATA = get_body_DATA(sickness_flag);
+
+        // 局部功能开关
+        // 随访方式
+        let sf_way = false;
+        let sf_blood_pressure = false;
+
 
 
         // 设定一个修改flag
@@ -589,7 +595,30 @@
         for (let i = 0; i < tr_s.length; i++)
         {
 
-            if (tr_s[i].innerText.includes('此次随访分类'))
+            if (tr_s[i].innerText.includes('随访方式') && sf_way)
+            {
+                let div_s = tr_s[i].getElementsByTagName("div");
+                for (let j=0; j < div_s.length; j++)
+                {
+                    if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
+                        && !div_s[j].className.includes("checked"))
+                        div_s[j].click();
+                }
+            }
+
+            else if (tr_s[i].innerText.includes('血压') && sf_blood_pressure)
+            {
+                let input_s = tr_s[i].getElementsByTagName("input");
+                input_s[0].value = body_DATA['blood_pressure_high'];
+                input_s[1].value = body_DATA['blood_pressure_low'];
+
+                input_s[0].dispatchEvent(fkVueEvent);
+                input_s[1].dispatchEvent(fkVueEvent);
+
+            }
+
+
+            else if (tr_s[i].innerText.includes('此次随访分类'))
             {
                 let div_s = tr_s[i].getElementsByTagName("div");
                 for (let j = 0; j < div_s.length; j++)
@@ -601,28 +630,6 @@
                 }
 
             }
-
-            // else if (tr_s[i].innerText.includes('血压'))
-            // {
-            //     let input_s = tr_s[i].getElementsByTagName("input");
-            //     input_s[0].value = body_DATA['blood_pressure_high'];
-            //     input_s[1].value = body_DATA['blood_pressure_low'];
-            //
-            //     input_s[0].dispatchEvent(fkVueEvent);
-            //     input_s[1].dispatchEvent(fkVueEvent);
-            //
-            // }
-
-            // else if (tr_s[i].innerText.includes('随访方式'))
-            // {
-            //     let div_s = tr_s[i].getElementsByTagName("div");
-            //     for (let j=0; j < div_s.length; j++)
-            //     {
-            //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
-            //             && !div_s[j].className.includes("checked"))
-            //             div_s[j].click();
-            //     }
-            // }
 
             else if (tr_s[i].innerText.includes('随访结局'))
             {
