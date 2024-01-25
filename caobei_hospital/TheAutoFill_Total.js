@@ -579,8 +579,8 @@
 
         // 局部功能开关
         // 随访方式
-        const sf_day = false;
-        const sf_way = false;
+        const sf_day = true;
+        const sf_way = true;
         const sf_blood_pressure = false;
 
 
@@ -594,7 +594,8 @@
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i = 0; i < tr_s.length; i++)
         {
-            if (tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
+            if ((tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
+                && !tr_s[i].innerText.includes('下次随访日期'))
             {
                 // 随访日期
                 if (sf_day)
@@ -667,6 +668,7 @@
 
             else if (tr_s[i].innerText.includes('随访医生'))
             {
+                console.log("进入随访医生模块");
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
                 let div_s = tr_s[i].getElementsByTagName("div");
                 for (let j = 0; j < div_s.length; j++)
