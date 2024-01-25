@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.4
+// @version      0.3.0.5
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -579,7 +579,7 @@
 
         // 局部功能开关
         // 随访方式
-        const sf_day = false
+        const sf_day = false;
         const sf_way = false;
         const sf_blood_pressure = false;
 
