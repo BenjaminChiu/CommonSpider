@@ -584,7 +584,6 @@
         const sf_blood_pressure = false;
 
 
-
         // 设定一个修改flag
         let result_flag = false;
         let cun_doctor_flag = false;
