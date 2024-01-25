@@ -49,6 +49,25 @@
     };
 
 
+    const g_s_1 = "1.减钠增钾，饮食清淡。2.合理膳食，科学食养。3.吃动平衡，健康体重。4.戒烟限酒，心理平衡。5.监测血压，自我管理。";
+    const g_s_2 = "合理膳食，饮食清淡，吃动平衡，健康体重。戒烟限酒，监测血压，自我管理。";
+    const g_s = [g_s_1, g_s_2];
+
+    const t_s_1 = "1.食物多样，养成和建立合理膳食习惯。2.能量适宜，控制超重肥胖和预防消瘦。3.主食定量，优选全谷物和低血糖生成指数食物。4.积极运动，改善体质和胰岛素敏感性。" +
+        "5.清淡饮食，限制饮酒，预防和延缓并发症。6.食养有道，合理选择应用食药物质。7.规律进餐，合理加餐，促进餐后血糖稳定。8.自我管理，定期营养咨询，提高血糖控制能力。9.戒烟限酒，享受健康生活。";
+    const t_s_2 = "饮食多样，合理膳食。主食定量，积极运动。戒烟限酒，清淡饮食，规律进餐。";
+    const t_s = [t_s_1, t_s_2];
+
+    const u_s_1 = "食物多样、搭配合理，符合平衡膳食要求。能量供给与机体需要相适应，吃动平衡，维持健康体重。保证优质蛋白质、矿物质、维生素的供给。" +
+        "烹制食物适合咀嚼、吞咽和消化。戒烟限酒，饮食清淡，注意食品卫生。食物摄入无法满足需要时，合理进行营养素补充。";
+    const u_s_2 = "食物多样、搭配合理。吃动平衡，戒烟限酒，健康体重。保证优质蛋白质、矿物质、维生素的供给";
+    const u_s = [u_s_1, u_s_2];
+
+
+
+
+
+
     // =======Util-1====获取是高血压还是糖尿病随访==========
     function get_sickness_status()
     {
@@ -197,7 +216,8 @@
                                     for (let z = 0; z < li_s.length; z++)
                                     {
                                         // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
-                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
+                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                            && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停用"))
                                         {
                                             li_s[z].click();
                                             cun_doctor_flag = true;
@@ -406,20 +426,6 @@
 
                     else if (tr_s[j].innerText.includes("健康摘要"))
                     {
-                        let g_s_1 = "1.减钠增钾，饮食清淡。2.合理膳食，科学食养。3.吃动平衡，健康体重。4.戒烟限酒，心理平衡。5.监测血压，自我管理。";
-                        let g_s_2 = "合理膳食，饮食清淡，吃动平衡，健康体重。戒烟限酒，监测血压，自我管理。";
-                        let g_s = [g_s_1, g_s_2];
-
-                        let t_s_1 = "1.食物多样，养成和建立合理膳食习惯。2.能量适宜，控制超重肥胖和预防消瘦。3.主食定量，优选全谷物和低血糖生成指数食物。4.积极运动，改善体质和胰岛素敏感性。" +
-                            "5.清淡饮食，限制饮酒，预防和延缓并发症。6.食养有道，合理选择应用食药物质。7.规律进餐，合理加餐，促进餐后血糖稳定。8.自我管理，定期营养咨询，提高血糖控制能力。9.戒烟限酒，享受健康生活。";
-                        let t_s_2 = "饮食多样，合理膳食。主食定量，积极运动。戒烟限酒，清淡饮食，规律进餐。";
-                        let t_s = [t_s_1, t_s_2];
-
-                        let u_s_1 = "食物多样、搭配合理，符合平衡膳食要求。能量供给与机体需要相适应，吃动平衡，维持健康体重。保证优质蛋白质、矿物质、维生素的供给。" +
-                            "烹制食物适合咀嚼、吞咽和消化。戒烟限酒，饮食清淡，注意食品卫生。食物摄入无法满足需要时，合理进行营养素补充。";
-                        let u_s_2 = "食物多样、搭配合理。吃动平衡，戒烟限酒，健康体重。保证优质蛋白质、矿物质、维生素的供给";
-                        let u_s = [u_s_1, u_s_2];
-
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
                         if (sickness_flag["gxy"] && !sickness_flag["tyb"])
@@ -563,6 +569,7 @@
     function suiFangResult()
     {
         console.log("随访结局测试使用，已进入随访结局函数");
+
         // 获取是高血压还是糖尿病
         let sickness_flag = get_sickness_status();
         // 外部获取 转诊的村医姓名
@@ -595,39 +602,35 @@
 
             }
 
-            else if (tr_s[i].innerText.includes('血压'))
-            {
-                let input_s = tr_s[i].getElementsByTagName("input");
-                input_s[0].value = body_DATA['blood_pressure_high'];
-                input_s[1].value = body_DATA['blood_pressure_low'];
+            // else if (tr_s[i].innerText.includes('血压'))
+            // {
+            //     let input_s = tr_s[i].getElementsByTagName("input");
+            //     input_s[0].value = body_DATA['blood_pressure_high'];
+            //     input_s[1].value = body_DATA['blood_pressure_low'];
+            //
+            //     input_s[0].dispatchEvent(fkVueEvent);
+            //     input_s[1].dispatchEvent(fkVueEvent);
+            //
+            // }
 
-                input_s[0].dispatchEvent(fkVueEvent);
-                input_s[1].dispatchEvent(fkVueEvent);
-
-            }
-
-                // else if (tr_s[i].innerText.includes('随访方式'))
-                // {
-                //     let div_s = tr_s[i].getElementsByTagName("div");
-                //     for (let j=0; j < div_s.length; j++)
-                //     {
-                //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
-                //             && !div_s[j].className.includes("checked"))
-                //             div_s[j].click();
-                //     }
+            // else if (tr_s[i].innerText.includes('随访方式'))
+            // {
+            //     let div_s = tr_s[i].getElementsByTagName("div");
+            //     for (let j=0; j < div_s.length; j++)
+            //     {
+            //         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
+            //             && !div_s[j].className.includes("checked"))
+            //             div_s[j].click();
+            //     }
             // }
 
             else if (tr_s[i].innerText.includes('随访结局'))
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
                 if (sickness_flag)
-                {
                     textarea_s[0].value = the_Result ? '已随访，血压控制满意。' : '已随访，血压控制不满意。';
-                }
                 else
-                {
                     textarea_s[0].value = the_Result ? '已随访，空腹血糖控制满意。' : '已随访，空腹血糖控制不满意。';
-                }
 
                 if (!result_flag)
                 {
@@ -635,6 +638,18 @@
                     result_flag = true;     // 修改完成后，重置修改标志
                 }
 
+            }
+
+            else if (tr_s[i].innerText.includes('健康指导'))
+            {
+                let textarea_s = tr_s[i].getElementsByTagName("textarea");
+
+                if (sickness_flag)
+                    textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
+                else
+                    textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+
+                textarea_s[0].dispatchEvent(fkVueEvent);
             }
 
             else if (tr_s[i].innerText.includes('随访医生'))
@@ -664,7 +679,8 @@
                             for (let z = 0; z < li_s.length; z++)
                             {
                                 // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
-                                if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag)
+                                if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                    && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停"))
                                 {
                                     li_s[z].click();
                                     cun_doctor_flag = true;
@@ -680,15 +696,13 @@
 
         }
 
-
-        console.log("随访结局测试使用，已退出随访结局函数");
     }
 
 
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
-        let useFlag = false;
+        let useFlag = true;
         if (fuckEvent.key === "F9" && useFlag)
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
