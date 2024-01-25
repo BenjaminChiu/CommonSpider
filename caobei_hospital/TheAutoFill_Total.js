@@ -579,8 +579,9 @@
 
         // 局部功能开关
         // 随访方式
-        let sf_way = false;
-        let sf_blood_pressure = false;
+        const sf_day = false
+        const sf_way = false;
+        const sf_blood_pressure = false;
 
 
 
@@ -594,8 +595,15 @@
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i = 0; i < tr_s.length; i++)
         {
+            if (tr_s[i].innerText.includes('随访日期') && sf_day)
+            {
+                // 随访日期
+                let inputs = tr_s[i].getElementsByTagName("input");
+                inputs[0].value = $.cookie("tiJianDate");
+                inputs[0].dispatchEvent(fkVueEvent_change);
+            }
 
-            if (tr_s[i].innerText.includes('随访方式') && sf_way)
+            else if (tr_s[i].innerText.includes('随访方式') && sf_way)
             {
                 let div_s = tr_s[i].getElementsByTagName("div");
                 for (let j=0; j < div_s.length; j++)
