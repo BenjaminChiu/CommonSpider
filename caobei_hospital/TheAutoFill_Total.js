@@ -594,22 +594,24 @@
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i = 0; i < tr_s.length; i++)
         {
-            if (tr_s[i].innerText.includes('随访日期') && sf_day)
+            if (tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
             {
                 // 随访日期
-                let inputs = tr_s[i].getElementsByTagName("input");
-                inputs[0].value = $.cookie("tiJianDate");
-                inputs[0].dispatchEvent(fkVueEvent_change);
-            }
-
-            else if (tr_s[i].innerText.includes('随访方式') && sf_way)
-            {
-                let div_s = tr_s[i].getElementsByTagName("div");
-                for (let j=0; j < div_s.length; j++)
+                if (sf_day)
                 {
-                    if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
-                        && !div_s[j].className.includes("checked"))
-                        div_s[j].click();
+                    let inputs = tr_s[i].getElementsByTagName("input");
+                    inputs[0].value = $.cookie("tiJianDate");
+                    inputs[0].dispatchEvent(fkVueEvent_change);
+                }
+                if (sf_way)
+                {
+                    let div_s = tr_s[i].getElementsByTagName("div");
+                    for (let j=0; j < div_s.length; j++)
+                    {
+                        if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
+                            && !div_s[j].className.includes("checked"))
+                            div_s[j].click();
+                    }
                 }
             }
 
@@ -621,7 +623,6 @@
 
                 input_s[0].dispatchEvent(fkVueEvent);
                 input_s[1].dispatchEvent(fkVueEvent);
-
             }
 
 
@@ -635,7 +636,6 @@
                     else if (div_s[j].innerText.includes("2控制不满意") && div_s[j].className.includes('checked'))
                         the_Result = false;
                 }
-
             }
 
             else if (tr_s[i].innerText.includes('随访结局'))
@@ -651,7 +651,6 @@
                     textarea_s[0].dispatchEvent(fkVueEvent);
                     result_flag = true;     // 修改完成后，重置修改标志
                 }
-
             }
 
             else if (tr_s[i].innerText.includes('健康指导'))
