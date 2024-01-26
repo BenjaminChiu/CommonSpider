@@ -579,8 +579,8 @@
 
         // 局部功能开关
         // 随访方式
-        const sf_day = true;
-        const sf_way = true;
+        const sf_day = false;
+        const sf_way = false;
         const sf_blood_pressure = false;
 
 
