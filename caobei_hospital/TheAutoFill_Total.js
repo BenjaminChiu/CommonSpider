@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.8
+// @version      0.3.0.9
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -9,6 +9,8 @@
 // @match        *://*.scwjxx.cn/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
+// @downloadURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.user.js
+// @updateURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.meta.js
 // ==/UserScript==
 
 (function ()
@@ -735,21 +737,21 @@
             let DllButton = "";
 
             let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
-                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>";
+                "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
             let Btm_DllButton = "</div>";
 
             let Br_String = "<div style='height: 4px;'></div>";
 
-            let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>";
+            let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align:center; color: brown;'>";
 
             let tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>";
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
 
             let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊表</a>" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>" +
                 "<div style='height: 4px;'></div>" +
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>";
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
 
 
             if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
@@ -762,10 +764,13 @@
 
             $("body").append(DllButton);
 
-            $("#tiJianDate")[0].addEventListener("focusout", function ()
+            if (tiJianDATE_Flag)
             {
-                $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
-            });
+                $("#tiJianDate")[0].addEventListener("focusout", function ()
+                {
+                    $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
+                });
+            }
 
             $("#tiJian_a").click(function ()
             {
