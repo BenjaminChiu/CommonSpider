@@ -16,9 +16,15 @@
     'use strict';
 
     // Function on/off
-    const tiJianDATE_Flag = false;
-    const tiJian_Dll_Flag = true;
-    const suiFang_Dll_Flag = true;
+    const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
+    const tiJian_Dll_Flag = true;       // 体检表填充
+    const suiFang_Dll_Flag = true;      // 随访模块
+
+    // 局部功能开关（随访）
+    const sf_day = false;               // 随访日期
+    const sf_way = false;               // 随访方式
+    const sf_blood_pressure = false;    // 随访血压
+
 
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
@@ -26,7 +32,6 @@
     // const fkVueEvent = document.createEvent('HTMLEvents');
     // fkVueEvent.initEvent("input", true, true);//如果是select选择框把"input"改成"change"
     // fkVueEvent.eventType = 'message';
-
     const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
     const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
@@ -585,12 +590,6 @@
         let cun_doctor = get_cun_doctor();
         // 外部获取体征数据
         let body_DATA = get_body_DATA(sickness_flag);
-
-        // 局部功能开关
-        // 随访方式
-        const sf_day = false;
-        const sf_way = false;
-        const sf_blood_pressure = false;
 
 
         // 设定一个修改flag
