@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.6
+// @version      0.3.0.7
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -62,6 +62,8 @@
         "烹制食物适合咀嚼、吞咽和消化。饮食清淡，注意食品卫生。食物摄入无法满足需要时，合理进行营养素补充。";
     const u_s_2 = "食物多样、搭配合理。吃动平衡，健康体重。保证优质蛋白质、矿物质、维生素的供给";
     const u_s = [u_s_1, u_s_2];
+
+    const the_final = "清淡饮食，畅情志。";
 
 
 
@@ -428,15 +430,16 @@
                     {
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
-                        if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                            textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
-                        else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
-                        else
-                            textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
+                        // if (sickness_flag["gxy"] && !sickness_flag["tyb"])
+                        //     textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
+                        // else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
+                        //     textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        // else if (sickness_flag["gxy"] && sickness_flag["tyb"])
+                        //     textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                        // else
+                        //     textarea_s[0].value = u_s[Math.floor(Math.random() * u_s.length)];
 
+                        textarea_s[0].value = the_final;
                         textarea_s[0].dispatchEvent(fkVueEvent);
                     }
 
@@ -658,11 +661,12 @@
             {
                 let textarea_s = tr_s[i].getElementsByTagName("textarea");
 
-                if (sickness_flag)
-                    textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
-                else
-                    textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
+                // if (sickness_flag)
+                //     textarea_s[0].value = g_s[Math.floor(Math.random() * g_s.length)];
+                // else
+                //     textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
 
+                textarea_s[0].value = the_final;
                 textarea_s[0].dispatchEvent(fkVueEvent);
             }
 
