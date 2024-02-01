@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.7
+// @version      0.3.0.8
 // @description  适用于健康云平台各类表单的数据填充
 // @author       Benjamin Chiu.topfisherman@126.com
 // @license MIT
@@ -15,6 +15,10 @@
 {
     'use strict';
 
+    // Function on/off
+    const tiJianDATE_Flag = false;
+    const tiJian_Dll_Flag = true;
+    const suiFang_Dll_Flag = true;
 
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
@@ -191,9 +195,12 @@
                     if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                     {
                         // 体检日期
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = $.cookie("tiJianDate");
-                        inputs[0].dispatchEvent(fkVueEvent_change);
+                        if (tiJianDATE_Flag)
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = $.cookie("tiJianDate");
+                            inputs[0].dispatchEvent(fkVueEvent_change);
+                        }
 
                         // 责任医生 步骤一：点击下拉框
                         let div_s = tr_s[j].getElementsByTagName("div");
@@ -224,7 +231,6 @@
                                             li_s[z].click();
                                             cun_doctor_flag = true;
                                         }
-
                                     }
                                 }
                             }
@@ -601,7 +607,7 @@
                 && !tr_s[i].innerText.includes('下次随访日期'))
             {
                 // 随访日期
-                if (sf_day)
+                if (sf_day && tiJianDATE_Flag)
                 {
                     let inputs = tr_s[i].getElementsByTagName("input");
                     inputs[0].value = $.cookie("tiJianDate");
@@ -726,22 +732,18 @@
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
 
-            let tiJian_Dll_Flag = true;
-            let suiFang_Dll_Flag = true;
-
 
             let DllButton = "";
 
             let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 80px; z-index: 8888;'>";
-
             let Btm_DllButton = "</div>";
 
             let Br_String = "<div style='height: 4px;'></div>";
 
-            let tiJian_String = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>" +
-                "<div style='height: 4px;'></div>" +
-                "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 80px; height: 22px; text-align:center; color: brown;'>";
+
+            let tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检表</a>";
 
             let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
@@ -751,11 +753,11 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">完善随访</a>";
 
 
-            if (tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String + Br_String + suiFang_String + Btm_DllButton;
-            else if (tiJian_Dll_Flag && !suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String + Btm_DllButton;
-            else if (!tiJian_Dll_Flag && suiFang_Dll_Flag)
+            if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
+                DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Btm_DllButton;
+            else if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
+                DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + Btm_DllButton;
+            else if (!tiJianDATE_Flag && !tiJian_Dll_Flag && suiFang_Dll_Flag)
                 DllButton = Pre_DllButton + suiFang_String + Btm_DllButton;
 
 
