@@ -29,6 +29,8 @@
     const next_sf_day = false;          // 下一次随访日期
     const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
 
+    const special_next_sf_day_value = "2024-05-30";    // 下一次随访日期值
+
 
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
@@ -739,6 +741,29 @@
     }
 
 
+    // =========Function-4====sf-day=============
+    function sfDay()
+    {
+        console.log("已进入-专业修改随访日期函数");
+
+
+        let tr_s = $('tr');     // 找table中的一行tr
+        for (let i = 0; i < tr_s.length; i++)
+        {
+            if (tr_s[i].innerText.includes('下次随访日期'))
+            {
+                // 下一次随访日期
+
+                let inputs = tr_s[i].getElementsByTagName("input");
+                inputs[0].value = special_next_sf_day_value;
+                inputs[0].dispatchEvent(fkVueEvent_change);
+            }
+
+        }
+
+    }
+
+
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
@@ -768,12 +793,17 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
 
 
+            let sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
+
+
+
             if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Btm_DllButton;
+                DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
             else if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + Btm_DllButton;
+                DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
             else if (!tiJianDATE_Flag && !tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + suiFang_String + Btm_DllButton;
+                DllButton = Pre_DllButton + suiFang_String  + sfDayString + Btm_DllButton;
 
 
             $("body").append(DllButton);
@@ -799,6 +829,11 @@
             $("#suiFangResult_a").click(function ()
             {
                 suiFangResult();
+            });
+
+            $("#sfDay_a").click(function ()
+            {
+                sfDay();
             });
 
         }
