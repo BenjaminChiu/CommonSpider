@@ -26,6 +26,8 @@
     const sf_day = false;               // 随访日期
     const sf_way = false;               // 随访方式
     const sf_blood_pressure = false;    // 随访血压
+    const next_sf_day = false;          // 下一次随访日期
+    const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
 
 
     // 解决vue页面注入js修改input值，
@@ -623,6 +625,18 @@
                             && !div_s[j].className.includes("checked"))
                             div_s[j].click();
                     }
+                }
+            }
+
+            else if (!(tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
+                && tr_s[i].innerText.includes('下次随访日期'))
+            {
+                // 下一次随访日期
+                if (next_sf_day)
+                {
+                    let inputs = tr_s[i].getElementsByTagName("input");
+                    inputs[0].value = next_sf_day_value;
+                    inputs[0].dispatchEvent(fkVueEvent_change);
                 }
             }
 
