@@ -764,6 +764,157 @@
     }
 
 
+    // ===================生成指定范围内的整数=====================
+    function randomInt(min, max)
+    {
+        return Math.floor(Math.random() * (max - min + 1) + min);
+    }
+
+
+    function templateFun(tr_s, i, randNum, selectNum1, selectNum2)
+    {
+        let divs = tr_s[i].getElementsByTagName("div");
+
+        const the_value_flag = randomInt(0,9) < randNum;
+
+        if (the_value_flag && !divs[selectNum1].className.includes('checked'))
+            divs[selectNum1].click();
+        else if (!the_value_flag && !divs[selectNum2].className.includes('checked'))
+            divs[selectNum2].click();
+    }
+
+
+    // =========Function-5====中医=============
+    function zhongYi()
+    {
+        console.log("已进入-中医保健函数");
+
+
+        // 外部获取 转诊的村医姓名
+        let cun_doctor = get_cun_doctor();
+
+        // 设定一个修改flag
+        let cun_doctor_flag = false;
+
+
+        let tr_s = $('tr');     // 找table中的一行tr
+        for (let i = 0; i < tr_s.length; i++)
+        {
+            if (tr_s[i].innerText.includes('您精力充沛吗'))
+                templateFun(tr_s, i, 6, 3, 2)
+            else if (tr_s[i].innerText.includes('您容易疲乏吗'))
+                templateFun(tr_s, i, 6, 1, 2)
+            else if (tr_s[i].innerText.includes('您容易气短'))
+                templateFun(tr_s, i, 6, 1, 2)
+            else if (tr_s[i].innerText.includes('您说话声音低弱无力吗'))
+                templateFun(tr_s, i, 6, 1, 2)
+            else if (tr_s[i].innerText.includes('您感到闷闷不乐'))
+                templateFun(tr_s, i, 6, 2, 1)
+            else if (tr_s[i].innerText.includes('您容易精神紧张'))
+                templateFun(tr_s, i, 6, 3, 2)
+            else if (tr_s[i].innerText.includes('您因为生活状态改变而感到孤独'))
+                templateFun(tr_s, i, 7, 3, 2)
+            else if (tr_s[i].innerText.includes('您容易感到害怕或受到惊吓吗'))
+                templateFun(tr_s, i, 7, 3, 1)
+            else if (tr_s[i].innerText.includes(')您感到身体超重不轻松吗'))
+                templateFun(tr_s, i, 6, 2, 1)
+            else if (tr_s[i].innerText.includes('您眼睛干涩吗'))
+                templateFun(tr_s, i, 6, 3, 2)
+            else if (tr_s[i].innerText.includes('您手脚发凉吗'))
+                templateFun(tr_s, i, 7, 3, 2)
+            else if (tr_s[i].innerText.includes('背部或腰膝部怕冷吗'))
+                templateFun(tr_s, i, 6, 2, 1)
+            else if (tr_s[i].innerText.includes('您比一般人耐受不了寒冷吗'))
+                templateFun(tr_s, i, 6, 2, 1)
+            else if (tr_s[i].innerText.includes('您容易患感冒吗'))
+                templateFun(tr_s, i, 6, 2, 3)
+            else if (tr_s[i].innerText.includes('您没有感冒时也会鼻塞'))
+                templateFun(tr_s, i, 6, 0, 2)
+            else if (tr_s[i].innerText.includes('您有口粘口腻'))
+                templateFun(tr_s, i, 6, 0, 2)
+            else if (tr_s[i].innerText.includes('花粉或在季节交替'))
+                templateFun(tr_s, i, 8, 0, 1)
+            else if (tr_s[i].innerText.includes('您的皮肤容易起荨麻疹吗'))
+                templateFun(tr_s, i, 6, 0, 1)
+            else if (tr_s[i].innerText.includes('您的皮肤在不知不觉中会出现青紫瘀斑'))
+                templateFun(tr_s, i, 6, 0, 1)
+            else if (tr_s[i].innerText.includes('指被指甲或钝物划过后皮肤的反应'))
+                templateFun(tr_s, i, 6, 0, 2)
+            else if (tr_s[i].innerText.includes('您皮肤或口唇干吗'))
+                templateFun(tr_s, i, 6, 1, 2)
+            else if (tr_s[i].innerText.includes('您有肢体麻木或固定部位疼痛的感觉吗'))
+                templateFun(tr_s, i, 6, 1, 2)
+            else if (tr_s[i].innerText.includes('您面部或鼻部有油腻感或者油亮发光吗'))
+                templateFun(tr_s, i, 7, 1, 0)
+            else if (tr_s[i].innerText.includes('您面色或目眶晦黯'))
+                templateFun(tr_s, i, 6, 0, 1)
+            else if (tr_s[i].innerText.includes('您有皮肤湿疹'))
+                templateFun(tr_s, i, 8, 0, 1)
+            else if (tr_s[i].innerText.includes('您感到口干咽燥、总想喝水吗'))
+                templateFun(tr_s, i, 7, 1, 0)
+            else if (tr_s[i].innerText.includes('您感到口苦或嘴里有异味吗'))
+                templateFun(tr_s, i, 7, 0, 2)
+            else if (tr_s[i].innerText.includes('您腹部肥大吗'))
+                templateFun(tr_s, i, 7, 0, 2)
+            else if (tr_s[i].innerText.includes('凉的东西会感到不舒服或者怕吃'))
+                templateFun(tr_s, i, 5, 2, 3)
+            else if (tr_s[i].innerText.includes('您有大便黏滞不爽'))
+                templateFun(tr_s, i, 6, 1, 3)
+            else if (tr_s[i].innerText.includes('您容易大便干燥吗'))
+                templateFun(tr_s, i, 6, 4, 2)
+            else if (tr_s[i].innerText.includes('您舌苔厚腻或有舌苔厚厚的感觉吗'))
+                templateFun(tr_s, i, 7, 1, 2)
+            else if (tr_s[i].innerText.includes('您舌下静脉瘀紫或增粗吗'))
+                templateFun(tr_s, i, 6, 0, 1)
+
+
+
+            else if (tr_s[i].innerText.includes('医生签名'))
+            {
+                console.log("进入中医保健 医生签名 模块");
+                // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
+                let div_s = tr_s[i].getElementsByTagName("div");
+                for (let j = 0; j < div_s.length; j++)
+                {
+                    if ("combobox" === div_s[j].getAttribute("role"))
+                    {
+                        // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
+                        div_s[j].click();
+                        break;  // 目的达到，结束内循环
+                    }
+                }
+
+
+                // 步骤二：模拟点击选取对应村医生
+                setTimeout(function ()
+                {
+                    let ul_s = $('ul[role="listbox"]');
+                    for (let j = 0; j < ul_s.length; j++)
+                    {
+                        if (ul_s[j].innerText.includes('曹碑镇卫生院'))
+                        {
+                            let li_s = ul_s[j].getElementsByTagName("li");
+                            for (let z = 0; z < li_s.length; z++)
+                            {
+                                // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                    && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停"))
+                                {
+                                    li_s[z].click();
+                                    cun_doctor_flag = true;
+                                }
+
+                            }
+                        }
+                    }
+                }, 500);
+
+            }
+        }
+    }
+
+
+
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
@@ -796,14 +947,26 @@
             let sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
 
+            let zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
 
 
-            if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
-            else if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
-            else if (!tiJianDATE_Flag && !tiJian_Dll_Flag && suiFang_Dll_Flag)
-                DllButton = Pre_DllButton + suiFang_String  + sfDayString + Btm_DllButton;
+
+            //
+            // if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
+            //     DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
+            // if (!tiJianDATE_Flag && !tiJian_Dll_Flag && suiFang_Dll_Flag)
+            //     DllButton = Pre_DllButton + suiFang_String  + sfDayString + Btm_DllButton;
+            //
+            //
+            // if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
+
+            DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String
+                + sfDayString + Br_String + zhongYiString + Btm_DllButton;
+
+
+
+
 
 
             $("body").append(DllButton);
@@ -834,6 +997,11 @@
             $("#sfDay_a").click(function ()
             {
                 sfDay();
+            });
+
+            $("#zhongYi_a").click(function ()
+            {
+                zhongYi();
             });
 
         }
