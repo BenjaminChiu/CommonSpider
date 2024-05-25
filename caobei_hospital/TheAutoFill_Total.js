@@ -8,7 +8,7 @@
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
-// @require      https://cdn.staticfile.org/jquery-cookie/1.4.1/jquery.cookie.min.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
 // @downloadURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.user.js
 // @updateURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.meta.js
 // ==/UserScript==
@@ -18,7 +18,7 @@
     'use strict';
 
     // Function on/off
-    const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
+    const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
     const suiFang_Dll_Flag = true;      // 随访模块
 
@@ -871,6 +871,24 @@
 
             else if (tr_s[i].innerText.includes('医生签名'))
             {
+
+                let inputs = tr_s[i].getElementsByTagName("input");
+
+                inputs[0].value = $.cookie("tiJianDate");
+                inputs[0].dispatchEvent(fkVueEvent_change);
+
+                let now_value = $.cookie("tiJianDate");
+                let now_date = now_value.split("-", 3);
+                now_date[0] = parseInt(now_date[0]) + 1;
+                let new_now_date = now_date[0] + now_date[1] + now_date[2]
+                console.log(new_now_date);
+                inputs[1].value = new_now_date;
+                inputs[1].dispatchEvent(fkVueEvent_change);
+
+
+
+
+
                 console.log("进入中医保健 医生签名 模块");
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
                 let div_s = tr_s[i].getElementsByTagName("div");
@@ -976,6 +994,7 @@
                 $("#tiJianDate")[0].addEventListener("focusout", function ()
                 {
                     $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
+                    console.log("已完成日期cookie插入");
                 });
             }
 
