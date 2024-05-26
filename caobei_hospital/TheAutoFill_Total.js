@@ -790,13 +790,6 @@
         console.log("已进入-中医保健函数");
 
 
-        // 外部获取 转诊的村医姓名
-        let cun_doctor = get_cun_doctor();
-
-        // 设定一个修改flag
-        let cun_doctor_flag = false;
-
-
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i = 0; i < tr_s.length; i++)
         {
@@ -809,7 +802,7 @@
             else if (tr_s[i].innerText.includes('您说话声音低弱无力吗'))
                 templateFun(tr_s, i, 6, 1, 2)
             else if (tr_s[i].innerText.includes('您感到闷闷不乐'))
-                templateFun(tr_s, i, 6, 2, 1)
+                templateFun(tr_s, i, 7, 1, 2)
             else if (tr_s[i].innerText.includes('您容易精神紧张'))
                 templateFun(tr_s, i, 6, 3, 2)
             else if (tr_s[i].innerText.includes('您因为生活状态改变而感到孤独'))
@@ -868,8 +861,26 @@
                 templateFun(tr_s, i, 6, 0, 1)
 
 
+        }
+    }
 
-            else if (tr_s[i].innerText.includes('医生签名'))
+
+    function zhongYi_2()
+    {
+        console.log("已进入-中医保健函数");
+
+
+        // 外部获取 转诊的村医姓名
+        let cun_doctor = get_cun_doctor();
+
+        // 设定一个修改flag
+        let cun_doctor_flag = false;
+
+
+        let tr_s = $('tr');     // 找table中的一行tr
+        for (let i = 0; i < tr_s.length; i++)
+        {
+            if (tr_s[i].innerText.includes('医生签名'))
             {
 
                 let inputs = tr_s[i].getElementsByTagName("input");
@@ -921,7 +932,6 @@
                                     li_s[z].click();
                                     cun_doctor_flag = true;
                                 }
-
                             }
                         }
                     }
@@ -930,8 +940,6 @@
             }
         }
     }
-
-
 
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
@@ -968,6 +976,9 @@
             let zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
 
+            let zhongYiString_2 = "<a id='zhongYi_a_2' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
+
 
 
             //
@@ -980,7 +991,7 @@
             // if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
 
             DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String
-                + sfDayString + Br_String + zhongYiString + Btm_DllButton;
+                + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Btm_DllButton;
 
 
 
@@ -1022,6 +1033,12 @@
             {
                 zhongYi();
             });
+
+            $("#zhongYi_a_2").click(function ()
+            {
+                zhongYi_2();
+            });
+
 
         }
     });
