@@ -161,10 +161,10 @@
         }
         else
         {
-            body_DATA['blood_pressure_high'] = Math.floor(Math.random() * (126 - 102 + 1)) + 102;
-            body_DATA['blood_pressure_low'] = Math.floor(Math.random() * (78 - 64 + 1)) + 64;
-            body_DATA['blood_pressure_high_2'] = Math.floor(Math.random() * (128 - 101 + 1)) + 101;
-            body_DATA['blood_pressure_low_2'] = Math.floor(Math.random() * (79 - 62 + 1)) + 62;
+            body_DATA['blood_pressure_high'] = Math.floor(Math.random() * (119 - 102 + 1)) + 102;
+            body_DATA['blood_pressure_low'] = Math.floor(Math.random() * (72 - 64 + 1)) + 60;
+            body_DATA['blood_pressure_high_2'] = Math.floor(Math.random() * (119 - 101 + 1)) + 100;
+            body_DATA['blood_pressure_low_2'] = Math.floor(Math.random() * (71 - 62 + 1)) + 60;
         }
         return body_DATA;
     }
@@ -332,116 +332,117 @@
                     }
 
 
-                    else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                        }
-                    }
+                    // else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
+                    // {
+                    //     const divs = tr_s[j].getElementsByTagName("div");
+                    //     for (let k = 0; k < divs.length; k++)
+                    //     {
+                    //         if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
+                    //         {
+                    //             divs[k].click();
+                    //         }
+                    //     }
+                    // }
 
 
-                    else if (tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
-                    {
-                        let input_s = tr_s[j].getElementsByTagName("input");
-                        // 尿蛋白
-                        input_s[0].value = "-";
-                        input_s[0].dispatchEvent(fkVueEvent);
-                        input_s[0].dispatchEvent(fkVueEvent_blur);
-                        // 尿糖
-                        input_s[1].value = "-";
-                        input_s[1].dispatchEvent(fkVueEvent);
-                        input_s[1].dispatchEvent(fkVueEvent_blur);
-                    }
-                    else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
-                    {
-                        let input_s = tr_s[j].getElementsByTagName("input");
-                        // 尿酮体
-                        input_s[0].value = "-";
-                        input_s[0].dispatchEvent(fkVueEvent);
-                        input_s[0].dispatchEvent(fkVueEvent_blur);
-                        // 尿潜血
-                        input_s[1].value = "-";
-                        input_s[1].dispatchEvent(fkVueEvent);
-                        input_s[1].dispatchEvent(fkVueEvent_blur);
-                    }
+                    // else if (tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
+                    // {
+                    //     let input_s = tr_s[j].getElementsByTagName("input");
+                    //     // 尿蛋白
+                    //     input_s[0].value = "-";
+                    //     input_s[0].dispatchEvent(fkVueEvent);
+                    //     input_s[0].dispatchEvent(fkVueEvent_blur);
+                    //     // 尿糖
+                    //     input_s[1].value = "-";
+                    //     input_s[1].dispatchEvent(fkVueEvent);
+                    //     input_s[1].dispatchEvent(fkVueEvent_blur);
+                    // }
+                    // else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
+                    // {
+                    //     let input_s = tr_s[j].getElementsByTagName("input");
+                    //     // 尿酮体
+                    //     input_s[0].value = "-";
+                    //     input_s[0].dispatchEvent(fkVueEvent);
+                    //     input_s[0].dispatchEvent(fkVueEvent_blur);
+                    //     // 尿潜血
+                    //     input_s[1].value = "-";
+                    //     input_s[1].dispatchEvent(fkVueEvent);
+                    //     input_s[1].dispatchEvent(fkVueEvent_blur);
+                    // }
 
-                    else if (tr_s[j].innerText.includes("心电图"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                        }
-                    }
-                    else if (tr_s[j].innerText.includes("腹部B超"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                        }
-                    }
+                    // else if (tr_s[j].innerText.includes("心电图"))
+                    // {
+                    //     const divs = tr_s[j].getElementsByTagName("div");
+                    //     for (let k = 0; k < divs.length; k++)
+                    //     {
+                    //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                    //         {
+                    //             divs[k].click();
+                    //         }
+                    //     }
+                    // }
 
-                    else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
-                    {
-                        console.log("慢病备注Debug");
-                        let edit_flag = false;
+                    // else if (tr_s[j].innerText.includes("腹部B超"))
+                    // {
+                    //     const divs = tr_s[j].getElementsByTagName("div");
+                    //     for (let k = 0; k < divs.length; k++)
+                    //     {
+                    //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                    //         {
+                    //             divs[k].click();
+                    //         }
+                    //     }
+                    // }
 
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                                edit_flag = true;
-                            }
-                        }
+                    // else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
+                    // {
+                    //     console.log("慢病备注Debug");
+                    //     let edit_flag = false;
+                    //
+                    //     const divs = tr_s[j].getElementsByTagName("div");
+                    //     for (let k = 0; k < divs.length; k++)
+                    //     {
+                    //         if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
+                    //         {
+                    //             divs[k].click();
+                    //             edit_flag = true;
+                    //         }
+                    //     }
+                    //
+                    //     if (!edit_flag)
+                    //     {
+                    //         setTimeout(function ()
+                    //         {
+                    //             let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                    //             if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
+                    //                 textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
+                    //             if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
+                    //                 textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
+                    //             textarea_s[0].dispatchEvent(fkVueEvent);
+                    //         }, 400);
+                    //     }
+                    // }
 
-                        if (!edit_flag)
-                        {
-                            setTimeout(function ()
-                            {
-                                let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                                if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                                    textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                                if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                                    textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                                textarea_s[0].dispatchEvent(fkVueEvent);
-                            }, 400);
-                        }
-                    }
 
-
-                    else if (tr_s[j].innerText.includes("危险因素控制"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
-                                    || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
-                                && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                        }
-                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        textarea_s[0].value = "预防骨质疏松、预防跌倒";
-                        textarea_s[0].dispatchEvent(fkVueEvent);
-
-                        textarea_s[1].value = "流感疫苗、肺炎疫苗";
-                        textarea_s[1].dispatchEvent(fkVueEvent);
-                    }
+                    // else if (tr_s[j].innerText.includes("危险因素控制"))
+                    // {
+                    //     const divs = tr_s[j].getElementsByTagName("div");
+                    //     for (let k = 0; k < divs.length; k++)
+                    //     {
+                    //         if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
+                    //                 || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
+                    //             && !divs[k].className.includes('checked'))
+                    //         {
+                    //             divs[k].click();
+                    //         }
+                    //     }
+                    //     let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                    //     textarea_s[0].value = "预防骨质疏松、预防跌倒";
+                    //     textarea_s[0].dispatchEvent(fkVueEvent);
+                    //
+                    //     textarea_s[1].value = "流感疫苗、肺炎疫苗";
+                    //     textarea_s[1].dispatchEvent(fkVueEvent);
+                    // }
 
                     else if (tr_s[j].innerText.includes("健康摘要"))
                     {
