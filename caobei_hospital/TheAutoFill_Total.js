@@ -1045,4 +1045,40 @@
     });
 
 
+
+    // 无效注释区
+    // let DllButton = "";
+    //
+    // let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
+    //     "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
+    // let Btm_DllButton = "</div>";
+    //
+    // let Br_String = "<div style='height: 4px;'></div>";
+    //
+    // let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align:center; color: brown;'>";
+    //
+    // let tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
+    //
+    // let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>" +
+    //     "<div style='height: 4px;'></div>" +
+    //     "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
+    //
+    //
+    // let sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
+    //
+    // let zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
+    //
+    // let zhongYiString_2 = "<a id='zhongYi_a_2' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
+
+
+
+
+
+
 })();
