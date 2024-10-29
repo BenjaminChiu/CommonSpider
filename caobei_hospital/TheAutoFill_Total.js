@@ -23,8 +23,8 @@
     const suiFang_Dll_Flag = true;      // 随访模块
 
     // 局部功能开关（随访）
-    const sf_day = false;               // 随访日期
-    const sf_way = false;               // 随访方式
+    const sf_day = true;               // 随访日期
+    const sf_way = true;               // 随访方式
     const sf_blood_pressure = false;    // 随访血压
     const next_sf_day = false;          // 下一次随访日期
     const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
@@ -899,8 +899,6 @@
 
 
 
-
-
                 console.log("进入中医保健 医生签名 模块");
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
                 let div_s = tr_s[i].getElementsByTagName("div");
@@ -942,6 +940,49 @@
         }
     }
 
+
+
+
+    function basicInfo()
+    {
+        console.log("已进入-基本信息修改");
+
+
+        let tr_s = $('tr');     // 找table中的一行tr
+        for (let i = 0; i < tr_s.length; i++)
+        {
+            if (tr_s[i].innerText.includes('工作单位') && tr_s[i].innerText.includes('本人电话'))
+            {
+                let inputs = tr_s[i].getElementsByTagName("input");
+
+                inputs[0].value = "务工";
+                inputs[0].dispatchEvent(fkVueEvent_change);
+
+            }
+            else if (tr_s[i].innerText.includes('医疗费用') && tr_s[i].innerText.includes('支付方式'))
+            {
+                let divs = tr_s[j].getElementsByTagName("div");
+
+                for (let k = 0; k < divs.length; k++)
+                {
+                    if (divs[k].innerText.includes('1城乡居民基本医疗保险')  && !divs[k].className.includes('checked'))
+                    {
+                        divs[k].click();
+                    }
+                    if (divs[k].innerText.includes('3城镇居民基本医疗保险')  && divs[k].className.includes('checked'))
+                    {
+                        divs[k].click();
+                    }
+                }
+            }
+        }
+    }
+
+
+
+
+
+
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
@@ -981,6 +1022,9 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
 
 
+            let basicInfoString = "<a id='basicInfo_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">基信</a>";
+
 
             //
             // if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
@@ -992,7 +1036,7 @@
             // if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
 
             DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String
-                + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Btm_DllButton;
+                + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString + Btm_DllButton;
 
 
 
@@ -1039,6 +1083,12 @@
             {
                 zhongYi_2();
             });
+
+            $("#basicInfo_a").click(function ()
+            {
+                basicInfo();
+            });
+
 
 
         }
