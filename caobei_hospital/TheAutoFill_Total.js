@@ -947,21 +947,24 @@
     {
         console.log("已进入-基本信息修改");
 
+        let edit_flag_job = false;
+
 
         let tr_s = $('tr');     // 找table中的一行tr
         for (let i = 0; i < tr_s.length; i++)
         {
-            if (tr_s[i].innerText.includes('工作单位') && tr_s[i].innerText.includes('本人电话'))
+            if (tr_s[i].innerText.includes('工作单位') && tr_s[i].innerText.includes('本人电话') && edit_flag_job === false)
             {
+                edit_flag_job = true;
                 let inputs = tr_s[i].getElementsByTagName("input");
 
                 inputs[0].value = "务工";
-                inputs[0].dispatchEvent(fkVueEvent_change);
+                inputs[0].dispatchEvent(fkVueEvent);
 
             }
             else if (tr_s[i].innerText.includes('医疗费用') && tr_s[i].innerText.includes('支付方式'))
             {
-                let divs = tr_s[j].getElementsByTagName("div");
+                let divs = tr_s[i].getElementsByTagName("div");
 
                 for (let k = 0; k < divs.length; k++)
                 {
