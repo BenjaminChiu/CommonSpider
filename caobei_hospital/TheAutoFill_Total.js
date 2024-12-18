@@ -7,7 +7,8 @@
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
-// @match        *://*.jdcloud-oss.com/*
+// @match        *://*.ruifumedical.com/*
+// @match        *://*.jd.com/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.js
@@ -990,7 +991,7 @@
         // getPdf('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
         //     'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D');
 
-        const loadingTask = pdfjsLib.getDocument('C:\\Users\\Administrator\\Downloads\\009.pdf');
+        const loadingTask = pdfjsLib.getDocument('https://file.ruifumedical.com/files/result/2024/12/16/W1100844060.pdf');
 
         loadingTask.promise.then(function (pdf)
         {
