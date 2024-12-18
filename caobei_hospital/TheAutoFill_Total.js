@@ -10,16 +10,18 @@
 // @match        *://*.jdcloud-oss.com/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
-// @require      https://raw.githubusercontent.com/BenjaminChiu/CommonSpider/refs/heads/develop/caobei_hospital/pdf.js
+// @require      https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.js
 // @downloadURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.user.js
 // @updateURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.meta.js
 // ==/UserScript==
+
 
 
 (function ()
 {
     'use strict';
 
+    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.10.111/build/pdf.worker.js';
 
 
     // Function on/off
@@ -985,8 +987,12 @@
         // PDFJS.getDocument('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
         //     'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D');
 
-        console.log(PDFJS);
-        console.log(FUCKME);
+        // getPdf('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
+        //     'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D');
+
+        console.log(pdfjsLib.getDocument('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
+                 'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D'));
+
         console.log("Get in the pdfjs successfully.");
     }
 
