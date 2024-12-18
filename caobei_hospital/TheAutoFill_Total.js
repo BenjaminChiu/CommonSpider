@@ -3,19 +3,24 @@
 // @namespace    http://tampermonkey.net/
 // @version      0.3.0.9
 // @description  适用于健康云平台各类表单的数据填充
-// @author       Benjamin Chiu.topfisherman@126.com
+// @author       BenjaminChiu
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
+// @match        *://*.jdcloud-oss.com/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
+// @require      https://raw.githubusercontent.com/BenjaminChiu/CommonSpider/refs/heads/develop/caobei_hospital/pdf.js
 // @downloadURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.user.js
 // @updateURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.meta.js
 // ==/UserScript==
 
+
 (function ()
 {
     'use strict';
+
+
 
     // Function on/off
     const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
@@ -79,10 +84,6 @@
     const u_s = [u_s_1, u_s_2];
 
     const the_final = "清淡饮食，畅情志。";
-
-
-
-
 
 
     // =======Util-1====获取是高血压还是糖尿病随访==========
@@ -332,116 +333,116 @@
                     }
 
 
-                    // else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    // }
+                        // else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
+                        // {
+                        //     const divs = tr_s[j].getElementsByTagName("div");
+                        //     for (let k = 0; k < divs.length; k++)
+                        //     {
+                        //         if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
+                        //         {
+                        //             divs[k].click();
+                        //         }
+                        //     }
+                        // }
 
 
-                    // else if (tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
-                    // {
-                    //     let input_s = tr_s[j].getElementsByTagName("input");
-                    //     // 尿蛋白
-                    //     input_s[0].value = "-";
-                    //     input_s[0].dispatchEvent(fkVueEvent);
-                    //     input_s[0].dispatchEvent(fkVueEvent_blur);
-                    //     // 尿糖
-                    //     input_s[1].value = "-";
-                    //     input_s[1].dispatchEvent(fkVueEvent);
-                    //     input_s[1].dispatchEvent(fkVueEvent_blur);
-                    // }
-                    // else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
-                    // {
-                    //     let input_s = tr_s[j].getElementsByTagName("input");
-                    //     // 尿酮体
-                    //     input_s[0].value = "-";
-                    //     input_s[0].dispatchEvent(fkVueEvent);
-                    //     input_s[0].dispatchEvent(fkVueEvent_blur);
-                    //     // 尿潜血
-                    //     input_s[1].value = "-";
-                    //     input_s[1].dispatchEvent(fkVueEvent);
-                    //     input_s[1].dispatchEvent(fkVueEvent_blur);
-                    // }
+                        // else if (tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
+                        // {
+                        //     let input_s = tr_s[j].getElementsByTagName("input");
+                        //     // 尿蛋白
+                        //     input_s[0].value = "-";
+                        //     input_s[0].dispatchEvent(fkVueEvent);
+                        //     input_s[0].dispatchEvent(fkVueEvent_blur);
+                        //     // 尿糖
+                        //     input_s[1].value = "-";
+                        //     input_s[1].dispatchEvent(fkVueEvent);
+                        //     input_s[1].dispatchEvent(fkVueEvent_blur);
+                        // }
+                        // else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
+                        // {
+                        //     let input_s = tr_s[j].getElementsByTagName("input");
+                        //     // 尿酮体
+                        //     input_s[0].value = "-";
+                        //     input_s[0].dispatchEvent(fkVueEvent);
+                        //     input_s[0].dispatchEvent(fkVueEvent_blur);
+                        //     // 尿潜血
+                        //     input_s[1].value = "-";
+                        //     input_s[1].dispatchEvent(fkVueEvent);
+                        //     input_s[1].dispatchEvent(fkVueEvent_blur);
+                        // }
 
-                    // else if (tr_s[j].innerText.includes("心电图"))
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    // }
+                        // else if (tr_s[j].innerText.includes("心电图"))
+                        // {
+                        //     const divs = tr_s[j].getElementsByTagName("div");
+                        //     for (let k = 0; k < divs.length; k++)
+                        //     {
+                        //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                        //         {
+                        //             divs[k].click();
+                        //         }
+                        //     }
+                        // }
 
-                    // else if (tr_s[j].innerText.includes("腹部B超"))
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    // }
+                        // else if (tr_s[j].innerText.includes("腹部B超"))
+                        // {
+                        //     const divs = tr_s[j].getElementsByTagName("div");
+                        //     for (let k = 0; k < divs.length; k++)
+                        //     {
+                        //         if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                        //         {
+                        //             divs[k].click();
+                        //         }
+                        //     }
+                        // }
 
-                    // else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
-                    // {
-                    //     console.log("慢病备注Debug");
-                    //     let edit_flag = false;
-                    //
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //             edit_flag = true;
-                    //         }
-                    //     }
-                    //
-                    //     if (!edit_flag)
-                    //     {
-                    //         setTimeout(function ()
-                    //         {
-                    //             let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                    //             if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                    //                 textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                    //             if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                    //                 textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                    //             textarea_s[0].dispatchEvent(fkVueEvent);
-                    //         }, 400);
-                    //     }
-                    // }
+                        // else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
+                        // {
+                        //     console.log("慢病备注Debug");
+                        //     let edit_flag = false;
+                        //
+                        //     const divs = tr_s[j].getElementsByTagName("div");
+                        //     for (let k = 0; k < divs.length; k++)
+                        //     {
+                        //         if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
+                        //         {
+                        //             divs[k].click();
+                        //             edit_flag = true;
+                        //         }
+                        //     }
+                        //
+                        //     if (!edit_flag)
+                        //     {
+                        //         setTimeout(function ()
+                        //         {
+                        //             let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        //             if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
+                        //                 textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
+                        //             if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
+                        //                 textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
+                        //             textarea_s[0].dispatchEvent(fkVueEvent);
+                        //         }, 400);
+                        //     }
+                        // }
 
 
-                    // else if (tr_s[j].innerText.includes("危险因素控制"))
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
-                    //                 || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
-                    //             && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    //     let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                    //     textarea_s[0].value = "预防骨质疏松、预防跌倒";
-                    //     textarea_s[0].dispatchEvent(fkVueEvent);
-                    //
-                    //     textarea_s[1].value = "流感疫苗、肺炎疫苗";
-                    //     textarea_s[1].dispatchEvent(fkVueEvent);
+                        // else if (tr_s[j].innerText.includes("危险因素控制"))
+                        // {
+                        //     const divs = tr_s[j].getElementsByTagName("div");
+                        //     for (let k = 0; k < divs.length; k++)
+                        //     {
+                        //         if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
+                        //                 || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
+                        //             && !divs[k].className.includes('checked'))
+                        //         {
+                        //             divs[k].click();
+                        //         }
+                        //     }
+                        //     let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                        //     textarea_s[0].value = "预防骨质疏松、预防跌倒";
+                        //     textarea_s[0].dispatchEvent(fkVueEvent);
+                        //
+                        //     textarea_s[1].value = "流感疫苗、肺炎疫苗";
+                        //     textarea_s[1].dispatchEvent(fkVueEvent);
                     // }
 
                     else if (tr_s[j].innerText.includes("健康摘要"))
@@ -622,7 +623,7 @@
                 if (sf_way)
                 {
                     let div_s = tr_s[i].getElementsByTagName("div");
-                    for (let j=0; j < div_s.length; j++)
+                    for (let j = 0; j < div_s.length; j++)
                     {
                         if (div_s[j].innerText.includes("2家庭") && div_s[j].className.includes("ant-tag-checkable")
                             && !div_s[j].className.includes("checked"))
@@ -776,7 +777,7 @@
     {
         let divs = tr_s[i].getElementsByTagName("div");
 
-        const the_value_flag = randomInt(0,9) < randNum;
+        const the_value_flag = randomInt(0, 9) < randNum;
 
         if (the_value_flag && !divs[selectNum1].className.includes('checked'))
             divs[selectNum1].click();
@@ -898,7 +899,6 @@
                 inputs[1].dispatchEvent(fkVueEvent_change);
 
 
-
                 console.log("进入中医保健 医生签名 模块");
                 // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
                 let div_s = tr_s[i].getElementsByTagName("div");
@@ -941,8 +941,6 @@
     }
 
 
-
-
     function basicInfo()
     {
         console.log("已进入-基本信息修改");
@@ -968,17 +966,28 @@
 
                 for (let k = 0; k < divs.length; k++)
                 {
-                    if (divs[k].innerText.includes('1城乡居民基本医疗保险')  && !divs[k].className.includes('checked'))
+                    if (divs[k].innerText.includes('1城乡居民基本医疗保险') && !divs[k].className.includes('checked'))
                     {
                         divs[k].click();
                     }
-                    if (divs[k].innerText.includes('3城镇居民基本医疗保险')  && divs[k].className.includes('checked'))
+                    if (divs[k].innerText.includes('3城镇居民基本医疗保险') && divs[k].className.includes('checked'))
                     {
                         divs[k].click();
                     }
                 }
             }
         }
+    }
+
+
+    function pdfGetDATA()
+    {
+        // PDFJS.getDocument('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
+        //     'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D');
+
+        console.log(PDFJS);
+        console.log(FUCKME);
+        console.log("Get in the pdfjs successfully.");
     }
 
 
@@ -997,53 +1006,44 @@
 
             let DllButton = "";
 
-            let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
+            const Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
-            let Btm_DllButton = "</div>";
+            const Btm_DllButton = "</div>";
 
-            let Br_String = "<div style='height: 4px;'></div>";
+            const Br_String = "<div style='height: 4px;'></div>";
 
-            let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align:center; color: brown;'>";
+            const tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align:center; color: brown;'>";
 
-            let tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            const tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
 
-            let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            const suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>" +
                 "<div style='height: 4px;'></div>" +
                 "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
 
 
-            let sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
-
-            let zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
-
-            let zhongYiString_2 = "<a id='zhongYi_a_2' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
-
-
-            let basicInfoString = "<a id='basicInfo_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">基信</a>";
-
-
+            // const sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
             //
-            // if (!tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
-            //     DllButton = Pre_DllButton + tiJian_String_2 + Br_String + suiFang_String + sfDayString + Btm_DllButton;
-            // if (!tiJianDATE_Flag && !tiJian_Dll_Flag && suiFang_Dll_Flag)
-            //     DllButton = Pre_DllButton + suiFang_String  + sfDayString + Btm_DllButton;
+            // const zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
+            //
+            // const zhongYiString_2 = "<a id='zhongYi_a_2' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
             //
             //
-            // if (tiJianDATE_Flag && tiJian_Dll_Flag && suiFang_Dll_Flag)
+            // const basicInfoString = "<a id='basicInfo_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">基信</a>";
 
-            DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String
-                + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString + Btm_DllButton;
-
-
+            // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
 
 
+            const PDF_String = "<a id='PDF_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">PDF</a>";
+
+            DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String + PDF_String + Btm_DllButton;
 
 
             $("body").append(DllButton);
@@ -1092,46 +1092,14 @@
                 basicInfo();
             });
 
+            $('#PDF_a').click(function ()
+            {
+                pdfGetDATA();
+            });
 
 
         }
     });
-
-
-
-    // 无效注释区
-    // let DllButton = "";
-    //
-    // let Pre_DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
-    //     "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
-    // let Btm_DllButton = "</div>";
-    //
-    // let Br_String = "<div style='height: 4px;'></div>";
-    //
-    // let tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align:center; color: brown;'>";
-    //
-    // let tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
-    //
-    // let suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>" +
-    //     "<div style='height: 4px;'></div>" +
-    //     "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
-    //
-    //
-    // let sfDayString = "<a id='sfDay_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">sfDay</a>";
-    //
-    // let zhongYiString = "<a id='zhongYi_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医</a>";
-    //
-    // let zhongYiString_2 = "<a id='zhongYi_a_2' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-    //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
-
-
-
-
 
 
 })();
