@@ -1,0 +1,24 @@
+{
+  "manifest_version": 2,
+  "name": "辅检数据获取器",
+  "version": "1.0",
+  "description": "从检测报告中获取病历辅检数据",
+  "permissions": ["activeTab"],
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "browser_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "./favicon.ico",
+      "48": "./favicon.ico",
+      "128": "./favicon.ico"
+    }
+  },
+  "icons": {
+    "16": "./favicon.ico",
+    "48": "./favicon.ico",
+    "128": "./favicon.ico"
+  }
+}
