@@ -990,8 +990,23 @@
         // getPdf('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
         //     'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D');
 
-        console.log(pdfjsLib.getDocument('https://eicore-invoice-24.s3.cn-north-1.jdcloud-oss.com/digital-invoice/digital_24947200000022571933.pdf?' +
-                 'AWSAccessKeyId=JDC_8007B4FE0EE6947B08A911AD2BAD&Expires=2679021790&Signature=L8HY4FQmVy2bPxb2TvcmT2RYR1M%3D'));
+        const loadingTask = pdfjsLib.getDocument('C:\\Users\\Administrator\\Downloads\\009.pdf');
+
+        loadingTask.promise.then(function (pdf)
+        {
+            // pdf is the loaded PDF document
+            console.log("PDF loaded successfully:", pdf);
+
+            // Access the number of pages
+            console.log("Number of pages:", pdf.numPages);
+
+            // Get a specific page
+            pdf.getPage(1).then(function (page) {
+                // page is the loaded page object
+                console.log("Page 1 loaded:", page);
+            });
+        });
+
 
         console.log("Get in the pdfjs successfully.");
     }
