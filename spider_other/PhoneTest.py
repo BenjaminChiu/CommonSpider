@@ -80,18 +80,12 @@ def get_request(mobile, p_index):
             status = '风险号'
 
 
-        # write_excel(The_excel, The_excel_active, p_index+2, 13, area)
-        # write_excel(The_excel, The_excel_active, p_index+2, 14, channel)
-        # write_excel(The_excel, The_excel_active, p_index+2, 15, status)
-
         The_excel_active.cell(p_index+2, 13, area)
         The_excel_active.cell(p_index+2, 14, channel)
         The_excel_active.cell(p_index+2, 15, status)
 
-
     else:
         The_excel_active.cell(p_index + 2, 15, 'None')
-        # write_excel(The_excel, The_excel_active, p_index+2, 15, 'None')
 
     # if p_index % 10 == 0:
     The_excel.save(excel_path)
