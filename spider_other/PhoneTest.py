@@ -67,21 +67,21 @@ def get_request(mobile, p_index):
 
     content = json.loads(pre_content)
 
-    if (content['code'] == 200):
+    if content['code'] == 200:
         area = (content['data'])['area']
         channel = (content['data'])['channel']
         status = (content['data'])['status']
-        if (status == 0):
+        if status == 0:
             status = '空号'
-        elif (status == 1):
+        elif status == 1:
             status = '实号'
-        elif (status == 2):
+        elif status == 2:
             status = '停机'
-        elif (status == 3):
+        elif status == 3:
             status = '查无此号'
-        elif (status == 4):
+        elif status == 4:
             status = '沉默号'
-        elif (status == 5):
+        elif status == 5:
             status = '风险号'
 
         # 将结果存入一个数组保存起来
