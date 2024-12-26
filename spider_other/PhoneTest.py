@@ -10,7 +10,7 @@ import urllib, sys, ssl, openpyxl
 import pandas as pd
 from openpyxl.reader.excel import load_workbook
 
-excel_path = "C:\\Users\\Administrator\\Desktop\\source.xlsx"
+excel_path = "C:\\Users\\Administrator\\Desktop\\Temp.xlsx"
 The_excel = load_workbook(excel_path)
 The_excel_active = The_excel.active
 
@@ -21,7 +21,7 @@ The_excel_active = The_excel.active
 
 
 def read_excel():
-    df = pd.read_excel(excel_path, usecols=['Tel'])
+    df = pd.read_excel(excel_path, usecols=['Tel', 'Area', 'Channel', 'Result'])
     phone_array = []
 
     for single_array in df.values:
@@ -44,6 +44,11 @@ def get_request(mobile, p_index):
     if ("825" == str(mobile)[:3]):
         mobile = "0" + str(mobile)
 
+
+    # 因为待查询的数据里有重复的电话号码，没有必要再一次去查询。
+    # 请求前，先去已查询过的数组里，查找结果
+
+
     print(mobile)
     url = host + path + '?mobile=' + str(mobile)
     print(url)
@@ -58,7 +63,7 @@ def get_request(mobile, p_index):
     response = urllib.request.urlopen(my_request, context=ctx)
     pre_content = response.read().decode('utf-8')
     print(pre_content)
-    print("当前任务进度：" + str(p_index) + "/4335")
+    print("当前任务进度：" + str(p_index+2) + "/4335")
 
     content = json.loads(pre_content)
 
@@ -79,6 +84,8 @@ def get_request(mobile, p_index):
         elif (status == 5):
             status = '风险号'
 
+        # 将结果存入一个数组保存起来
+        # 以备用来让后来的待查电话来 查询
 
         The_excel_active.cell(p_index+2, 13, area)
         The_excel_active.cell(p_index+2, 14, channel)
@@ -87,6 +94,8 @@ def get_request(mobile, p_index):
     else:
         The_excel_active.cell(p_index + 2, 15, 'None')
 
+    # 本质是每10个保存一次
+    # 修改为在快要结束的时候，改为查询一个，保存一个
     # if p_index % 10 == 0:
     The_excel.save(excel_path)
 
@@ -98,8 +107,11 @@ if __name__ == '__main__':
 
     phone_array = read_excel()
 
-    for index in range(len(phone_array)):
-        get_request(phone_array[index], index)
+    message = input("Input 'Y' for testing.\n")
+    print(message)
 
-
-    The_excel.close()
+    # for index in range(len(phone_array)):
+    #     get_request(phone_array[index], index)
+    #
+    #
+    # The_excel.close()
