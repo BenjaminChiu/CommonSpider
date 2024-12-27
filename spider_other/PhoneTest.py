@@ -14,6 +14,12 @@ excel_path = "C:\\Users\\Administrator\\Desktop\\Temp.xlsx"
 The_excel = load_workbook(excel_path)
 The_excel_active = The_excel.active
 
+# 已经查询并获得结果的 电话及其相关信息
+result_tel = []
+# 用于存放单个电话与信息的容器
+item_tel = []
+
+
 
 # def write_excel(excel, excel_active, row, col, result):
 #     excel_active.cell(row, col, result)
@@ -84,12 +90,19 @@ def get_request(mobile, p_index):
         elif status == 5:
             status = '风险号'
 
-        # 将结果存入一个数组保存起来
-        # 以备用来让后来的待查电话来 查询
+        # 1. 以备用来让后来的待查电话来 先查询
 
+        # 2. 之间容器没有内容，再将结果存入一个数组保存起来
+        item_tel = [str(mobile), area, channel, status]
+        result_tel.append(item_tel)
+
+        # 写入excel
         The_excel_active.cell(p_index+2, 13, area)
         The_excel_active.cell(p_index+2, 14, channel)
         The_excel_active.cell(p_index+2, 15, status)
+
+
+
 
     else:
         The_excel_active.cell(p_index + 2, 15, 'None')
