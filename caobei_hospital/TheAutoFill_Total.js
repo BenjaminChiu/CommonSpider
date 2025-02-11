@@ -1062,10 +1062,10 @@
             // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
 
 
-            const PDF_String = "<a id='PDF_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">PDF</a>";
+            // const PDF_String = "<a id='PDF_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">PDF</a>";
 
-            DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String + PDF_String + Btm_DllButton;
+            DllButton = Pre_DllButton + tiJian_String_1 + Br_String + tiJian_String_2 + Br_String + suiFang_String + Br_String + Btm_DllButton;
 
 
             $("body").append(DllButton);
@@ -1114,10 +1114,6 @@
                 basicInfo();
             });
 
-            $('#PDF_a').click(function ()
-            {
-                pdfGetDATA();
-            });
 
 
         }
