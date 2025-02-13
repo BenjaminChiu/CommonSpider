@@ -1014,9 +1014,6 @@
 
 
 
-
-
-
     // 程序入口
     document.addEventListener("keydown", function (fuckEvent)
     {
@@ -1118,6 +1115,10 @@
 
         }
     });
+
+    // we have a test.
+
+
 
 
 })();
