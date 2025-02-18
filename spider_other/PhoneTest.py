@@ -126,5 +126,4 @@ if __name__ == '__main__':
     # for index in range(len(phone_array)):
     #     get_request(phone_array[index], index)
     #
-    #
     # The_excel.close()
