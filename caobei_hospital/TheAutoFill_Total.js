@@ -22,9 +22,6 @@
 {
     'use strict';
 
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@3.10.111/build/pdf.worker.js';
-
-
     // Function on/off
     const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
