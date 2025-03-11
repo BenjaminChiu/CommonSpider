@@ -22,20 +22,6 @@
 {
     'use strict';
 
-    // Function on/off
-    const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
-    const tiJian_Dll_Flag = true;       // 体检表填充
-    const suiFang_Dll_Flag = true;      // 随访模块
-
-    // 局部功能开关（随访）
-    const sf_day = true;               // 随访日期
-    const sf_way = true;               // 随访方式
-    const sf_blood_pressure = false;    // 随访血压
-    const next_sf_day = false;          // 下一次随访日期
-    const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
-
-    const special_next_sf_day_value = "2024-05-30";    // 下一次随访日期值
-
 
     // 解决vue页面注入js修改input值，
     // 只有当接收到键盘的按键(随便哪个键盘的按键消息)，才会触发input和change事件,进而把输入框中的value赋值给预设的相关变量，到这一步才算走完整个设置value的过程。
@@ -44,29 +30,6 @@
     // fkVueEvent.initEvent("input", true, true);//如果是select选择框把"input"改成"change"
     // fkVueEvent.eventType = 'message';
     const fkVueEvent = new Event("input", {view: window, bubbles: true, cancelable: false});
-    const fkVueEvent_blur = new Event("blur", {view: window, bubbles: true, cancelable: false});
-    const fkVueEvent_change = new Event("change", {view: window, bubbles: true, cancelable: false});
-    // js原生鼠标点击
-    // const click_Event = new MouseEvent('click', {'view': window, 'bubbles': true, 'cancelable': true});
-
-
-    // 字典 村医的联系方式
-    const cun_doctor_tel = {
-        "王祥茂": "13547784526",
-        "胥德顺": "13882507277",
-        "王晏": "15108117003",
-        "覃蒲昌": "15082588136",
-        "蒲兴周": "15181944660",
-        "付建兴": "13882549411",
-        "任朝龙": "15182548314",
-        "胥学领": "15388349328",
-        "蒲泽华": "15983086284",
-        "王平": "18980189346",
-        "廖先志": "19827454586",
-        "杨荣": "15328520078",
-        "赵中全": "15108117301",
-        "王军": "18280866037"
-    };
 
 
     const the_final = "合理膳食，饮食清淡，吃动平衡，舒畅心态。";
