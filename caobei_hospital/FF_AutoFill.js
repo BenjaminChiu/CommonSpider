@@ -98,7 +98,8 @@
         let body_DATA = {
             'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
             'pulse_rate': Math.floor(Math.random() * (82 - 64 + 1)) + 64,
-            'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16
+            'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
+            'SpO2': Math.floor(Math.random() * (98 - 96 + 1)) + 96
         }
 
         // 传入高血压患者
@@ -203,6 +204,12 @@
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_DATA['respiratory_rate'].toString();
+                        inputs[0].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("SpO2"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['SpO2'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
                     }
 
