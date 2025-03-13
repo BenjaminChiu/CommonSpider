@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         云平台自动化脚本
 // @namespace    http://tampermonkey.net/
-// @version      0.3.0.9
+// @version      0.9.0.9
 // @description  适用于健康云平台各类表单的数据填充
 // @author       BenjaminChiu
 // @license MIT
@@ -23,9 +23,9 @@
     'use strict';
 
     // 左侧大功能 开关
-    const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
+    const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
-    const suiFang_Dll_Flag = true;      // 随访模块
+    const suiFang_Dll_Flag = false;      // 随访模块
 
     // 体检 功能开关
     const yb_tj = false;        // 一般体检开关
@@ -34,8 +34,8 @@
 
 
     // 随访 功能开关
-    const sf_day = true;               // 随访日期 是否填充
-    const sf_way = true;               // 随访方式
+    const sf_day = false;               // 随访日期 是否填充
+    const sf_way = false;               // 随访方式
     const sf_blood_pressure = false;    // 随访血压
 
     const next_sf_day = false;          // 下一次随访日期
@@ -997,14 +997,9 @@
 
             if (tiJianDATE_Flag)
             {
-                const tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' style='width: 70px; height: 22px; text-align: center; color: brown;'>";
+                const tiJian_String_1 = "<input id = 'tiJianDate' placeholder='体检日期' value='" + $.cookie("tiJianDate") + "' " +
+                    "style='width: 70px; height: 22px; text-align: center; color: brown;'>";
                 DllButton = DllButton + tiJian_String_1
-
-                $("#tiJianDate")[0].addEventListener("focusout", function ()
-                {
-                    $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
-                    console.log("已完成日期cookie插入");
-                });
             }
 
             if (tiJian_Dll_Flag)
@@ -1012,37 +1007,46 @@
                 const tiJian_String_2 = "<a id='tiJian_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
                 DllButton = DllButton + tiJian_String_2;
-
-                $("#tiJian_a").click(function ()
-                {
-                    tiJian();
-                });
             }
 
 
             if(suiFang_Dll_Flag)
             {
-                const suiFang_String = "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                    " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>" +
-                    "<div style='height: 4px;'></div>" +
+                const suiFang_String =
                     "<a id='suiFangResult_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-                    " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>";
+                    " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">随访</a>" +
+                    "<a id='zhuanzhen_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                    " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">转诊</a>";
                 DllButton = DllButton + suiFang_String;
-
-                $("#zhuanzhen_a").click(function ()
-                {
-                    zhuanZhen();
-                });
-
-                $("#suiFangResult_a").click(function ()
-                {
-                    suiFangResult();
-                });
             }
 
 
             DllButton = DllButton + "</div>";
             $("body").append(DllButton);
+
+
+
+            $("#tiJianDate")[0].addEventListener("focusout", function ()
+            {
+                $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
+                console.log("已完成日期cookie插入");
+            });
+
+            $("#tiJian_a").click(function ()
+            {
+                tiJian();
+            });
+
+            $("#zhuanzhen_a").click(function ()
+            {
+                zhuanZhen();
+            });
+
+            $("#suiFangResult_a").click(function ()
+            {
+                suiFangResult();
+            });
+
 
 
 
@@ -1058,16 +1062,9 @@
             //
             // const basicInfoString = "<a id='basicInfo_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
             //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">基信</a>";
-
             // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
-
-
             // const PDF_String = "<a id='PDF_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
             //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">PDF</a>";
-
-
-
-
             // $("#sfDay_a").click(function ()
             // {
             //     sfDay();
