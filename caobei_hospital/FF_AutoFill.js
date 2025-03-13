@@ -254,17 +254,6 @@
                     }
 
 
-                    // else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    // }
 
                     else if (tr_s[j].innerText.includes("危险因素控制"))
                     {
