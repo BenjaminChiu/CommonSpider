@@ -783,8 +783,6 @@
     //     else if (!the_value_flag && !divs[selectNum2].className.includes('checked'))
     //         divs[selectNum2].click();
     // }
-
-
     // =========Function-5====中医=============
     // function zhongYi()
     // {
@@ -864,7 +862,6 @@
     //
     //     }
     // }
-
     // function zhongYi_2()
     // {
     //     console.log("已进入-中医保健函数");
@@ -937,7 +934,6 @@
     //         }
     //     }
     // }
-
     // function basicInfo()
     // {
     //     console.log("已进入-基本信息修改");
@@ -1008,7 +1004,6 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">体检</a>";
                 DllButton = DllButton + tiJian_String_2;
             }
-
 
             if(suiFang_Dll_Flag)
             {
