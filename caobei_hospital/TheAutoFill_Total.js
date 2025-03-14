@@ -30,7 +30,7 @@
     // 体检 功能开关
     const yb_tj = false;        // 一般体检开关
     const yb_tj_xy = false;     // 子开关 / 一般体检中的血压开关
-    const sh_tj = false;        // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const sh_tj = true;        // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -376,6 +376,7 @@
 
                     else if (sh_tj && tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
                     {
+                        console.log("进入尿功能！")
                         let input_s = tr_s[j].getElementsByTagName("input");
                         // 尿蛋白
                         input_s[0].value = "-";
@@ -1021,26 +1022,37 @@
 
 
 
-            $("#tiJianDate")[0].addEventListener("focusout", function ()
+            if (tiJianDATE_Flag)
             {
-                $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
-                console.log("已完成日期cookie插入");
-            });
+                $("#tiJianDate")[0].addEventListener("focusout", function ()
+                {
+                    $.cookie('tiJianDate', $("#tiJianDate")[0].value, {expires: 365, path: '/'});
+                    console.log("已完成日期cookie插入");
+                });
+            }
 
-            $("#tiJian_a").click(function ()
+            if (tiJian_Dll_Flag)
             {
-                tiJian();
-            });
+                $("#tiJian_a").click(function ()
+                {
+                    tiJian();
+                });
+            }
 
-            $("#zhuanzhen_a").click(function ()
-            {
-                zhuanZhen();
-            });
 
-            $("#suiFangResult_a").click(function ()
+            if(suiFang_Dll_Flag)
             {
-                suiFangResult();
-            });
+                $("#zhuanzhen_a").click(function ()
+                {
+                    zhuanZhen();
+                });
+
+                $("#suiFangResult_a").click(function ()
+                {
+                    suiFangResult();
+                });
+            }
+
 
 
 
