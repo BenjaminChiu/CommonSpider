@@ -7,11 +7,9 @@
 // @license MIT
 // @icon         https://ehr.scwjxx.cn/favicon.ico
 // @match        *://*.scwjxx.cn/*
-// @match        *://*.ruifumedical.com/*
 // @match        *://*.jd.com/*
 // @require      https://cdn.staticfile.org/jquery/3.5.1/jquery.min.js
 // @require      https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js
-// @require      https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.10.111/pdf.js
 // @downloadURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.user.js
 // @updateURL https://update.greasyfork.org/scripts/460223/%E4%BA%91%E5%B9%B3%E5%8F%B0%E8%87%AA%E5%8A%A8%E5%8C%96%E8%84%9A%E6%9C%AC.meta.js
 // ==/UserScript==
@@ -25,7 +23,7 @@
     // 左侧大功能 开关
     const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
-    const suiFang_Dll_Flag = false;      // 随访模块
+    const suiFang_Dll_Flag = true;      // 随访模块
 
     // 体检 功能开关
     const yb_tj = false;        // 一般体检开关
@@ -38,9 +36,10 @@
     const sf_way = false;               // 随访方式
     const sf_blood_pressure = false;    // 随访血压
 
-    const next_sf_day = false;          // 下一次随访日期
-    const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
-    const special_next_sf_day_value = "2024-05-30";    // 下一次随访日期值
+    // 暂时废弃功能
+    // const next_sf_day = false;          // 下一次随访日期
+    // const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
+    // const special_next_sf_day_value = "2024-05-30";    // 下一次随访日期值
 
 
     // 解决vue页面注入js修改input值，
@@ -635,17 +634,18 @@
                 }
             }
 
-            else if (!(tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
-                && tr_s[i].innerText.includes('下次随访日期'))
-            {
-                // 下一次随访日期
-                if (next_sf_day)
-                {
-                    let inputs = tr_s[i].getElementsByTagName("input");
-                    inputs[0].value = next_sf_day_value;
-                    inputs[0].dispatchEvent(fkVueEvent_change);
-                }
-            }
+            // 废弃功能：
+            // else if (!(tr_s[i].innerText.includes('随访日期') || tr_s[i].innerText.includes('随访方式'))
+            //     && tr_s[i].innerText.includes('下次随访日期'))
+            // {
+            //     // 下一次随访日期
+            //     if (next_sf_day)
+            //     {
+            //         let inputs = tr_s[i].getElementsByTagName("input");
+            //         inputs[0].value = next_sf_day_value;
+            //         inputs[0].dispatchEvent(fkVueEvent_change);
+            //     }
+            // }
 
             else if (tr_s[i].innerText.includes('血压') && sf_blood_pressure)
             {
