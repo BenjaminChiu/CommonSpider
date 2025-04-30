@@ -746,27 +746,27 @@
     }
 
 
-    // =========Function-4====sf-day=============
-    function sfDay()
-    {
-        console.log("已进入-专业修改随访日期函数");
-
-
-        let tr_s = $('tr');     // 找table中的一行tr
-        for (let i = 0; i < tr_s.length; i++)
-        {
-            if (tr_s[i].innerText.includes('下次随访日期'))
-            {
-                // 下一次随访日期
-
-                let inputs = tr_s[i].getElementsByTagName("input");
-                inputs[0].value = special_next_sf_day_value;
-                inputs[0].dispatchEvent(fkVueEvent_change);
-            }
-
-        }
-
-    }
+    // ====废弃函数=====Function-4====sf-day=============
+    // function sfDay()
+    // {
+    //     console.log("已进入-专业修改随访日期函数");
+    //
+    //
+    //     let tr_s = $('tr');     // 找table中的一行tr
+    //     for (let i = 0; i < tr_s.length; i++)
+    //     {
+    //         if (tr_s[i].innerText.includes('下次随访日期'))
+    //         {
+    //             // 下一次随访日期
+    //
+    //             let inputs = tr_s[i].getElementsByTagName("input");
+    //             inputs[0].value = special_next_sf_day_value;
+    //             inputs[0].dispatchEvent(fkVueEvent_change);
+    //         }
+    //
+    //     }
+    //
+    // }
 
 
 
