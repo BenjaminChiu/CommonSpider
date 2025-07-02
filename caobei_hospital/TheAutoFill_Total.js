@@ -24,6 +24,7 @@
     const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
     const suiFang_Dll_Flag = true;      // 随访模块
+    const jksc_Flag = true;      // 健康筛查
 
     // 体检 功能开关
     const yb_tj = false;        // 一般体检开关
@@ -169,6 +170,10 @@
             body_DATA['blood_pressure_high_2'] = Math.floor(Math.random() * (119 - 101 + 1)) + 100;
             body_DATA['blood_pressure_low_2'] = Math.floor(Math.random() * (71 - 62 + 1)) + 60;
         }
+
+        // 一个正常的随机血糖值
+        body_DATA['blood_glucose'] = (Math.random() * (6.3 - 5.1) + 5.1).toFixed(1);
+
         return body_DATA;
     }
 
@@ -746,6 +751,200 @@
     }
 
 
+    // =========Function-4====健康筛查_读取=============
+    function JKSC_Read()
+    {
+        console.log("使用健康筛查读取功能.");
+
+        let read_flag = false;
+
+        let form_s = $('form');
+        for (let i = 0; i < form_s.length; i++)
+        {
+            // 找到了目标form表单
+            if (form_s[i].innerText.includes('体检日期') && form_s[i].innerText.includes('责任医生') && !read_flag)
+            {
+                read_flag = true;   // 只读一次
+
+                // 获取所有行，并且遍历所有行
+                // const tr_s = form_s[i].getElementsByTagName("tr");
+                let tr_s = document.getElementsByTagName("tr");
+                for (let j = 0; j < tr_s.length; j++)
+                {
+                    if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        const man_height = inputs[0].value;
+                        const man_weight = inputs[1].value;
+
+                        console.log("身高：" + man_height + "\n体重：" + man_weight);
+                        $.cookie('man_height', man_height, {expires: 365, path: '/'});
+                        $.cookie('man_weight', man_weight, {expires: 365, path: '/'});
+                    }
+                    else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        const waistline = inputs[0].value;
+
+                        console.log("腰围：" + waistline);
+                        $.cookie('waistline', waistline, {expires: 365, path: '/'});
+                    }
+
+                }
+            }
+        }
+
+        alert("身高、体重、腰围已读取成功！")
+    }
+
+    // =========Function-5====健康筛查_填充=============
+    function JKSC()
+    {
+        console.log("使用健筛 填充功能.");
+
+
+        // 获取 老 高 糖 状态
+        let sickness_flag = get_sickness_status_for_tiJian();
+        let body_DATA = get_body_DATA();
+
+        let jksc_location_flag = false;
+        let write_flag = false;
+        let jksc_text_edit_flag = false
+
+
+        let cun_doctor = get_cun_doctor();  // 外部获取 转诊的村医姓名
+        let cun_doctor_flag = false     // 是否已经点击过随访医生
+
+        let p_s = document.getElementsByTagName("p");
+        for (let j = 0; j < p_s.length; j++)
+        {
+            if (p_s[j].innerText.includes("新建健康筛查随访"))
+            {
+                jksc_location_flag = true;
+                break;
+            }
+
+        }
+
+        let form_s = $('form');
+        for (let i = 0; i < form_s.length; i++)
+        {
+            // 找到了目标form表单
+            if (form_s[i].innerText.includes('体温') && form_s[i].innerText.includes('脉率') && !write_flag && jksc_location_flag)
+            {
+                write_flag = true;   // 只读一次
+
+                // 获取所有行，并且遍历所有行
+                // const tr_s = form_s[i].getElementsByTagName("tr");
+                let tr_s = document.getElementsByTagName("tr");
+                for (let j = 0; j < tr_s.length; j++)
+                {
+                    if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['body_temperature'].toString();
+                        inputs[0].dispatchEvent(fkVueEvent);
+                        inputs[1].value = body_DATA['pulse_rate'].toString();
+                        inputs[1].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("血压"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['respiratory_rate'].toString();
+                        inputs[0].dispatchEvent(fkVueEvent);
+
+                        inputs[1].value = body_DATA['blood_pressure_high'].toString();
+                        inputs[2].value = body_DATA['blood_pressure_low'].toString();
+                        inputs[1].dispatchEvent(fkVueEvent);
+                        inputs[2].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("man_height");
+                        inputs[0].dispatchEvent(fkVueEvent);
+
+                        inputs[1].value = $.cookie("man_weight");
+                        inputs[1].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("waistline");
+                        inputs[0].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("空腹血糖") && tr_s[j].innerText.includes("随机血糖") && sickness_flag["tyb"])
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['blood_glucose'];
+                        inputs[0].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("备注") && !jksc_text_edit_flag)
+                    {
+                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
+
+                        if (sickness_flag["gxy"] && !sickness_flag["tyb"])
+                            textarea_s[0].value = "低盐清淡饮食，规范服药，保持情绪舒畅。";
+                        else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
+                            textarea_s[0].value = "饮食低脂低糖不过于油腻，规范服药，保持情绪舒畅。";
+                        else if (sickness_flag["gxy"] && sickness_flag["tyb"])
+                            textarea_s[0].value = "低盐低脂低糖饮食，规范服药，保持情绪舒畅。";
+                        else
+                            textarea_s[0].value = "科学饮食，规律运动，逐步改善体重。";
+
+                        textarea_s[0].dispatchEvent(fkVueEvent);
+                        jksc_text_edit_flag = true;
+                    }
+
+
+                    else if (tr_s[j].innerText.includes('随访医生'))
+                    {
+                        console.log("进入随访医生模块");
+                        // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
+                        let div_s = tr_s[j].getElementsByTagName("div");
+                        for (let z = 0; z < div_s.length; z++)
+                        {
+                            if ("combobox" === div_s[z].getAttribute("role"))
+                            {
+                                // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
+                                div_s[z].click();
+                                break;  // 目的达到，结束内循环
+                            }
+                        }
+
+
+                        // 步骤二：模拟点击选取对应村医生
+                        setTimeout(function ()
+                        {
+                            let ul_s = $('ul[role="listbox"]');
+                            for (let y = 0; y < ul_s.length; y++)
+                            {
+                                if (ul_s[y].innerText.includes('曹碑镇卫生院'))
+                                {
+                                    let li_s = ul_s[y].getElementsByTagName("li");
+                                    for (let z = 0; z < li_s.length; z++)
+                                    {
+                                        // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                            && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停"))
+                                        {
+                                            li_s[z].click();
+                                            cun_doctor_flag = true;
+                                        }
+
+                                    }
+                                }
+                            }
+                        }, 300);
+
+                    }
+
+
+                }
+            }
+        }
+    }
+
     // ====废弃函数=====Function-4====sf-day=============
     // function sfDay()
     // {
@@ -1016,6 +1215,15 @@
                 DllButton = DllButton + suiFang_String;
             }
 
+            if (jksc_Flag)
+            {
+                const jksc_read_String = "<a id='jksc_read_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">健筛_读</a>";
+                const jksc_String = "<a id='jksc_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
+                " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">健筛_填</a>";
+                DllButton = DllButton + jksc_read_String + jksc_String;
+            }
+
 
             DllButton = DllButton + "</div>";
             $("body").append(DllButton);
@@ -1053,6 +1261,17 @@
                 });
             }
 
+            if (jksc_Flag)
+            {
+                $("#jksc_read_a").click(function ()
+                {
+                    JKSC_Read();
+                });
+                $("#jksc_a").click(function ()
+                {
+                    JKSC();
+                });
+            }
 
 
 
