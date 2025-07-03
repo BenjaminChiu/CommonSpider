@@ -789,12 +789,43 @@
                         console.log("腰围：" + waistline);
                         $.cookie('waistline', waistline, {expires: 365, path: '/'});
                     }
+                    else if (tr_s[j].innerText.includes("血压"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_blood_high = inputs[1].value;
+                        const man_blood_low = inputs[2].value;
 
+                        console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
+                        $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
+                        $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
+                    }
+
+                }
+            }
+            else if (form_s[i].innerText.includes('随访日期') && form_s[i].innerText.includes('随访方式') && !read_flag)
+            {
+                 read_flag = true;   // 只读一次
+
+                // 获取所有行，并且遍历所有行
+                const tr_s = form_s[i].getElementsByTagName("tr");
+                // let tr_s = document.getElementsByTagName("tr");
+                for (let j = 0; j < tr_s.length; j++)
+                {
+                    if (tr_s[j].innerText.includes("血压"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_blood_high = inputs[0].value;
+                        const man_blood_low = inputs[1].value;
+
+                        console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
+                        $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
+                        $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
+                    }
                 }
             }
         }
 
-        alert("身高、体重、腰围已读取成功！")
+
     }
 
     // =========Function-5====健康筛查_填充=============
@@ -853,8 +884,8 @@
                         inputs[0].value = body_DATA['respiratory_rate'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
 
-                        inputs[1].value = body_DATA['blood_pressure_high'].toString();
-                        inputs[2].value = body_DATA['blood_pressure_low'].toString();
+                        inputs[1].value = $.cookie("man_blood_high");
+                        inputs[2].value = $.cookie("man_blood_low");
                         inputs[1].dispatchEvent(fkVueEvent);
                         inputs[2].dispatchEvent(fkVueEvent);
                     }
