@@ -771,9 +771,17 @@
                 let tr_s = document.getElementsByTagName("tr");
                 for (let j = 0; j < tr_s.length; j++)
                 {
-                    if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                     {
-                        let inputs = tr_s[j].getElementsByTagName("input");
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const your_day = inputs[0].value;
+
+                        console.log("体检日期：" + your_day);
+                        $.cookie('sf_day', your_day, {expires: 365, path: '/'});
+                    }
+                    else if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
                         const man_height = inputs[0].value;
                         const man_weight = inputs[1].value;
 
@@ -811,7 +819,15 @@
                 // let tr_s = document.getElementsByTagName("tr");
                 for (let j = 0; j < tr_s.length; j++)
                 {
-                    if (tr_s[j].innerText.includes("血压"))
+                    if (tr_s[j].innerText.includes("随访日期") && tr_s[j].innerText.includes("随访方式"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const your_day = inputs[0].value;
+
+                        console.log("随访日期：" + your_day);
+                        $.cookie('sf_day', your_day, {expires: 365, path: '/'});
+                    }
+                    else if (tr_s[j].innerText.includes("血压"))
                     {
                         const inputs = tr_s[j].getElementsByTagName("input");
                         const man_blood_high = inputs[0].value;
@@ -863,14 +879,22 @@
             // 找到了目标form表单
             if (form_s[i].innerText.includes('体温') && form_s[i].innerText.includes('脉率') && !write_flag && jksc_location_flag)
             {
-                write_flag = true;   // 只读一次
+                write_flag = true;   // 只写一次
 
                 // 获取所有行，并且遍历所有行
                 // const tr_s = form_s[i].getElementsByTagName("tr");
                 let tr_s = document.getElementsByTagName("tr");
                 for (let j = 0; j < tr_s.length; j++)
                 {
-                    if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
+
+                    if (tr_s[j].innerText.includes("随访日期") && !tr_s[j].innerText.includes("下次随访日期"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("sf_day");
+                        console.log("当前随访日期：" + inputs[0].value);
+                        inputs[0].dispatchEvent(fkVueEvent_change);
+                    }
+                    else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_DATA['body_temperature'].toString();
@@ -928,7 +952,7 @@
                     }
 
 
-                    else if (tr_s[j].innerText.includes('随访医生'))
+                    else if (tr_s[j].innerText.includes('随访医生') && tr_s[j].innerText.includes("下次随访日期"))
                     {
                         console.log("进入随访医生模块");
                         // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
@@ -967,6 +991,12 @@
                                 }
                             }
                         }, 300);
+
+
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[1].value = "2025-09-17";
+                        inputs[1].dispatchEvent(fkVueEvent_change);
+                        console.log("下一次健筛日期：" + inputs[1].value);
 
                     }
 
