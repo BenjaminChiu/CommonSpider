@@ -1029,9 +1029,6 @@
     // }
 
 
-
-
-
     // ===============本函数在中医功能中大量使用====================
     // function templateFun(tr_s, i, randNum, selectNum1, selectNum2)
     // {
