@@ -786,10 +786,13 @@
                         const man_height = inputs[0].value;
                         const man_weight = inputs[1].value;
 
+                        // 体重有三种状态：过重、过轻、正常，故不能使用true、false来赋值
                         if (man_weight > 23.99)
                             $.cookie('man_weight_flag', "过重", {expires: 365, path: '/'});
                         else if (man_weight < 18.5)
                             $.cookie('man_weight_flag', "过轻", {expires: 365, path: '/'});
+                        else
+                            $.cookie('man_weight_flag', "正常", {expires: 365, path: '/'});
 
                         console.log("体重状态：" + $.cookie("man_weight_flag"));
                         console.log("身高：" + man_height + "\n体重：" + man_weight);
@@ -946,16 +949,36 @@
                     {
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
-                        if (sickness_flag["gxy"] && !sickness_flag["tyb"])
-                            textarea_s[0].value = "低盐清淡饮食，规范服药，保持情绪舒畅。";
-                        else if (!sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = "饮食低脂低糖不过于油腻，规范服药，保持情绪舒畅。";
-                        else if (sickness_flag["gxy"] && sickness_flag["tyb"])
-                            textarea_s[0].value = "低盐低脂低糖饮食，规范服药，保持情绪舒畅。";
-                        else if ($.cookie("man_weight_flag") === "过轻")
-                            textarea_s[0].value = "加强营养、科学饮食、增加体重。";
-                        else if ($.cookie("man_weight_flag") === "过重")
+                        const man_weight_flag= $.cookie("man_weight_flag");
+                        const gxy_flag = sickness_flag["gxy"];
+                        const tyb_flag = sickness_flag["tyb"];
+
+                        if (man_weight_flag === "过重" && gxy_flag && tyb_flag)
+                            textarea_s[0].value = "低盐低脂低糖饮食，规范服药，保持情绪舒畅。\n健康饮食，控制体重、适当运动、逐步减轻体重。";
+                        else if (man_weight_flag === "过重" && gxy_flag && !tyb_flag)
+                            textarea_s[0].value = "低盐清淡饮食，规范服药，保持情绪舒畅。\n健康饮食，控制体重、适当运动、逐步减轻体重。";
+                        else if (man_weight_flag === "过重" && !gxy_flag && tyb_flag)
+                            textarea_s[0].value = "饮食低脂低糖不过于油腻，规范服药，保持情绪舒畅。\n健康饮食，控制体重、适当运动、逐步减轻体重。";
+                        else if (man_weight_flag === "过重" && !gxy_flag && !tyb_flag)
                             textarea_s[0].value = "健康饮食，控制体重、适当运动、逐步减轻体重。";
+
+                        else if (man_weight_flag === "过轻" && gxy_flag && tyb_flag)
+                            textarea_s[0].value = "低盐低脂低糖饮食，规范服药，保持情绪舒畅。\n加强营养、科学饮食、增加体重。";
+                        else if (man_weight_flag === "过轻" && gxy_flag && !tyb_flag)
+                            textarea_s[0].value = "低盐清淡饮食，规范服药，保持情绪舒畅。\n加强营养、科学饮食、增加体重。";
+                        else if (man_weight_flag === "过轻" && !gxy_flag && tyb_flag)
+                            textarea_s[0].value = "饮食低脂低糖不过于油腻，规范服药，保持情绪舒畅。\n加强营养、科学饮食、增加体重。";
+                        else if (man_weight_flag === "过轻" && !gxy_flag && !tyb_flag)
+                            textarea_s[0].value = "加强营养、科学饮食、增加体重。";
+
+                        else if (man_weight_flag === "正常" && gxy_flag && tyb_flag)
+                            textarea_s[0].value = "低盐低脂低糖饮食，规范服药，保持情绪舒畅。";
+                        else if (man_weight_flag === "正常" && gxy_flag && !tyb_flag)
+                            textarea_s[0].value = "低盐清淡饮食，规范服药，保持情绪舒畅。";
+                        else if (man_weight_flag === "正常" && !gxy_flag && tyb_flag)
+                            textarea_s[0].value = "饮食低脂低糖不过于油腻，规范服药，保持情绪舒畅。";
+                        else if (man_weight_flag === "正常" && !gxy_flag && !tyb_flag)
+                            textarea_s[0].value = "勤开窗，保持室内通风；避免剧烈体力劳动，多休息。";
 
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
