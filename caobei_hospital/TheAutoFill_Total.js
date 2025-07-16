@@ -875,7 +875,7 @@
         let p_s = document.getElementsByTagName("p");
         for (let j = 0; j < p_s.length; j++)
         {
-            if (p_s[j].innerText.includes("新建健康筛查随访"))
+            if (p_s[j].innerText.includes("健康筛查随访"))
             {
                 jksc_location_flag = true;
                 break;
@@ -983,6 +983,7 @@
 
                         textarea_s[0].dispatchEvent(fkVueEvent);
                         jksc_text_edit_flag = true;
+                        console.log("备注功能执行完毕。");
                     }
 
 
