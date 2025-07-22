@@ -1281,7 +1281,7 @@
             let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
 
-            const Br_String = "<div style='height: 4px;'></div>";
+            // const Br_String = "<div style='height: 4px;'></div>";
 
 
             if (tiJianDATE_Flag)
