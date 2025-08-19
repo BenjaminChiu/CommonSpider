@@ -21,21 +21,21 @@
     'use strict';
 
     // 左侧大功能 开关
-    const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
+    const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
     const suiFang_Dll_Flag = true;      // 随访模块
     const jksc_Flag = true;      // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = false;        // 一般体检开关
-    const yb_tj_xy = false;     // 子开关 / 一般体检中的血压开关
-    const sh_tj = true;        // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const yb_tj = true;        // 一般体检开关
+    const yb_tj_xy = true;     // 子开关 / 一般体检中的血压开关
+    const sh_tj = false;        // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
-    const sf_day = false;               // 随访日期 是否填充
-    const sf_way = false;               // 随访方式
-    const sf_blood_pressure = false;    // 随访血压
+    const sf_day = true;               // 随访日期 是否填充
+    const sf_way = true;               // 随访方式
+    const sf_blood_pressure = true;    // 随访血压
 
     // 暂时废弃功能
     // const next_sf_day = false;          // 下一次随访日期
@@ -303,10 +303,37 @@
                         inputs[0].dispatchEvent(fkVueEvent);
                         inputs[1].dispatchEvent(fkVueEvent);
                     }
-                    else if (yb_tj && tr_s[j].innerText.includes("SpO2"))
+
+                    else if (yb_tj && tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_height = inputs[0].value;
+                        const man_weight = inputs[1].value;
+
+                        $.cookie('man_height', man_height, {expires: 365, path: '/'});
+                        $.cookie('man_weight', man_weight, {expires: 365, path: '/'});
+                    }
+                    else if (yb_tj && tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_yaowei = inputs[0].value;
+                        const man_weight_node = inputs[1].value;
+
+                        $.cookie('man_yaowei', man_yaowei, {expires: 365, path: '/'});
+                        $.cookie('man_weight_node', man_weight_node, {expires: 365, path: '/'});
+                    }
+
+                    // else if (yb_tj && tr_s[j].innerText.includes("SpO2"))
+                    // {
+                    //     let inputs = tr_s[j].getElementsByTagName("input");
+                    //     inputs[0].value = body_DATA['SpO2'].toString();
+                    //     inputs[0].dispatchEvent(fkVueEvent);
+                    // }
+
+                    else if (yb_tj && tr_s[j].innerText.includes("空腹血糖"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_DATA['SpO2'].toString();
+                        inputs[0].value = body_DATA['blood_glucose'].toString();
                         inputs[0].dispatchEvent(fkVueEvent);
                     }
 
@@ -351,15 +378,21 @@
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("危险因素控制"))
                     {
+                        let over_weight = false;
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let k = 0; k < divs.length; k++)
                         {
+                            // 没有点击的危险因素的，要点击
                             if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
                                     || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
                                 && !divs[k].className.includes('checked'))
                             {
                                 divs[k].click();
                             }
+                            // 该病人超重，赋予标识
+                            else if (divs[k].innerText.includes('5') && divs[k].className.includes('checked'))
+                                over_weight = true;
+
                         }
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
                         textarea_s[0].value = "预防骨质疏松、预防跌倒";
@@ -367,6 +400,16 @@
 
                         textarea_s[1].value = "流感疫苗、肺炎疫苗";
                         textarea_s[1].dispatchEvent(fkVueEvent);
+
+                        // 根据标识，如果超重，获取cookie中的值并减2，赋予“目标体重”框
+                        if (over_weight)
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = $.cookie("man_weight") - 2;
+                            inputs[0].dispatchEvent(fkVueEvent);
+                        }
+
+
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("健康摘要"))
                     {
@@ -377,7 +420,7 @@
                     }
 
 
-
+                    // 生化检测模块
                     else if (sh_tj && tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
                     {
                         console.log("进入尿功能！")
@@ -477,26 +520,26 @@
 
         // ====Start======第4页监听器=================
         // 解决点击第4页时，自动取消“4锻炼”按钮
-        let div_s = document.getElementsByTagName("div");
-        for (let i = 0; i < div_s.length; i++)
-        {
-            if (div_s[i].innerText === "第4页")
-            {
-                div_s[i].addEventListener("mousedown", function ()
-                {
-                    for (let j = 0; j < div_s.length; j++)
-                    {
-                        if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
-                        {
-                            setTimeout(function ()
-                            {
-                                div_s[j].click();
-                            }, 1500);
-                        }
-                    }
-                });
-            }
-        }
+        // let div_s = document.getElementsByTagName("div");
+        // for (let i = 0; i < div_s.length; i++)
+        // {
+        //     if (div_s[i].innerText === "第4页")
+        //     {
+        //         div_s[i].addEventListener("mousedown", function ()
+        //         {
+        //             for (let j = 0; j < div_s.length; j++)
+        //             {
+        //                 if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
+        //                 {
+        //                     setTimeout(function ()
+        //                     {
+        //                         div_s[j].click();
+        //                     }, 1500);
+        //                 }
+        //             }
+        //         });
+        //     }
+        // }
         // ====End======第4页监听器=================
 
 
