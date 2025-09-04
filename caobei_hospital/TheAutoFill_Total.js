@@ -150,7 +150,7 @@
         // 体征数据：体温、脉搏、呼吸频率、高压、低压
         let body_DATA = {
             'body_temperature': (Math.random() * (36.9 - 36) + 36).toFixed(1),
-            'pulse_rate': Math.floor(Math.random() * (82 - 64 + 1)) + 64,
+            'pulse_rate': Math.floor(Math.random() * (88 - 64 + 1)) + 64,
             'respiratory_rate': Math.floor(Math.random() * (20 - 16 + 1)) + 16,
             'SpO2': Math.floor(Math.random() * (98 - 96 + 1)) + 96
         }
@@ -703,6 +703,13 @@
 
                 input_s[0].dispatchEvent(fkVueEvent);
                 input_s[1].dispatchEvent(fkVueEvent);
+            }
+
+            else if (tr_s[i].innerText.includes('心率') && sf_blood_pressure)
+            {
+                let input_s = tr_s[i].getElementsByTagName("input");
+                input_s[0].value = body_DATA['pulse_rate'];
+                input_s[0].dispatchEvent(fkVueEvent);
             }
 
 
