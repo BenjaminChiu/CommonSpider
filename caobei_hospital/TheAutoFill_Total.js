@@ -24,7 +24,7 @@
     const tiJianDATE_Flag = true;      // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
     const suiFang_Dll_Flag = true;      // 随访模块
-    const jksc_Flag = true;      // 健康筛查
+    const jksc_Flag = false;      // 健康筛查
 
     // 体检 功能开关
     const yb_tj = true;        // 一般体检开关
