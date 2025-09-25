@@ -331,7 +331,7 @@
                     //     inputs[0].dispatchEvent(fkVueEvent);
                     // }
 
-                    else if (yb_tj && tr_s[j].innerText.includes("空腹血糖"))
+                    else if (yb_tj && yb_tj_xy && tr_s[j].innerText.includes("空腹血糖"))
                     {
                         let inputs = tr_s[j].getElementsByTagName("input");
                         inputs[0].value = body_DATA['blood_glucose'].toString();
