@@ -192,6 +192,16 @@
         let body_DATA = get_body_DATA();
         let body_DATA_gao = get_body_DATA("gao")
 
+        // 系统认为当前病人是否超重的flag
+        let over_weight = false;
+        // 全局变量存储当前病人的身高、体重、腰围、体质指数
+        let man_height;
+        let man_weight;
+        let man_yaowei;
+        let man_weight_node;
+
+
+
 
         // 修改体检表标签
         let edit_flag = false;
@@ -308,20 +318,26 @@
                     else if (yb_tj && tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
                     {
                         const inputs = tr_s[j].getElementsByTagName("input");
-                        const man_height = inputs[0].value;
-                        const man_weight = inputs[1].value;
+                        man_height = inputs[0].value;
+                        man_weight = inputs[1].value;
 
-                        $.cookie('man_height', man_height, {expires: 365, path: '/'});
-                        $.cookie('man_weight', man_weight, {expires: 365, path: '/'});
+                        inputs[1].addEventListener("focusout", function ()
+                        {
+                            man_weight = inputs[1].value;
+                            console.log("最新体重已修改。");
+                        });
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
                     {
                         const inputs = tr_s[j].getElementsByTagName("input");
-                        const man_yaowei = inputs[0].value;
-                        const man_weight_node = inputs[1].value;
+                        man_yaowei = inputs[0].value;
+                        man_weight_node = inputs[1].value;
 
-                        $.cookie('man_yaowei', man_yaowei, {expires: 365, path: '/'});
-                        $.cookie('man_weight_node', man_weight_node, {expires: 365, path: '/'});
+                        inputs[0].addEventListener("focusout", function ()
+                        {
+                            man_weight = inputs[0].value;
+                            console.log("最新腰围已修改。");
+                        });
                     }
 
                     // else if (yb_tj && tr_s[j].innerText.includes("SpO2"))
@@ -379,7 +395,7 @@
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("危险因素控制"))
                     {
-                        let over_weight = false;
+
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let k = 0; k < divs.length; k++)
                         {
@@ -406,7 +422,7 @@
                         if (over_weight)
                         {
                             let inputs = tr_s[j].getElementsByTagName("input");
-                            inputs[0].value = $.cookie("man_weight") - 2;
+                            inputs[0].value = man_weight - 2;
                             inputs[0].dispatchEvent(fkVueEvent);
                         }
 
