@@ -421,6 +421,7 @@
                         // 根据标识，如果超重，获取cookie中的值并减2，赋予“目标体重”框
                         if (over_weight)
                         {
+                            console.log("已进入实际修改体重界面，准备修改体重。")
                             let inputs = tr_s[j].getElementsByTagName("input");
                             inputs[0].value = man_weight - 2;
                             inputs[0].dispatchEvent(fkVueEvent);
