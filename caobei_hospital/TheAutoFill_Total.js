@@ -199,6 +199,8 @@
         let man_weight;
         let man_yaowei;
         let man_weight_node;
+        // 体检表中第四页-体重框
+        let man_weight_input;
 
 
 
@@ -325,6 +327,16 @@
                         {
                             man_weight = inputs[1].value;
                             console.log("最新体重已修改。");
+                            man_weight_node = man_weight / ((man_height/100) * (man_height/100))
+                            console.log("体质指数为：" + man_weight_node);
+
+                            if (man_weight_node > 23.99)
+                            {
+                                // 调用修改体重的功能
+                                man_weight_input[0].value = man_weight - 2;
+                                man_weight_input[0].dispatchEvent(fkVueEvent);
+                            }
+
                         });
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
@@ -395,7 +407,6 @@
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("危险因素控制"))
                     {
-
                         const divs = tr_s[j].getElementsByTagName("div");
                         for (let k = 0; k < divs.length; k++)
                         {
@@ -406,7 +417,8 @@
                             {
                                 divs[k].click();
                             }
-                            // 该病人超重，赋予标识
+                            // 该病人超重，赋予标识。
+                            // 缺陷：只是开头检测一次，后续并没有修改
                             else if (divs[k].innerText.includes('5') && divs[k].className.includes('checked'))
                                 over_weight = true;
 
@@ -419,15 +431,13 @@
                         textarea_s[1].dispatchEvent(fkVueEvent);
 
                         // 根据标识，如果超重，获取cookie中的值并减2，赋予“目标体重”框
-                        if (over_weight)
+                        if (man_weight_node > 23.99)
                         {
                             console.log("已进入实际修改体重界面，准备修改体重。")
-                            let inputs = tr_s[j].getElementsByTagName("input");
-                            inputs[0].value = man_weight - 2;
-                            inputs[0].dispatchEvent(fkVueEvent);
+                            man_weight_input = tr_s[j].getElementsByTagName("input");
+                            man_weight_input[0].value = man_weight - 2;
+                            man_weight_input[0].dispatchEvent(fkVueEvent);
                         }
-
-
                     }
                     else if (yb_tj && tr_s[j].innerText.includes("健康摘要"))
                     {
