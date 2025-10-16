@@ -318,13 +318,18 @@
                             textarea_s[1].dispatchEvent(fkVueEvent);
                             // 初始化体重框
                             man_weight_input = tr_s[j].getElementsByTagName("input");
+                            console.log("体重调试断点")
 
                             // 应对不修改身高、体重的情况（Part-2）
-                            if (man_weight_node > 23.99)
+                            setTimeout(function ()
                             {
-                                man_weight_input[0].value = man_weight - 2;
-                                man_weight_input[0].dispatchEvent(fkVueEvent);
-                            }
+                                if (man_weight_node > 23.99)
+                                {
+                                    man_weight_input[0].value = man_weight - 2;
+                                    man_weight_input[0].dispatchEvent(fkVueEvent);
+                                }
+                            }, 600)
+
                         }
                         else if (yb_tj && tr_s[j].innerText.includes("健康摘要"))
                         {
