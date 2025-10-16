@@ -21,16 +21,16 @@
     'use strict';
 
     // 左侧大功能 开关
-    const tiJianDATE_Flag = false;      // 日期填充（体检、随访）
+    const tiJianDATE_Flag = true;       // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
     const zhongYi_Dll_Flag = true;      // 中医模块
     const suiFang_Dll_Flag = false;     // 随访模块
-    const jksc_Flag = false;      // 健康筛查
+    const jksc_Flag = false;            // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = true;        // 一般体检开关
-    const yb_tj_xy = false;     // 子开关 / 一般体检中的血压开关
-    const sh_tj = false;        // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const yb_tj = true;                 // 一般体检开关
+    const yb_tj_xy = false;             // 一般体检中的血压开关（血压、空腹血糖）
+    const sh_tj = false;                // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -38,10 +38,6 @@
     const sf_way = true;               // 随访方式
     const sf_blood_pressure = true;    // 随访血压
 
-    // 暂时废弃功能
-    // const next_sf_day = false;          // 下一次随访日期
-    // const next_sf_day_value = "2024-08-30";    // 下一次随访日期值
-    // const special_next_sf_day_value = "2024-05-30";    // 下一次随访日期值
 
 
     // 解决vue页面注入js修改input值，
@@ -76,8 +72,6 @@
     };
 
 
-
-    const the_final = "合理膳食，饮食清淡，吃动平衡，舒畅心态。";
 
 
     // =======Util-1====获取是高血压还是糖尿病随访==========
@@ -192,22 +186,17 @@
         let body_DATA = get_body_DATA();
         let body_DATA_gao = get_body_DATA("gao")
 
-        // 系统认为当前病人是否超重的flag
-        let over_weight = false;
-        // 全局变量存储当前病人的身高、体重、腰围、体质指数
-        let man_height;
-        let man_weight;
-        let man_yaowei;
-        let man_weight_node;
-        // 体检表中第四页-体重框
-        let man_weight_input;
-
-
-
 
         // 修改体检表标签
         let edit_flag = false;
         let cun_doctor_flag = false;
+
+
+        // 全局变量存储当前病人的体重、体质指数
+        let man_weight;
+        let man_weight_node;
+        // 体检表中第四页-体重框
+        let man_weight_input;
 
 
         let form_s = $('form');
@@ -219,72 +208,172 @@
                 // 只允许修改一次
                 edit_flag = true;
 
-                // 获取所有行，并且遍历所有行
                 // const tr_s = form_s[i].getElementsByTagName("tr");
                 let tr_s = document.getElementsByTagName("tr");
                 for (let j = 0; j < tr_s.length; j++)
                 {
-                    if (yb_tj && tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
+                    // 一般体检模块
+                    if (yb_tj)
                     {
-                        // 体检日期
-                        if (tiJianDATE_Flag)
+                        if (tr_s[j].innerText.includes("体检日期") && tr_s[j].innerText.includes("责任医生"))
                         {
-                            let inputs = tr_s[j].getElementsByTagName("input");
-                            inputs[0].value = $.cookie("tiJianDate");
-                            inputs[0].dispatchEvent(fkVueEvent_change);
-                        }
-
-                        // 责任医生 步骤一：点击下拉框
-                        let div_s = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < div_s.length; k++)
-                        {
-                            if ("combobox" === div_s[k].getAttribute("role"))
+                            // 体检日期
+                            if (tiJianDATE_Flag)
                             {
-                                div_s[k].click();
-                                break;  // 仅仅终止本轮内循环。终止目的：防止多次点击下拉框，不好看，效率底下！
+                                let inputs = tr_s[j].getElementsByTagName("input");
+                                inputs[0].value = $.cookie("tiJianDate");
+                                inputs[0].dispatchEvent(fkVueEvent_change);
                             }
-                        }
 
-                        // 责任医生 步骤二：模拟点击对应村医
-                        setTimeout(function ()
-                        {
-                            let ul_s = $('ul[role="listbox"]');
-                            for (let k = 0; k < ul_s.length; k++)
+                            // 责任医生 步骤一：点击下拉框
+                            let div_s = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < div_s.length; k++)
                             {
-                                if (ul_s[k].innerText.includes('曹碑镇卫生院'))
+                                if ("combobox" === div_s[k].getAttribute("role"))
                                 {
-                                    let li_s = ul_s[k].getElementsByTagName("li");
-                                    for (let z = 0; z < li_s.length; z++)
+                                    div_s[k].click();
+                                    break;  // 仅仅终止本轮内循环。终止目的：防止多次点击下拉框，不好看，效率底下！
+                                }
+                            }
+
+                            // 责任医生 步骤二：模拟点击对应村医
+                            setTimeout(function ()
+                            {
+                                let ul_s = $('ul[role="listbox"]');
+                                for (let k = 0; k < ul_s.length; k++)
+                                {
+                                    if (ul_s[k].innerText.includes('曹碑镇卫生院'))
                                     {
-                                        // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
-                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
-                                            && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停用"))
+                                        let li_s = ul_s[k].getElementsByTagName("li");
+                                        for (let z = 0; z < li_s.length; z++)
                                         {
-                                            li_s[z].click();
-                                            cun_doctor_flag = true;
+                                            // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                            if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                                && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停用"))
+                                            {
+                                                li_s[z].click();
+                                                cun_doctor_flag = true;
+                                            }
                                         }
                                     }
                                 }
-                            }
-                        }, 300);
+                            }, 300);
 
-                    }
-                    else if (yb_tj && tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
-                    {
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_DATA['body_temperature'].toString();
-                        inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].value = body_DATA['pulse_rate'].toString();
-                        inputs[1].dispatchEvent(fkVueEvent);
-                    }
-                    else if (yb_tj && tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
-                    {
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_DATA['respiratory_rate'].toString();
-                        inputs[0].dispatchEvent(fkVueEvent);
-
-                        if (yb_tj_xy)
+                        }
+                        else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
                         {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = body_DATA['body_temperature'].toString();
+                            inputs[0].dispatchEvent(fkVueEvent);
+                            inputs[1].value = body_DATA['pulse_rate'].toString();
+                            inputs[1].dispatchEvent(fkVueEvent);
+                        }
+                        else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = body_DATA['respiratory_rate'].toString();
+                            inputs[0].dispatchEvent(fkVueEvent);
+                        }
+                        else if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                        {
+                            const inputs = tr_s[j].getElementsByTagName("input");
+                            // 应对不修改身高、体重的情况(Part-1)
+                            let man_height = inputs[0].value;
+                            man_weight = inputs[1].value;   //初始化赋值
+                            man_weight_node = man_weight / ((man_height/100) * (man_height/100))
+
+                            // 应对修改身高、体重的情况
+                            // 加个监听器，一有改动就读取
+                            inputs[1].addEventListener("focusout", function ()
+                            {
+                                man_height = inputs[0].value;
+                                man_weight = inputs[1].value;
+                                man_weight_node = man_weight / ((man_height/100) * (man_height/100))
+
+                                if (man_weight_node > 23.99)
+                                {
+                                    // 调用修改体重的功能
+                                    man_weight_input[0].value = man_weight - 2;
+                                    man_weight_input[0].dispatchEvent(fkVueEvent);
+                                }
+
+                            });
+                        }
+
+                        else if (tr_s[j].innerText.includes("危险因素控制"))
+                        {
+                            const divs = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < divs.length; k++)
+                            {
+                                // 没有点击的危险因素的，要点击
+                                if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4') || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
+                                    && !divs[k].className.includes('checked'))
+                                    divs[k].click();
+                            }
+                            let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                            textarea_s[0].value = "预防骨质疏松、预防跌倒";
+                            textarea_s[0].dispatchEvent(fkVueEvent);
+
+                            textarea_s[1].value = "流感疫苗、肺炎疫苗";
+                            textarea_s[1].dispatchEvent(fkVueEvent);
+                            // 初始化体重框
+                            man_weight_input = tr_s[j].getElementsByTagName("input");
+
+                            // 应对不修改身高、体重的情况（Part-2）
+                            if (man_weight_node > 23.99)
+                            {
+                                man_weight_input[0].value = man_weight - 2;
+                                man_weight_input[0].dispatchEvent(fkVueEvent);
+                            }
+                        }
+                        else if (yb_tj && tr_s[j].innerText.includes("健康摘要"))
+                        {
+                            let textarea_s = tr_s[j].getElementsByTagName("textarea");
+                            textarea_s[0].value = "合理膳食，饮食清淡，吃动平衡，舒畅心态。";
+                            textarea_s[0].dispatchEvent(fkVueEvent);
+                        }
+
+                        // ========老年人专有功能==========
+                        else if ((tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
+                            || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估")) && sickness_flag['lao'])
+                        {
+                            let divs = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < divs.length; k++)
+                            {
+                                if ((divs[k].innerText.includes('2基本满意') || divs[k].innerText.includes('1粗筛阴性') || divs[k].innerText.includes('1可自理'))
+                                    && !divs[k].className.includes('checked'))
+                                    divs[k].click();
+                            }
+
+                            setTimeout(function ()
+                            {
+                                let table_s = document.getElementsByClassName('ant-modal-content');
+                                for (let k = 0; k < table_s.length; k++)
+                                {
+                                    if (table_s[k].innerText.includes("老年人生活自理能力评估表"))
+                                    {
+                                        const table_divs = table_s[k].getElementsByTagName("div")
+                                        for (let z = 0; z < table_divs.length; z++)
+                                        {
+                                            if (table_divs[z].innerText.includes('0分') && table_divs[z].innerText.includes('独立完成')
+                                                && table_divs[z].className.includes('ant-tag-checkable')
+                                                && !table_divs[z].className.includes('ant-tag-checkable-checked'))
+                                                table_divs[z].click();
+                                        }
+                                        const button_s = table_s[k].getElementsByTagName("button")
+                                        button_s[1].click();
+                                    }
+                                }
+                            }, 400);
+                        }
+                    }
+
+                    if (yb_tj_xy)
+                    {
+                        if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+
                             if (sickness_flag["gxy"])
                             {
                                 inputs[1].value = body_DATA_gao['blood_pressure_high'].toString();
@@ -298,279 +387,89 @@
                             inputs[1].dispatchEvent(fkVueEvent);
                             inputs[2].dispatchEvent(fkVueEvent);
                         }
-
-                    }
-                    else if (yb_tj && yb_tj_xy && tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
-                    {
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        if (sickness_flag["gxy"])
+                        else if (tr_s[j].innerText.includes("右侧") && !tr_s[j].innerText.includes("右侧弱"))
                         {
-                            inputs[0].value = body_DATA_gao['blood_pressure_high_2'].toString();
-                            inputs[1].value = body_DATA_gao['blood_pressure_low_2'].toString();
-                        }
-                        else
-                        {
-                            inputs[0].value = body_DATA['blood_pressure_high_2'].toString();
-                            inputs[1].value = body_DATA['blood_pressure_low_2'].toString();
-                        }
-                        inputs[0].dispatchEvent(fkVueEvent);
-                        inputs[1].dispatchEvent(fkVueEvent);
-                    }
-
-                    else if (yb_tj && tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
-                    {
-                        const inputs = tr_s[j].getElementsByTagName("input");
-                        man_height = inputs[0].value;
-                        man_weight = inputs[1].value;
-
-                        inputs[1].addEventListener("focusout", function ()
-                        {
-                            man_weight = inputs[1].value;
-                            console.log("最新体重已修改。");
-                            man_weight_node = man_weight / ((man_height/100) * (man_height/100))
-                            console.log("体质指数为：" + man_weight_node);
-
-                            if (man_weight_node > 23.99)
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            if (sickness_flag["gxy"])
                             {
-                                // 调用修改体重的功能
-                                man_weight_input[0].value = man_weight - 2;
-                                man_weight_input[0].dispatchEvent(fkVueEvent);
+                                inputs[0].value = body_DATA_gao['blood_pressure_high_2'].toString();
+                                inputs[1].value = body_DATA_gao['blood_pressure_low_2'].toString();
                             }
-
-                        });
-                    }
-                    else if (yb_tj && tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
-                    {
-                        const inputs = tr_s[j].getElementsByTagName("input");
-                        man_yaowei = inputs[0].value;
-                        man_weight_node = inputs[1].value;
-
-                        inputs[0].addEventListener("focusout", function ()
-                        {
-                            man_weight = inputs[0].value;
-                            console.log("最新腰围已修改。");
-                        });
-                    }
-
-                    // else if (yb_tj && tr_s[j].innerText.includes("SpO2"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = body_DATA['SpO2'].toString();
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    // }
-
-                    else if (yb_tj && yb_tj_xy && tr_s[j].innerText.includes("空腹血糖"))
-                    {
-                        let inputs = tr_s[j].getElementsByTagName("input");
-                        inputs[0].value = body_DATA['blood_glucose'].toString();
-                        inputs[0].dispatchEvent(fkVueEvent);
-                    }
-
-
-                    // ========老年人专有功能=======Start=========
-                    else if (yb_tj && (tr_s[j].innerText.includes("老年人健康状态自我评估*") || tr_s[j].innerText.includes("老年人认知能力*")
-                            || tr_s[j].innerText.includes("老年人情感状态*") || tr_s[j].innerText.includes("老年人生活自理能力自我评估"))
-                        && sickness_flag['lao'])
-                    {
-                        let divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if ((divs[k].innerText.includes('2基本满意') || divs[k].innerText.includes('1粗筛阴性') || divs[k].innerText.includes('1可自理'))
-                                && !divs[k].className.includes('checked'))
+                            else
                             {
-                                divs[k].click();
+                                inputs[0].value = body_DATA['blood_pressure_high_2'].toString();
+                                inputs[1].value = body_DATA['blood_pressure_low_2'].toString();
                             }
+                            inputs[0].dispatchEvent(fkVueEvent);
+                            inputs[1].dispatchEvent(fkVueEvent);
+                        }
+                        else if (tr_s[j].innerText.includes("空腹血糖"))
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = body_DATA['blood_glucose'].toString();
+                            inputs[0].dispatchEvent(fkVueEvent);
                         }
 
-                        setTimeout(function ()
-                        {
-                            let table_s = document.getElementsByClassName('ant-modal-content');
-                            for (let k = 0; k < table_s.length; k++)
-                            {
-                                if (table_s[k].innerText.includes("老年人生活自理能力评估表"))
-                                {
-                                    const table_divs = table_s[k].getElementsByTagName("div")
-                                    for (let z = 0; z < table_divs.length; z++)
-                                    {
-                                        if (table_divs[z].innerText.includes('0分') && table_divs[z].innerText.includes('独立完成')
-                                            && table_divs[z].className.includes('ant-tag-checkable')
-                                            && !table_divs[z].className.includes('ant-tag-checkable-checked'))
-                                        {
-                                            table_divs[z].click();
-                                        }
-                                    }
-                                    const button_s = table_s[k].getElementsByTagName("button")
-                                    button_s[1].click();
-                                }
-                            }
-                        }, 400);
+                        // else if (tr_s[j].innerText.includes("SpO2"))
+                        // {
+                        //     let inputs = tr_s[j].getElementsByTagName("input");
+                        //     inputs[0].value = body_DATA['SpO2'].toString();
+                        //     inputs[0].dispatchEvent(fkVueEvent);
+                        // }
+
                     }
-                    else if (yb_tj && tr_s[j].innerText.includes("危险因素控制"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            // 没有点击的危险因素的，要点击
-                            if ((divs[k].innerText.includes('3') || divs[k].innerText.includes('4')
-                                    || divs[k].innerText.includes('6') || divs[k].innerText.includes('7'))
-                                && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                            // 该病人超重，赋予标识。
-                            // 缺陷：只是开头检测一次，后续并没有修改
-                            else if (divs[k].innerText.includes('5') && divs[k].className.includes('checked'))
-                                over_weight = true;
-
-                        }
-                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                        textarea_s[0].value = "预防骨质疏松、预防跌倒";
-                        textarea_s[0].dispatchEvent(fkVueEvent);
-
-                        textarea_s[1].value = "流感疫苗、肺炎疫苗";
-                        textarea_s[1].dispatchEvent(fkVueEvent);
-
-                        // 根据标识，如果超重，获取cookie中的值并减2，赋予“目标体重”框
-                        if (man_weight_node > 23.99)
-                        {
-                            console.log("已进入实际修改体重界面，准备修改体重。")
-                            man_weight_input = tr_s[j].getElementsByTagName("input");
-                            man_weight_input[0].value = man_weight - 2;
-                            man_weight_input[0].dispatchEvent(fkVueEvent);
-                        }
-                    }
-                    else if (yb_tj && tr_s[j].innerText.includes("健康摘要"))
-                    {
-                        let textarea_s = tr_s[j].getElementsByTagName("textarea");
-
-                        textarea_s[0].value = the_final;
-                        textarea_s[0].dispatchEvent(fkVueEvent);
-                    }
-
 
                     // 生化检测模块
-                    else if (sh_tj && tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
+                    if (sh_tj)
                     {
-                        console.log("进入尿功能！")
-                        let input_s = tr_s[j].getElementsByTagName("input");
-                        // 尿蛋白
-                        input_s[0].value = "-";
-                        input_s[0].dispatchEvent(fkVueEvent);
-                        input_s[0].dispatchEvent(fkVueEvent_blur);
-                        // 尿糖
-                        input_s[1].value = "-";
-                        input_s[1].dispatchEvent(fkVueEvent);
-                        input_s[1].dispatchEvent(fkVueEvent_blur);
-                    }
-                    else if (sh_tj && tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
-                    {
-                        let input_s = tr_s[j].getElementsByTagName("input");
-                        // 尿酮体
-                        input_s[0].value = "-";
-                        input_s[0].dispatchEvent(fkVueEvent);
-                        input_s[0].dispatchEvent(fkVueEvent_blur);
-                        // 尿潜血
-                        input_s[1].value = "-";
-                        input_s[1].dispatchEvent(fkVueEvent);
-                        input_s[1].dispatchEvent(fkVueEvent_blur);
-                    }
-                    else if (sh_tj && tr_s[j].innerText.includes("心电图"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
+                        if (tr_s[j].innerText.includes("尿蛋白") && tr_s[j].innerText.includes("尿糖"))
                         {
-                            if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                            console.log("进入尿功能！")
+                            let input_s = tr_s[j].getElementsByTagName("input");
+                            // 尿蛋白
+                            input_s[0].value = "-";
+                            input_s[0].dispatchEvent(fkVueEvent);
+                            input_s[0].dispatchEvent(fkVueEvent_blur);
+                            // 尿糖
+                            input_s[1].value = "-";
+                            input_s[1].dispatchEvent(fkVueEvent);
+                            input_s[1].dispatchEvent(fkVueEvent_blur);
+                        }
+                        else if (tr_s[j].innerText.includes("尿酮体") && tr_s[j].innerText.includes("尿潜血"))
+                        {
+                            let input_s = tr_s[j].getElementsByTagName("input");
+                            // 尿酮体
+                            input_s[0].value = "-";
+                            input_s[0].dispatchEvent(fkVueEvent);
+                            input_s[0].dispatchEvent(fkVueEvent_blur);
+                            // 尿潜血
+                            input_s[1].value = "-";
+                            input_s[1].dispatchEvent(fkVueEvent);
+                            input_s[1].dispatchEvent(fkVueEvent_blur);
+                        }
+                        else if (tr_s[j].innerText.includes("心电图"))
+                        {
+                            const divs = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < divs.length; k++)
                             {
-                                divs[k].click();
+                                if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                                    divs[k].click();
+                            }
+                        }
+                        else if (tr_s[j].innerText.includes("腹部B超"))
+                        {
+                            const divs = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < divs.length; k++)
+                            {
+                                if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
+                                    divs[k].click();
                             }
                         }
                     }
-                    else if (sh_tj && tr_s[j].innerText.includes("腹部B超"))
-                    {
-                        const divs = tr_s[j].getElementsByTagName("div");
-                        for (let k = 0; k < divs.length; k++)
-                        {
-                            if (divs[k].innerText.includes('1正常') && !divs[k].className.includes('checked'))
-                            {
-                                divs[k].click();
-                            }
-                        }
-                    }
-
-
-
-                    // ===================废案====================
-                    // else if (tr_s[j].innerText.includes("足背脉搏动") && sickness_flag["tyb"])
-                    // {
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes("2触及双侧对称") && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //         }
-                    //     }
-                    // }
-                    // else if (tr_s[j].innerText.includes("其他系统疾病") && (sickness_flag["gxy"] || sickness_flag["tyb"]))
-                    // {
-                    //     console.log("慢病备注Debug");
-                    //     let edit_flag = false;
-                    //
-                    //     const divs = tr_s[j].getElementsByTagName("div");
-                    //     for (let k = 0; k < divs.length; k++)
-                    //     {
-                    //         if (divs[k].innerText.includes("2有异常") && !divs[k].className.includes('checked'))
-                    //         {
-                    //             divs[k].click();
-                    //             edit_flag = true;
-                    //         }
-                    //     }
-                    //
-                    //     if (!edit_flag)
-                    //     {
-                    //         setTimeout(function ()
-                    //         {
-                    //             let textarea_s = tr_s[j].getElementsByTagName("textarea");
-                    //             if (sickness_flag["gxy"] && !textarea_s[0].innerText.includes("原发性高血压"))
-                    //                 textarea_s[0].value = textarea_s[0].value + "原发性高血压 ";
-                    //             if (sickness_flag["tyb"] && !textarea_s[0].innerText.includes("二型糖尿病"))
-                    //                 textarea_s[0].value = textarea_s[0].value + "二型糖尿病";
-                    //             textarea_s[0].dispatchEvent(fkVueEvent);
-                    //         }, 400);
-                    //     }
-                    // }
-
 
                 }
             }
         }
-
-
-        // ====Start======第4页监听器=================
-        // 解决点击第4页时，自动取消“4锻炼”按钮
-        // let div_s = document.getElementsByTagName("div");
-        // for (let i = 0; i < div_s.length; i++)
-        // {
-        //     if (div_s[i].innerText === "第4页")
-        //     {
-        //         div_s[i].addEventListener("mousedown", function ()
-        //         {
-        //             for (let j = 0; j < div_s.length; j++)
-        //             {
-        //                 if (div_s[j].innerText === '4锻炼' && !div_s[j].className.includes('checked'))
-        //                 {
-        //                     setTimeout(function ()
-        //                     {
-        //                         div_s[j].click();
-        //                     }, 1500);
-        //                 }
-        //             }
-        //         });
-        //     }
-        // }
-        // ====End======第4页监听器=================
-
-
     }
 
 
@@ -1415,7 +1314,6 @@
 
 
 
-
             DllButton = DllButton + "</div>";
             $("body").append(DllButton);
 
@@ -1487,29 +1385,8 @@
             //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">基信</a>";
 
             // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
-
-            // const PDF_String = "<a id='PDF_a' target='_blank' style='font-size:15px; color:#fff; display: block; height: 100%; padding: 3px 1px;'" +
-            //     " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">PDF</a>";
-
-
-            // $("#sfDay_a").click(function ()
-            // {
-            //     sfDay();
-            // });
-            //
-
-            //
-            // $("#basicInfo_a").click(function ()
-            // {
-            //     basicInfo();
-            // });
-
-
-
         }
     });
-
-
 
 
 
