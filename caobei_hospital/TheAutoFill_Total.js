@@ -23,14 +23,14 @@
     // 左侧大功能 开关
     const tiJianDATE_Flag = true;       // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
-    const zhongYi_Dll_Flag = true;      // 中医模块
+    const zhongYi_Dll_Flag = false;      // 中医模块
     const suiFang_Dll_Flag = false;     // 随访模块
     const jksc_Flag = false;            // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = true;                 // 一般体检开关
+    const yb_tj = false;                 // 一般体检开关
     const yb_tj_xy = false;             // 一般体检中的血压开关（血压、空腹血糖）
-    const sh_tj = false;                // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const sh_tj = true;                // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -1259,15 +1259,18 @@
 
 
     // 程序入口
+    let useFlag=false;
+    let DllButton;
     document.addEventListener("keydown", function (fuckEvent)
     {
-        let useFlag = true;
-        if (fuckEvent.key === "F9" && useFlag)
+
+        if (fuckEvent.key === "F9" && !useFlag)
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
+            useFlag = true;     // 表示目前已经在使用了
 
 
-            let DllButton = "<div id='fuck.this.shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
+            DllButton = "<div id='fuck_this_shit' style='font-family: SimSun,fangsong; font-weight: bold; display: block; line-height: 22px; " +
                 "text-align: center; vertical-align: center; background-color: #25ae84; cursor: pointer; margin: 2px; position: fixed; left: 0; top: 185px; width: 70px; z-index: 8888;'>";
 
             // const Br_String = "<div style='height: 4px;'></div>";
@@ -1314,9 +1317,6 @@
                 " onmouseover=\"this.style.color='red'\" onmouseout=\"this.style.color='white'\">中医2</a>";
                 DllButton = DllButton + zhongYiString + zhongYiString_2;
             }
-
-
-
 
 
             DllButton = DllButton + "</div>";
@@ -1391,6 +1391,15 @@
 
             // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
         }
+
+        else if (fuckEvent.key === "F9" && useFlag)
+        {
+            useFlag = false;
+            console.log("您已按下F9，进行删除元素");
+
+            document.getElementById("fuck_this_shit").remove();
+        }
+
     });
 
 
