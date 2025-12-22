@@ -23,14 +23,14 @@
     // 左侧大功能 开关
     const tiJianDATE_Flag = true;       // 日期填充（体检、随访）
     const tiJian_Dll_Flag = true;       // 体检表填充
-    const zhongYi_Dll_Flag = false;      // 中医模块
+    const zhongYi_Dll_Flag = false;     // 中医模块
     const suiFang_Dll_Flag = false;     // 随访模块
     const jksc_Flag = false;            // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = false;                 // 一般体检开关
-    const yb_tj_xy = false;             // 一般体检中的血压开关（血压、空腹血糖）
-    const sh_tj = true;                // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const yb_tj = false;                // 一般体检开关
+    const yb_tj_xy = false;             // 一般体检中的 血压开关
+    const sh_tj = true;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -180,6 +180,7 @@
 
         // 获取 老 高 糖 状态
         let sickness_flag = get_sickness_status_for_tiJian();
+
         // 外部获取 转诊的村医姓名
         let cun_doctor = get_cun_doctor();
         // 外部获取体征数据
@@ -373,6 +374,7 @@
                         }
                     }
 
+                    // 一般体检 血压模块
                     if (yb_tj_xy)
                     {
                         if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("左侧"))
@@ -408,20 +410,32 @@
                             inputs[0].dispatchEvent(fkVueEvent);
                             inputs[1].dispatchEvent(fkVueEvent);
                         }
-                        else if (tr_s[j].innerText.includes("空腹血糖"))
-                        {
-                            let inputs = tr_s[j].getElementsByTagName("input");
-                            inputs[0].value = body_DATA['blood_glucose'].toString();
-                            inputs[0].dispatchEvent(fkVueEvent);
-                        }
-
                         // else if (tr_s[j].innerText.includes("SpO2"))
                         // {
                         //     let inputs = tr_s[j].getElementsByTagName("input");
                         //     inputs[0].value = body_DATA['SpO2'].toString();
                         //     inputs[0].dispatchEvent(fkVueEvent);
                         // }
+                    }
 
+                    if (sickness_flag["tyb"])
+                    {
+                        if (tr_s[j].innerText.includes("足背脉搏动"))
+                        {
+                            const divs = tr_s[j].getElementsByTagName("div");
+                            for (let k = 0; k < divs.length; k++)
+                            {
+                                // 没有点击的危险因素的，要点击
+                                if (divs[k].innerText.includes('触及双侧对称') && !divs[k].className.includes('checked'))
+                                    divs[k].click();
+                            }
+                        }
+                        else if (tr_s[j].innerText.includes("空腹血糖"))
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            inputs[0].value = body_DATA['blood_glucose'].toString();
+                            inputs[0].dispatchEvent(fkVueEvent);
+                        }
                     }
 
                     // 生化检测模块
