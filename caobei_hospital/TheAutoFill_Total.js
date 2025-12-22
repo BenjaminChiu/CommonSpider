@@ -28,9 +28,9 @@
     const jksc_Flag = false;            // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = false;                // 一般体检开关
-    const yb_tj_xy = false;             // 一般体检中的 血压开关
-    const sh_tj = true;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const yb_tj = true;                // 一般体检开关
+    const yb_tj_xy = true;             // 一般体检中的 血压开关
+    const sh_tj = false;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -425,7 +425,7 @@
                             const divs = tr_s[j].getElementsByTagName("div");
                             for (let k = 0; k < divs.length; k++)
                             {
-                                // 没有点击的危险因素的，要点击
+                                // 自动点击 摸脚背动脉
                                 if (divs[k].innerText.includes('触及双侧对称') && !divs[k].className.includes('checked'))
                                     divs[k].click();
                             }
