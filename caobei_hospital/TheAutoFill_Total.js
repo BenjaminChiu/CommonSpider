@@ -22,14 +22,14 @@
 
     // 左侧大功能 开关
     const tiJianDATE_Flag = true;       // 日期填充（体检、随访）
-    const tiJian_Dll_Flag = true;       // 体检表填充
+    const tiJian_Dll_Flag = false;       // 体检表填充
     const zhongYi_Dll_Flag = false;     // 中医模块
     const suiFang_Dll_Flag = false;     // 随访模块
-    const jksc_Flag = false;            // 健康筛查
+    const jksc_Flag = true;            // 健康筛查
 
     // 体检 功能开关
-    const yb_tj = true;                // 一般体检开关
-    const yb_tj_xy = true;             // 一般体检中的 血压开关
+    const yb_tj = false;                // 一般体检开关
+    const yb_tj_xy = false;             // 一般体检中的 血压开关
     const sh_tj = false;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
@@ -781,11 +781,12 @@
                         const inputs = tr_s[j].getElementsByTagName("input");
                         const man_height = inputs[0].value;
                         const man_weight = inputs[1].value;
+                        const man_weight_node = man_weight / ((man_height/100) * (man_height/100))
 
                         // 体重有三种状态：过重、过轻、正常，故不能使用true、false来赋值
-                        if (man_weight > 23.99)
+                        if (man_weight_node > 23.99)
                             $.cookie('man_weight_flag', "过重", {expires: 365, path: '/'});
-                        else if (man_weight < 18.5)
+                        else if (man_weight_node < 18.5)
                             $.cookie('man_weight_flag', "过轻", {expires: 365, path: '/'});
                         else
                             $.cookie('man_weight_flag', "正常", {expires: 365, path: '/'});
@@ -795,57 +796,57 @@
                         $.cookie('man_height', man_height, {expires: 365, path: '/'});
                         $.cookie('man_weight', man_weight, {expires: 365, path: '/'});
                     }
-                    // else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     const waistline = inputs[0].value;
-                    //
-                    //     console.log("腰围：" + waistline);
-                    //     $.cookie('waistline', waistline, {expires: 365, path: '/'});
-                    // }
-                    // else if (tr_s[j].innerText.includes("血压"))
-                    // {
-                    //     const inputs = tr_s[j].getElementsByTagName("input");
-                    //     const man_blood_high = inputs[1].value;
-                    //     const man_blood_low = inputs[2].value;
-                    //
-                    //     console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
-                    //     $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
-                    //     $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
-                    // }
+                    else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        const waistline = inputs[0].value;
+
+                        console.log("腰围：" + waistline);
+                        $.cookie('waistline', waistline, {expires: 365, path: '/'});
+                    }
+                    else if (tr_s[j].innerText.includes("血压"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_blood_high = inputs[1].value;
+                        const man_blood_low = inputs[2].value;
+
+                        console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
+                        $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
+                        $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
+                    }
 
                 }
             }
 
-            // else if (form_s[i].innerText.includes('随访日期') && form_s[i].innerText.includes('随访方式') && !read_flag)
-            // {
-            //      read_flag = true;   // 只读一次
-            //
-            //     // 获取所有行，并且遍历所有行
-            //     const tr_s = form_s[i].getElementsByTagName("tr");
-            //     // let tr_s = document.getElementsByTagName("tr");
-            //     for (let j = 0; j < tr_s.length; j++)
-            //     {
-            //         if (tr_s[j].innerText.includes("随访日期") && tr_s[j].innerText.includes("随访方式"))
-            //         {
-            //             const inputs = tr_s[j].getElementsByTagName("input");
-            //             const your_day = inputs[0].value;
-            //
-            //             console.log("随访日期：" + your_day);
-            //             $.cookie('sf_day', your_day, {expires: 365, path: '/'});
-            //         }
-            //         else if (tr_s[j].innerText.includes("血压"))
-            //         {
-            //             const inputs = tr_s[j].getElementsByTagName("input");
-            //             const man_blood_high = inputs[0].value;
-            //             const man_blood_low = inputs[1].value;
-            //
-            //             console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
-            //             $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
-            //             $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
-            //         }
-            //     }
-            // }
+            else if (form_s[i].innerText.includes('随访日期') && !read_flag)
+            {
+                 read_flag = true;   // 只读一次
+
+                // 获取所有行，并且遍历所有行
+                const tr_s = form_s[i].getElementsByTagName("tr");
+                // let tr_s = document.getElementsByTagName("tr");
+                for (let j = 0; j < tr_s.length; j++)
+                {
+                    if (tr_s[j].innerText.includes("随访日期") && tr_s[j].innerText.includes("随访方式"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const your_day = inputs[0].value;
+
+                        console.log("随访日期：" + your_day);
+                        $.cookie('sf_day', your_day, {expires: 365, path: '/'});
+                    }
+                    else if (tr_s[j].innerText.includes("血压"))
+                    {
+                        const inputs = tr_s[j].getElementsByTagName("input");
+                        const man_blood_high = inputs[0].value;
+                        const man_blood_low = inputs[1].value;
+
+                        console.log("血压高值：" + man_blood_high + "\n血压低值：" + man_blood_low);
+                        $.cookie('man_blood_high', man_blood_high, {expires: 365, path: '/'});
+                        $.cookie('man_blood_low', man_blood_low, {expires: 365, path: '/'});
+                    }
+                }
+            }
         }
     }
 
@@ -893,55 +894,55 @@
                 for (let j = 0; j < tr_s.length; j++)
                 {
 
-                    // if (tr_s[j].innerText.includes("随访日期") && !tr_s[j].innerText.includes("下次随访日期"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = $.cookie("sf_day");
-                    //     console.log("当前随访日期：" + inputs[0].value);
-                    //     inputs[0].dispatchEvent(fkVueEvent_change);
-                    // }
-                    // else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = body_DATA['body_temperature'].toString();
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    //     inputs[1].value = body_DATA['pulse_rate'].toString();
-                    //     inputs[1].dispatchEvent(fkVueEvent);
-                    // }
-                    // else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("血压"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = body_DATA['respiratory_rate'].toString();
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    //
-                    //     inputs[1].value = $.cookie("man_blood_high");
-                    //     inputs[2].value = $.cookie("man_blood_low");
-                    //     inputs[1].dispatchEvent(fkVueEvent);
-                    //     inputs[2].dispatchEvent(fkVueEvent);
-                    // }
-                    // else if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = $.cookie("man_height");
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    //
-                    //     inputs[1].value = $.cookie("man_weight");
-                    //     inputs[1].dispatchEvent(fkVueEvent);
-                    // }
-                    // else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = $.cookie("waistline");
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    // }
-                    // else if (tr_s[j].innerText.includes("空腹血糖") && tr_s[j].innerText.includes("随机血糖") && sickness_flag["tyb"])
-                    // {
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[0].value = body_DATA['blood_glucose'];
-                    //     inputs[0].dispatchEvent(fkVueEvent);
-                    // }
+                    if (tr_s[j].innerText.includes("随访日期") && !tr_s[j].innerText.includes("下次随访日期"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("tiJianDate");
+                        console.log("当前随访日期：" + inputs[0].value);
+                        inputs[0].dispatchEvent(fkVueEvent_change);
+                    }
+                    else if (tr_s[j].innerText.includes("体温") && tr_s[j].innerText.includes("脉率"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['body_temperature'].toString();
+                        inputs[0].dispatchEvent(fkVueEvent);
+                        inputs[1].value = body_DATA['pulse_rate'].toString();
+                        inputs[1].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("呼吸频率") && tr_s[j].innerText.includes("血压"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['respiratory_rate'].toString();
+                        inputs[0].dispatchEvent(fkVueEvent);
 
-                    if (tr_s[j].innerText.includes("备注") && !jksc_text_edit_flag)
+                        inputs[1].value = $.cookie("man_blood_high");
+                        inputs[2].value = $.cookie("man_blood_low");
+                        inputs[1].dispatchEvent(fkVueEvent);
+                        inputs[2].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("身高") && tr_s[j].innerText.includes("体重"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("man_height");
+                        inputs[0].dispatchEvent(fkVueEvent);
+
+                        inputs[1].value = $.cookie("man_weight");
+                        inputs[1].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("腰围") && tr_s[j].innerText.includes("体质指数"))
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = $.cookie("waistline");
+                        inputs[0].dispatchEvent(fkVueEvent);
+                    }
+                    else if (tr_s[j].innerText.includes("空腹血糖") && tr_s[j].innerText.includes("随机血糖") && sickness_flag["tyb"])
+                    {
+                        let inputs = tr_s[j].getElementsByTagName("input");
+                        inputs[0].value = body_DATA['blood_glucose'];
+                        inputs[0].dispatchEvent(fkVueEvent);
+                    }
+
+                    else if (tr_s[j].innerText.includes("备注") && !jksc_text_edit_flag)
                     {
                         let textarea_s = tr_s[j].getElementsByTagName("textarea");
 
@@ -983,53 +984,52 @@
                     }
 
 
-                    // else if (tr_s[j].innerText.includes('随访医生') && tr_s[j].innerText.includes("下次随访日期"))
-                    // {
-                    //     console.log("进入随访医生模块");
-                    //     // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
-                    //     let div_s = tr_s[j].getElementsByTagName("div");
-                    //     for (let z = 0; z < div_s.length; z++)
-                    //     {
-                    //         if ("combobox" === div_s[z].getAttribute("role"))
-                    //         {
-                    //             // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
-                    //             div_s[z].click();
-                    //             break;  // 目的达到，结束内循环
-                    //         }
-                    //     }
-                    //
-                    //
-                    //     // 步骤二：模拟点击选取对应村医生
-                    //     setTimeout(function ()
-                    //     {
-                    //         let ul_s = $('ul[role="listbox"]');
-                    //         for (let y = 0; y < ul_s.length; y++)
-                    //         {
-                    //             if (ul_s[y].innerText.includes('曹碑镇卫生院'))
-                    //             {
-                    //                 let li_s = ul_s[y].getElementsByTagName("li");
-                    //                 for (let z = 0; z < li_s.length; z++)
-                    //                 {
-                    //                     // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
-                    //                     if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
-                    //                         && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停"))
-                    //                     {
-                    //                         li_s[z].click();
-                    //                         cun_doctor_flag = true;
-                    //                     }
-                    //
-                    //                 }
-                    //             }
-                    //         }
-                    //     }, 300);
-                    //
-                    //
-                    //     let inputs = tr_s[j].getElementsByTagName("input");
-                    //     inputs[1].value = "2025-09-17";
-                    //     inputs[1].dispatchEvent(fkVueEvent_change);
-                    //     console.log("下一次健筛日期：" + inputs[1].value);
-                    //
-                    // }
+                    else if (tr_s[j].innerText.includes('随访医生') && tr_s[j].innerText.includes("下次随访日期"))
+                    {
+                        console.log("进入随访医生模块");
+                        // 步骤一：模拟点击下拉框，触发事件，获取下拉数据；如不点击获取不到相应下拉数据
+                        let div_s = tr_s[j].getElementsByTagName("div");
+                        for (let z = 0; z < div_s.length; z++)
+                        {
+                            if ("combobox" === div_s[z].getAttribute("role"))
+                            {
+                                // div_s[j].dispatchEvent(click_Event);     原生JS报错new ClickEvent构建错误
+                                div_s[z].click();
+                                break;  // 目的达到，结束内循环
+                            }
+                        }
+
+
+                        // 步骤二：模拟点击选取对应村医生
+                        setTimeout(function ()
+                        {
+                            let ul_s = $('ul[role="listbox"]');
+                            for (let y = 0; y < ul_s.length; y++)
+                            {
+                                if (ul_s[y].innerText.includes('曹碑镇卫生院'))
+                                {
+                                    let li_s = ul_s[y].getElementsByTagName("li");
+                                    for (let z = 0; z < li_s.length; z++)
+                                    {
+                                        // 关键：如果下拉列表中有村医 和 签约的村医一致，则点击该村医
+                                        if (li_s[z].innerText.includes(cun_doctor) && !cun_doctor_flag
+                                            && !li_s[z].innerText.includes("禁") && !li_s[z].innerText.includes("停"))
+                                        {
+                                            li_s[z].click();
+                                            cun_doctor_flag = true;
+                                        }
+                                    }
+                                }
+                            }
+                        }, 300);
+
+
+                        // let inputs = tr_s[j].getElementsByTagName("input");
+                        // inputs[1].value = "2025-09-17";
+                        // inputs[1].dispatchEvent(fkVueEvent_change);
+                        // console.log("下一次健筛日期：" + inputs[1].value);
+
+                    }
 
 
                 }
