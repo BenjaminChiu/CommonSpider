@@ -478,7 +478,7 @@
                         else if (tr_s[j].innerText.includes("糖化血红蛋白"))
                         {
                             let inputs = tr_s[j].getElementsByTagName("input");
-                            let fk_th = Math.floor(Math.random() * (5.9 - 4.1 + 1) + 4.1);
+                            let fk_th = (Math.random() * (5.9 - 4.1) + 4.1).toFixed(1);
                             inputs[0].value = fk_th.toString();
                             inputs[0].dispatchEvent(fkVueEvent);
                         }
