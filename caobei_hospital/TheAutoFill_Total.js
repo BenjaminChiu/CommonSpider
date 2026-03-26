@@ -22,15 +22,15 @@
 
     // 左侧大功能 开关
     const tiJianDATE_Flag = true;       // 日期填充（体检、随访）
-    const tiJian_Dll_Flag = false;       // 体检表填充
+    const tiJian_Dll_Flag = true;       // 体检表填充
     const zhongYi_Dll_Flag = false;     // 中医模块
     const suiFang_Dll_Flag = false;     // 随访模块
-    const jksc_Flag = true;            // 健康筛查
+    const jksc_Flag = false;            // 健康筛查
 
     // 体检 功能开关
     const yb_tj = false;                // 一般体检开关
     const yb_tj_xy = false;             // 一般体检中的 血压开关
-    const sh_tj = false;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
+    const sh_tj = true;                 // 生化体检开关（包括尿、心电图、B超。不包括血常规、肝功）
 
 
     // 随访 功能开关
@@ -475,6 +475,13 @@
                                     divs[k].click();
                             }
                         }
+                        else if (tr_s[j].innerText.includes("糖化血红蛋白"))
+                        {
+                            let inputs = tr_s[j].getElementsByTagName("input");
+                            let fk_th = Math.floor(Math.random() * (5.9 - 4.1 + 1) + 4.1);
+                            inputs[0].value = fk_th.toString();
+                            inputs[0].dispatchEvent(fkVueEvent);
+                        }
                         else if (tr_s[j].innerText.includes("腹部B超"))
                         {
                             const divs = tr_s[j].getElementsByTagName("div");
@@ -695,7 +702,7 @@
                 // else
                 //     textarea_s[0].value = t_s[Math.floor(Math.random() * t_s.length)];
 
-                textarea_s[0].value = the_final;
+                textarea_s[0].value = "合理膳食，饮食清淡，吃动平衡，舒畅心态。";;
                 textarea_s[0].dispatchEvent(fkVueEvent);
             }
 
