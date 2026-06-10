@@ -1285,7 +1285,7 @@
     document.addEventListener("keydown", function (fuckEvent)
     {
 
-        if (fuckEvent.key === "F9" && !useFlag)
+        if (fuckEvent.ctrlKey && fuckEvent.shiftKey && fuckEvent.code === "F8" && !useFlag)
         {
             console.log("您已按下F9，实现弹窗，StartFunction");
             useFlag = true;     // 表示目前已经在使用了
@@ -1413,7 +1413,7 @@
             // Button_1 = + Br_String + sfDayString + Br_String + zhongYiString + Br_String + zhongYiString_2 + Br_String + basicInfoString;
         }
 
-        else if (fuckEvent.key === "F9" && useFlag)
+        else if (fuckEvent.ctrlKey && fuckEvent.shiftKey && fuckEvent.code === "F8" && useFlag)
         {
             useFlag = false;
             console.log("您已按下F9，进行删除元素");
