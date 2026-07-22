@@ -3,7 +3,7 @@ import pandas as pd
 pd.set_option('display.max_rows', 1000)
 
 # ==================== 1. 读取数据 ====================
-df = pd.read_excel("C:\\Users\\Donkey\\Desktop\\Test2.xlsx")  # 请替换为实际文件路径
+df = pd.read_excel("C:\\Users\\Donkey\\Desktop\\Test.xlsx")  # 请替换为实际文件路径
 
 # ==================== 2. 数据清洗 ====================
 df['证件号码'] = df['证件号码'].astype(str)  # 确保为字符串
